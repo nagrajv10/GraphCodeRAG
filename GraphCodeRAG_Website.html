@@ -1,0 +1,501 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GraphCodeRAG — AST-Aware Developer Assistant</title>
+<link href="https://fonts.googleapis.com/css2?family=Geist+Mono:wght@400;500;600&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600;9..40,700&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --bg-0:#0a0a0c;--bg-1:#101014;--bg-2:#161619;--bg-3:#1c1c21;
+  --border-1:rgba(255,255,255,0.05);--border-2:rgba(255,255,255,0.08);--border-3:rgba(255,255,255,0.12);
+  --text-0:#fafafa;--text-1:#d4d4d8;--text-2:#a1a1aa;--text-3:#71717a;--text-4:#3f3f46;
+  --purple:#a855f7;--purple-dim:rgba(168,85,247,0.12);
+  --blue:#60a5fa;--blue-dim:rgba(96,165,250,0.12);
+  --green:#4ade80;--green-dim:rgba(74,222,128,0.12);
+  --amber:#fbbf24;--amber-dim:rgba(251,191,36,0.12);
+  --coral:#f87171;
+  --font-body:'DM Sans',system-ui,sans-serif;
+  --font-mono:'Geist Mono','JetBrains Mono',monospace;
+}
+html,body{height:100%;overflow:hidden}
+body{font-family:var(--font-body);background:var(--bg-0);color:var(--text-0);display:flex}
+
+.activity-bar{width:52px;background:var(--bg-0);border-right:1px solid var(--border-1);display:flex;flex-direction:column;align-items:center;padding:8px 0;gap:2px;flex-shrink:0}
+.ab-logo{width:34px;height:34px;border-radius:10px;background:linear-gradient(135deg,#7c3aed,#a855f7);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:14px;color:#fff;margin-bottom:12px}
+.ab-icon{width:38px;height:38px;border-radius:10px;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all .15s;position:relative;color:var(--text-4);font-size:16px}
+.ab-icon:hover{color:var(--text-2);background:rgba(255,255,255,0.03)}
+.ab-icon.active{color:var(--purple);background:var(--purple-dim)}
+.ab-icon .badge{position:absolute;top:6px;right:6px;width:7px;height:7px;border-radius:50%;background:var(--coral);border:2px solid var(--bg-0)}
+.ab-spacer{flex:1}
+.ab-divider{width:22px;height:1px;background:var(--border-1);margin:6px 0}
+
+.sidebar{width:272px;background:var(--bg-1);border-right:1px solid var(--border-1);display:flex;flex-direction:column;flex-shrink:0;transition:width .25s,opacity .2s;overflow:hidden}
+.sidebar.collapsed{width:0;border:none;opacity:0}
+.sb-header{padding:16px 18px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--border-1)}
+.sb-title{font-size:11px;font-weight:600;color:var(--text-4);text-transform:uppercase;letter-spacing:1px}
+.sb-add{width:24px;height:24px;border-radius:7px;border:1px dashed var(--border-3);background:none;color:var(--text-4);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:16px;transition:all .15s}
+.sb-add:hover{border-color:var(--purple);color:var(--purple)}
+.sb-section{padding:14px 14px 6px;font-size:10px;font-weight:600;color:var(--text-4);text-transform:uppercase;letter-spacing:.8px}
+.sb-card{margin:2px 10px;padding:10px 12px;border-radius:10px;cursor:pointer;border:1px solid transparent;transition:all .15s}
+.sb-card:hover{background:rgba(255,255,255,0.02)}
+.sb-card.active{background:var(--purple-dim);border-color:rgba(168,85,247,0.18)}
+.sb-card-row{display:flex;align-items:center;gap:8px;margin-bottom:3px}
+.sb-card-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+.sb-card-name{font-size:13px;font-weight:500;color:var(--text-1);flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.sb-card-time{font-size:10px;color:var(--text-4)}
+.sb-card-meta{display:flex;align-items:center;gap:6px;padding-left:16px}
+.sb-card-tag{font-size:10px;color:var(--text-3);font-family:var(--font-mono);background:rgba(255,255,255,0.04);padding:1px 7px;border-radius:4px}
+.sb-card-stats{font-size:10px;color:var(--text-4)}
+.sb-card-preview{font-size:11px;color:var(--text-4);padding-left:16px;margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+
+.main{flex:1;display:flex;flex-direction:column;min-width:0}
+.topbar{height:46px;display:flex;align-items:center;border-bottom:1px solid var(--border-1);background:rgba(10,10,12,0.85);backdrop-filter:blur(16px);flex-shrink:0}
+.tabs{display:flex;align-items:stretch;height:100%;flex:1;overflow-x:auto}
+.tab{display:flex;align-items:center;gap:8px;padding:0 18px;font-size:12px;color:var(--text-3);cursor:pointer;border-right:1px solid var(--border-1);white-space:nowrap;transition:all .12s;position:relative}
+.tab:hover{color:var(--text-2);background:rgba(255,255,255,0.015)}
+.tab.active{color:var(--text-0);background:rgba(255,255,255,0.03)}
+.tab.active::after{content:'';position:absolute;bottom:0;left:0;right:0;height:2px;background:var(--purple)}
+.tab-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+.tab-name{font-weight:500}
+.tab-branch{font-size:10px;color:var(--text-4);font-family:var(--font-mono);background:rgba(255,255,255,0.04);padding:1px 6px;border-radius:3px}
+.tab-close{width:16px;height:16px;border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:10px;color:var(--text-4);opacity:0;transition:all .1s}
+.tab:hover .tab-close{opacity:1}
+.tab-plus{width:36px;display:flex;align-items:center;justify-content:center;color:var(--text-4);cursor:pointer;font-size:18px;flex-shrink:0}
+.tab-plus:hover{color:var(--text-3)}
+.topbar-controls{display:flex;align-items:center;gap:8px;padding:0 14px;flex-shrink:0}
+.branch-btn{display:flex;align-items:center;gap:6px;padding:5px 11px;background:rgba(255,255,255,0.03);border:1px solid var(--border-2);border-radius:7px;cursor:pointer;font-size:12px;color:var(--text-1);font-family:var(--font-mono);font-weight:500}
+.branch-btn:hover{border-color:var(--border-3)}
+.status-pill{display:flex;align-items:center;gap:5px;padding:4px 11px;border-radius:20px;font-size:10px;font-weight:500;background:var(--green-dim);color:var(--green);border:1px solid rgba(74,222,128,0.15)}
+.status-dot{width:5px;height:5px;border-radius:50%;background:var(--green);animation:pulse 2s ease-in-out infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
+
+.workspace{display:flex;flex:1;overflow:hidden}
+.panel-left{width:224px;border-right:1px solid var(--border-1);display:flex;flex-direction:column;flex-shrink:0}
+.stats-row{display:flex;border-bottom:1px solid var(--border-1)}
+.stat-box{flex:1;padding:10px 6px;text-align:center;border-right:1px solid var(--border-1)}
+.stat-box:last-child{border-right:none}
+.stat-val{font-size:17px;font-weight:700;font-variant-numeric:tabular-nums}
+.stat-label{font-size:9px;color:var(--text-4);text-transform:uppercase;letter-spacing:.4px;margin-top:1px}
+.file-header{padding:10px 14px;font-size:10px;font-weight:600;color:var(--text-4);text-transform:uppercase;letter-spacing:.6px;display:flex;justify-content:space-between;border-bottom:1px solid var(--border-1)}
+.file-search{padding:6px 10px;border-bottom:1px solid var(--border-1)}
+.file-search input{width:100%;background:rgba(255,255,255,0.03);border:1px solid var(--border-1);color:var(--text-1);padding:5px 10px;border-radius:6px;font-size:11px;font-family:var(--font-body);outline:none}
+.file-search input:focus{border-color:rgba(168,85,247,0.3)}
+.file-search input::placeholder{color:var(--text-4)}
+.file-list{flex:1;overflow-y:auto;padding:4px 0}
+.file-item{display:flex;align-items:center;gap:7px;padding:5px 14px;font-size:12px;color:var(--text-3);cursor:pointer;transition:all .1s}
+.file-item:hover{background:rgba(255,255,255,0.02);color:var(--text-2)}
+.file-item.active{background:var(--purple-dim);color:var(--purple)}
+.file-icon{flex-shrink:0;font-size:12px;opacity:.5}
+.file-name{flex:1;font-family:var(--font-mono);font-size:11.5px}
+.file-badge{font-size:9px;background:rgba(255,255,255,0.04);padding:1px 6px;border-radius:6px;color:var(--text-4)}
+
+.panel-center{flex:1;display:flex;flex-direction:column;min-width:0}
+.graph-area{flex:1;position:relative;overflow:hidden;background:radial-gradient(ellipse at 20% 30%,rgba(168,85,247,0.04) 0%,transparent 50%),radial-gradient(ellipse at 80% 70%,rgba(96,165,250,0.03) 0%,transparent 40%),var(--bg-0)}
+.graph-area::before{content:'';position:absolute;inset:0;background-image:radial-gradient(rgba(255,255,255,0.03) 1px,transparent 1px);background-size:24px 24px}
+.graph-header{position:absolute;top:12px;left:16px;display:flex;align-items:center;gap:8px;z-index:5}
+.graph-title{font-size:10px;color:var(--text-4);text-transform:uppercase;letter-spacing:.6px}
+.graph-filter{display:flex;gap:2px;background:rgba(10,10,12,0.7);backdrop-filter:blur(8px);border:1px solid var(--border-1);border-radius:6px;padding:2px}
+.gf-opt{padding:3px 8px;font-size:9px;font-weight:500;color:var(--text-4);cursor:pointer;border-radius:4px;transition:all .12s}
+.gf-opt:hover{color:var(--text-2)}
+.gf-opt.on{background:var(--purple-dim);color:var(--purple)}
+.graph-toolbar{position:absolute;top:12px;right:14px;display:flex;gap:3px;z-index:5}
+.g-btn{width:30px;height:30px;border-radius:7px;border:1px solid var(--border-1);background:rgba(10,10,12,0.7);backdrop-filter:blur(8px);color:var(--text-4);display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:13px}
+.g-btn:hover{border-color:var(--border-3);color:var(--text-2)}
+
+.node{position:absolute;border-radius:50%;cursor:pointer;z-index:2;display:flex;align-items:center;justify-content:center;transition:all .2s;box-shadow:0 0 20px rgba(0,0,0,0.4)}
+.node:hover{transform:scale(1.18);z-index:10}
+.node.sel{transform:scale(1.2);z-index:10}
+.node-f{background:radial-gradient(circle at 35% 35%,#60a5fa,#2563eb);border:2px solid rgba(96,165,250,0.25)}
+.node-f.sel{border-color:var(--blue);box-shadow:0 0 24px rgba(59,130,246,0.4)}
+.node-c{background:radial-gradient(circle at 35% 35%,#c084fc,#7c3aed);border:2px solid rgba(192,132,252,0.25)}
+.node-c.sel{border-color:var(--purple);box-shadow:0 0 24px rgba(168,85,247,0.4)}
+.node-m{background:radial-gradient(circle at 35% 35%,#4ade80,#16a34a);border:2px solid rgba(74,222,128,0.25)}
+.node-lbl{position:absolute;bottom:-18px;left:50%;transform:translateX(-50%);font-size:9px;color:var(--text-3);white-space:nowrap;font-weight:500;text-shadow:0 1px 4px rgba(0,0,0,.9);font-family:var(--font-mono)}
+.node.glow{animation:npulse 2.5s ease-in-out infinite}
+@keyframes npulse{0%,100%{filter:brightness(1)}50%{filter:brightness(1.3)}}
+
+.graph-svg{position:absolute;inset:0;pointer-events:none;z-index:1}
+.edge{stroke-width:1}
+.edge-call{stroke:rgba(96,165,250,0.18)}
+.edge-import{stroke:rgba(74,222,128,0.14);stroke-dasharray:5 4}
+.edge-contain{stroke:rgba(192,132,252,0.14)}
+.edge-hl{stroke:rgba(251,191,36,0.45);stroke-width:1.8}
+.graph-legend{position:absolute;bottom:12px;left:14px;display:flex;gap:16px;font-size:10px;color:var(--text-4);background:rgba(10,10,12,.75);backdrop-filter:blur(8px);padding:7px 14px;border-radius:8px;border:1px solid var(--border-1);z-index:5}
+.leg-item{display:flex;align-items:center;gap:5px}
+.leg-dot{width:7px;height:7px;border-radius:50%}
+.leg-line{width:14px;height:2px;border-radius:1px}
+
+.code-pane{height:180px;border-top:1px solid var(--border-1);display:flex;flex-direction:column;flex-shrink:0}
+.code-header{display:flex;align-items:center;justify-content:space-between;padding:7px 14px;background:rgba(255,255,255,.012);border-bottom:1px solid var(--border-1);font-size:11px}
+.code-header-left{display:flex;align-items:center;gap:8px}
+.cp-badge{padding:2px 8px;border-radius:4px;font-size:9px;font-weight:600}
+.cp-cls{background:var(--purple-dim);color:var(--purple)}
+.cp-path{color:var(--text-3);font-family:var(--font-mono)}
+.cp-lines{color:var(--text-4);font-family:var(--font-mono);font-size:10px;background:rgba(255,255,255,.03);padding:1px 6px;border-radius:3px}
+.code-body{flex:1;overflow:auto;padding:6px 0;font-family:var(--font-mono);font-size:11.5px;line-height:1.7}
+.cl{display:flex;padding:0 14px}
+.cl:hover{background:rgba(255,255,255,.012)}
+.cl.hl{background:rgba(168,85,247,.05);border-left:2px solid var(--purple)}
+.ln{width:40px;text-align:right;padding-right:16px;color:var(--text-4);user-select:none;flex-shrink:0;opacity:.4}
+.lc{color:var(--text-1);white-space:pre}
+.kw{color:var(--purple)}.fn{color:var(--blue)}.st{color:var(--amber)}.cm{color:var(--text-4);font-style:italic}.pr{color:#f472b6}.op{color:var(--text-4)}
+
+.panel-right{width:380px;border-left:1px solid var(--border-1);display:flex;flex-direction:column;flex-shrink:0;background:var(--bg-1)}
+.chat-head{padding:11px 16px;border-bottom:1px solid var(--border-1);display:flex;align-items:center;justify-content:space-between}
+.chat-head-left{display:flex;align-items:center;gap:8px;font-size:13px;font-weight:600;color:var(--text-1)}
+.chat-av{width:22px;height:22px;border-radius:6px;background:linear-gradient(135deg,#7c3aed,#a855f7);display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:#fff}
+.mode-toggle{display:flex;background:rgba(255,255,255,.03);border-radius:6px;border:1px solid var(--border-1);overflow:hidden}
+.mode-opt{padding:4px 10px;font-size:10px;font-weight:500;color:var(--text-4);cursor:pointer;transition:all .12s}
+.mode-opt:hover{color:var(--text-2)}
+.mode-opt.on{background:var(--purple-dim);color:var(--purple)}
+
+.chat-msgs{flex:1;overflow-y:auto;padding:16px;display:flex;flex-direction:column;gap:16px}
+.msg-u{align-self:flex-end;max-width:88%}
+.msg-u-bub{background:rgba(255,255,255,.04);border:1px solid var(--border-2);border-radius:12px 12px 4px 12px;padding:10px 14px;font-size:12.5px;line-height:1.55;color:var(--text-1)}
+.msg-u-bub code{background:var(--purple-dim);color:var(--purple);padding:1px 5px;border-radius:3px;font-family:var(--font-mono);font-size:11px}
+
+.msg-a{display:flex;gap:10px}
+.msg-a-av{width:24px;height:24px;border-radius:7px;flex-shrink:0;background:linear-gradient(135deg,#7c3aed,#a855f7);display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:white;margin-top:2px}
+.msg-a-body{flex:1;min-width:0}
+.msg-a-body p{font-size:12.5px;line-height:1.6;color:var(--text-2);margin-bottom:7px}
+.msg-a-body strong{color:var(--text-1);font-weight:600}
+.msg-a-body code{background:var(--purple-dim);color:var(--purple);padding:1px 5px;border-radius:3px;font-family:var(--font-mono);font-size:11px}
+.msg-code{background:rgba(0,0,0,.35);border:1px solid var(--border-1);border-radius:8px;margin:8px 0;overflow:hidden}
+.msg-code-top{display:flex;justify-content:space-between;align-items:center;padding:5px 12px;background:rgba(255,255,255,.015);border-bottom:1px solid var(--border-1);font-size:10px;color:var(--text-4);font-family:var(--font-mono)}
+.msg-code-body{padding:10px 14px;font-family:var(--font-mono);font-size:11px;line-height:1.6;color:var(--text-2);white-space:pre;overflow-x:auto}
+.chips{display:flex;flex-wrap:wrap;gap:4px;margin-top:8px}
+.chip{display:flex;align-items:center;gap:4px;padding:3px 8px;border-radius:5px;font-size:9px;font-family:var(--font-mono);cursor:pointer;transition:all .15s}
+.chip-v{background:var(--blue-dim);color:var(--blue);border:1px solid rgba(96,165,250,.12)}
+.chip-g{background:var(--green-dim);color:var(--green);border:1px solid rgba(74,222,128,.12)}
+.chip:hover{filter:brightness(1.25)}
+.chip-dot{width:4px;height:4px;border-radius:50%}
+.trace{background:rgba(255,255,255,.015);border:1px solid var(--border-1);border-radius:8px;margin:8px 0;overflow:hidden}
+.trace-hd{padding:8px 12px;font-size:10px;color:var(--text-4);cursor:pointer;display:flex;align-items:center;gap:6px}
+.trace-hd:hover{color:var(--text-3)}
+.trace-hd .arr{transition:transform .2s;font-size:8px}
+.trace-hd .arr.open{transform:rotate(90deg)}
+.trace-bd{padding:0 12px 10px;display:none}
+.trace-bd.open{display:block}
+.trace-step{display:flex;align-items:center;gap:8px;padding:4px 0;font-size:10px;color:var(--text-3)}
+.trace-num{width:18px;height:18px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:600;flex-shrink:0}
+.tn-v{background:var(--blue-dim);color:var(--blue)}
+.tn-g{background:var(--green-dim);color:var(--green)}
+.tn-m{background:var(--amber-dim);color:var(--amber)}
+
+.chat-input-area{padding:12px 16px;border-top:1px solid var(--border-1)}
+.chat-ctx{display:flex;align-items:center;gap:6px;padding:4px 0;margin-bottom:6px}
+.ctx-chip{display:flex;align-items:center;gap:4px;padding:3px 8px;border-radius:5px;font-size:10px;font-family:var(--font-mono);background:var(--purple-dim);color:var(--purple);border:1px solid rgba(168,85,247,.12)}
+.ctx-x{cursor:pointer;opacity:.5}.ctx-x:hover{opacity:1}
+.chat-box{display:flex;align-items:flex-end;gap:8px;background:rgba(255,255,255,.02);border:1px solid var(--border-2);border-radius:10px;padding:10px 12px;transition:border-color .15s}
+.chat-box:focus-within{border-color:rgba(168,85,247,.35)}
+.chat-box textarea{flex:1;background:none;border:none;color:var(--text-0);font-size:12.5px;font-family:var(--font-body);resize:none;outline:none;height:20px;line-height:20px;max-height:80px}
+.chat-box textarea::placeholder{color:var(--text-4)}
+.chat-send{width:30px;height:30px;border-radius:8px;border:none;background:linear-gradient(135deg,#7c3aed,#a855f7);color:white;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:13px;flex-shrink:0}
+.chat-send:hover{filter:brightness(1.15)}
+.chat-hint{font-size:9px;color:var(--text-4);text-align:center;margin-top:5px;opacity:.6}
+
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.6);backdrop-filter:blur(6px);z-index:300;display:none;align-items:center;justify-content:center}
+.modal-overlay.show{display:flex}
+.modal{background:var(--bg-2);border:1px solid var(--border-2);border-radius:16px;width:500px;box-shadow:0 24px 80px rgba(0,0,0,.6);overflow:hidden;animation:modin .2s ease}
+@keyframes modin{from{opacity:0;transform:scale(.95) translateY(10px)}to{opacity:1;transform:scale(1) translateY(0)}}
+.modal-head{padding:20px 24px;border-bottom:1px solid var(--border-1);display:flex;align-items:center;justify-content:space-between}
+.modal-head h3{font-size:16px;font-weight:600}
+.modal-x{color:var(--text-4);cursor:pointer;font-size:18px;width:28px;height:28px;border-radius:7px;display:flex;align-items:center;justify-content:center}
+.modal-x:hover{background:rgba(255,255,255,.05);color:var(--text-2)}
+.modal-body{padding:24px}
+.modal-tabs{display:flex;gap:3px;margin-bottom:18px;background:rgba(255,255,255,.02);border-radius:8px;padding:3px;border:1px solid var(--border-1)}
+.modal-tab{padding:7px 16px;border-radius:6px;font-size:12px;color:var(--text-3);cursor:pointer;font-weight:500;flex:1;text-align:center}
+.modal-tab.active{background:var(--purple-dim);color:var(--purple)}
+.modal-field{margin-bottom:18px}
+.modal-label{font-size:12px;color:var(--text-3);font-weight:500;margin-bottom:7px}
+.modal-input{width:100%;background:rgba(255,255,255,.03);border:1px solid var(--border-2);color:var(--text-0);padding:11px 14px;border-radius:9px;font-size:13px;font-family:var(--font-body);outline:none}
+.modal-input:focus{border-color:rgba(168,85,247,.4)}
+.modal-input::placeholder{color:var(--text-4)}
+.modal-hint{font-size:11px;color:var(--text-4);margin-top:5px}
+.modal-foot{padding:16px 24px;border-top:1px solid var(--border-1);display:flex;justify-content:flex-end;gap:10px}
+.btn-ghost{padding:9px 18px;border-radius:9px;font-size:13px;color:var(--text-3);background:none;border:1px solid var(--border-2);cursor:pointer;font-family:inherit}
+.btn-ghost:hover{border-color:var(--border-3);color:var(--text-1)}
+.btn-primary{padding:9px 22px;border-radius:9px;font-size:13px;color:white;background:linear-gradient(135deg,#7c3aed,#a855f7);border:none;cursor:pointer;font-weight:600;font-family:inherit}
+.btn-primary:hover{filter:brightness(1.1)}
+.ingest-prog{margin-top:12px;display:none}.ingest-prog.show{display:block}
+.prog-bar{width:100%;height:6px;background:rgba(255,255,255,.05);border-radius:3px;overflow:hidden;margin-bottom:8px}
+.prog-fill{height:100%;background:linear-gradient(90deg,#7c3aed,#a855f7);border-radius:3px;width:0%;transition:width .3s}
+.prog-step{font-size:11px;color:var(--text-4);display:flex;align-items:center;gap:6px;padding:2px 0}
+.prog-step.done{color:var(--green)}.prog-step.active{color:var(--purple)}
+
+::-webkit-scrollbar{width:5px;height:5px}
+::-webkit-scrollbar-track{background:transparent}
+::-webkit-scrollbar-thumb{background:rgba(255,255,255,.06);border-radius:3px}
+
+[data-tip]{position:relative}
+[data-tip]:hover::after{content:attr(data-tip);position:absolute;left:calc(100% + 8px);top:50%;transform:translateY(-50%);background:var(--bg-3);color:var(--text-1);padding:4px 10px;border-radius:6px;font-size:11px;white-space:nowrap;z-index:100;border:1px solid var(--border-2)}
+</style>
+</head>
+<body>
+
+<div class="activity-bar">
+  <div class="ab-logo">G</div>
+  <div class="ab-icon active" data-tip="Explorer" id="btn-sb">&#9776;</div>
+  <div class="ab-icon" data-tip="Search">&#128269;</div>
+  <div class="ab-icon" data-tip="Graph">&#9672;</div>
+  <div class="ab-divider"></div>
+  <div class="ab-icon" data-tip="Evaluation">&#128202;</div>
+  <div class="ab-icon" data-tip="Ingest">&#8615;</div>
+  <div class="ab-spacer"></div>
+  <div class="ab-icon" data-tip="History">&#128337;<div class="badge"></div></div>
+  <div class="ab-icon" data-tip="Settings">&#9881;</div>
+</div>
+
+<div class="sidebar" id="sidebar">
+  <div class="sb-header"><span class="sb-title">Workspaces</span><button class="sb-add" id="btn-new">+</button></div>
+  <div class="sb-section">Active Sessions</div>
+  <div class="sb-card active">
+    <div class="sb-card-row"><div class="sb-card-dot" style="background:var(--purple)"></div><div class="sb-card-name">pallets/click</div><div class="sb-card-time">now</div></div>
+    <div class="sb-card-meta"><div class="sb-card-tag">main</div><div class="sb-card-stats">425 chunks · 85 edges</div></div>
+    <div class="sb-card-preview">Last: "How does invoke() handle..."</div>
+  </div>
+  <div class="sb-card">
+    <div class="sb-card-row"><div class="sb-card-dot" style="background:var(--blue)"></div><div class="sb-card-name">scikit-learn/sklearn</div><div class="sb-card-time">2h ago</div></div>
+    <div class="sb-card-meta"><div class="sb-card-tag">feature/pipeline</div><div class="sb-card-stats">1,842 chunks · 312 edges</div></div>
+    <div class="sb-card-preview">Last: "Why does fit_transform()..."</div>
+  </div>
+  <div class="sb-section">Recent History</div>
+  <div class="sb-card">
+    <div class="sb-card-row"><div class="sb-card-dot" style="background:var(--green)"></div><div class="sb-card-name">django/django</div><div class="sb-card-time">yesterday</div></div>
+    <div class="sb-card-meta"><div class="sb-card-tag">main</div><div class="sb-card-stats">5,210 chunks · 890 edges</div></div>
+    <div class="sb-card-preview">Last: "How does the ORM handle..."</div>
+  </div>
+  <div class="sb-card">
+    <div class="sb-card-row"><div class="sb-card-dot" style="background:var(--amber)"></div><div class="sb-card-name">fastapi/fastapi</div><div class="sb-card-time">Apr 10</div></div>
+    <div class="sb-card-meta"><div class="sb-card-tag">main</div><div class="sb-card-stats">980 chunks · 156 edges</div></div>
+    <div class="sb-card-preview">Last: "How does dependency injection..."</div>
+  </div>
+</div>
+
+<div class="main">
+  <div class="topbar">
+    <div class="tabs">
+      <div class="tab active"><div class="tab-dot" style="background:#7c3aed"></div><span class="tab-name">pallets/click</span><span class="tab-branch">main</span><span class="tab-close">&times;</span></div>
+      <div class="tab"><div class="tab-dot" style="background:#3b82f6"></div><span class="tab-name">scikit-learn/sklearn</span><span class="tab-branch">feature/pipeline</span><span class="tab-close">&times;</span></div>
+      <div class="tab-plus" id="btn-tab">+</div>
+    </div>
+    <div class="topbar-controls">
+      <div class="branch-btn">&#9095; main <span style="font-size:8px;color:var(--text-4)">&#9660;</span></div>
+      <div class="status-pill"><div class="status-dot"></div> Connected</div>
+    </div>
+  </div>
+
+  <div class="workspace">
+    <div class="panel-left">
+      <div class="stats-row">
+        <div class="stat-box"><div class="stat-val" style="color:var(--purple)">425</div><div class="stat-label">Chunks</div></div>
+        <div class="stat-box"><div class="stat-val" style="color:var(--blue)">387</div><div class="stat-label">Funcs</div></div>
+        <div class="stat-box"><div class="stat-val" style="color:var(--green)">85</div><div class="stat-label">Edges</div></div>
+        <div class="stat-box"><div class="stat-val" style="color:var(--amber)">38</div><div class="stat-label">Classes</div></div>
+      </div>
+      <div class="file-header">Files <span>142</span></div>
+      <div class="file-search"><input placeholder="Search files..." id="fsearch"/></div>
+      <div class="file-list" id="flist">
+        <div class="file-item active"><span class="file-icon">&#128196;</span><span class="file-name">core.py</span><span class="file-badge">24</span></div>
+        <div class="file-item"><span class="file-icon">&#128196;</span><span class="file-name">decorators.py</span><span class="file-badge">18</span></div>
+        <div class="file-item"><span class="file-icon">&#128196;</span><span class="file-name">types.py</span><span class="file-badge">12</span></div>
+        <div class="file-item"><span class="file-icon">&#128196;</span><span class="file-name">utils.py</span><span class="file-badge">9</span></div>
+        <div class="file-item"><span class="file-icon">&#128196;</span><span class="file-name">testing.py</span><span class="file-badge">7</span></div>
+        <div class="file-item"><span class="file-icon">&#128196;</span><span class="file-name">exceptions.py</span><span class="file-badge">5</span></div>
+        <div class="file-item"><span class="file-icon">&#128196;</span><span class="file-name">formatting.py</span><span class="file-badge">4</span></div>
+        <div class="file-item"><span class="file-icon">&#128196;</span><span class="file-name">shell_complete.py</span><span class="file-badge">6</span></div>
+        <div class="file-item"><span class="file-icon">&#128196;</span><span class="file-name">globals.py</span><span class="file-badge">3</span></div>
+        <div class="file-item"><span class="file-icon">&#128196;</span><span class="file-name">_compat.py</span><span class="file-badge">2</span></div>
+      </div>
+    </div>
+
+    <div class="panel-center">
+      <div class="graph-area">
+        <div class="graph-header">
+          <span class="graph-title">Knowledge Graph</span>
+          <div class="graph-filter">
+            <div class="gf-opt on" data-f="all">All</div>
+            <div class="gf-opt" data-f="call">Calls</div>
+            <div class="gf-opt" data-f="import">Imports</div>
+            <div class="gf-opt" data-f="contain">Contains</div>
+          </div>
+        </div>
+        <div class="graph-toolbar"><div class="g-btn">+</div><div class="g-btn">&minus;</div><div class="g-btn">&#8634;</div><div class="g-btn">&#9974;</div></div>
+
+        <svg class="graph-svg" width="100%" height="100%">
+          <line class="edge edge-call" x1="310" y1="140" x2="180" y2="85"/>
+          <line class="edge edge-call" x1="310" y1="140" x2="440" y2="95"/>
+          <line class="edge edge-call edge-hl" x1="310" y1="140" x2="230" y2="225"/>
+          <line class="edge edge-call" x1="180" y1="85" x2="110" y2="160"/>
+          <line class="edge edge-import" x1="480" y1="195" x2="440" y2="95"/>
+          <line class="edge edge-import" x1="480" y1="195" x2="545" y2="90"/>
+          <line class="edge edge-import" x1="110" y1="160" x2="60" y2="245"/>
+          <line class="edge edge-contain" x1="310" y1="140" x2="360" y2="225"/>
+          <line class="edge edge-contain" x1="310" y1="140" x2="270" y2="55"/>
+          <line class="edge edge-contain" x1="480" y1="195" x2="530" y2="260"/>
+          <line class="edge edge-call" x1="230" y1="225" x2="110" y2="160"/>
+          <line class="edge edge-import" x1="360" y1="225" x2="480" y2="195"/>
+        </svg>
+
+        <div class="node node-c sel" style="width:50px;height:50px;left:285px;top:115px"><div class="node-lbl">Group</div></div>
+        <div class="node node-f" style="width:36px;height:36px;left:162px;top:67px"><div class="node-lbl">invoke()</div></div>
+        <div class="node node-f" style="width:34px;height:34px;left:423px;top:78px"><div class="node-lbl">parse_args</div></div>
+        <div class="node node-f glow" style="width:32px;height:32px;left:214px;top:209px"><div class="node-lbl">resolve_cmd</div></div>
+        <div class="node node-f" style="width:30px;height:30px;left:95px;top:145px"><div class="node-lbl">main()</div></div>
+        <div class="node node-c" style="width:44px;height:44px;left:458px;top:173px"><div class="node-lbl">Option</div></div>
+        <div class="node node-m" style="width:38px;height:38px;left:526px;top:71px"><div class="node-lbl">utils.py</div></div>
+        <div class="node node-f" style="width:28px;height:28px;left:346px;top:211px"><div class="node-lbl">get_cmd</div></div>
+        <div class="node node-f" style="width:26px;height:26px;left:257px;top:42px"><div class="node-lbl">add_cmd</div></div>
+        <div class="node node-m" style="width:34px;height:34px;left:43px;top:228px"><div class="node-lbl">types.py</div></div>
+        <div class="node node-f" style="width:26px;height:26px;left:517px;top:247px"><div class="node-lbl">consume</div></div>
+
+        <div class="graph-legend">
+          <div class="leg-item"><div class="leg-dot" style="background:#3b82f6"></div> Function</div>
+          <div class="leg-item"><div class="leg-dot" style="background:#7c3aed"></div> Class</div>
+          <div class="leg-item"><div class="leg-dot" style="background:#22c55e"></div> Module</div>
+          <div class="leg-item"><div class="leg-line" style="background:#60a5fa"></div> Calls</div>
+          <div class="leg-item"><div class="leg-line" style="background:#4ade80;height:0;border-top:2px dashed #4ade80"></div> Imports</div>
+          <div class="leg-item"><div class="leg-line" style="background:#c084fc"></div> Contains</div>
+        </div>
+      </div>
+
+      <div class="code-pane">
+        <div class="code-header">
+          <div class="code-header-left"><span class="cp-badge cp-cls">CLASS</span><span class="cp-path">click/core.py</span><span class="cp-lines">L1247-1312</span></div>
+          <span style="font-size:10px;color:var(--text-4)">Selected: Group</span>
+        </div>
+        <div class="code-body">
+          <div class="cl"><span class="ln">1247</span><span class="lc"><span class="kw">class</span> <span class="fn">Group</span>(MultiCommand):</span></div>
+          <div class="cl"><span class="ln">1248</span><span class="lc">    <span class="st">"""A command that has subcommands."""</span></span></div>
+          <div class="cl"><span class="ln">1249</span><span class="lc"></span></div>
+          <div class="cl"><span class="ln">1250</span><span class="lc">    <span class="kw">def</span> <span class="fn">__init__</span>(<span class="pr">self</span>, name=<span class="kw">None</span>, commands=<span class="kw">None</span>, **attrs):</span></div>
+          <div class="cl"><span class="ln">1251</span><span class="lc">        <span class="fn">super</span>().__init__(name, **attrs)</span></div>
+          <div class="cl"><span class="ln">1252</span><span class="lc">        <span class="pr">self</span>.commands = commands <span class="kw">or</span> {}</span></div>
+          <div class="cl hl"><span class="ln">1284</span><span class="lc">    <span class="kw">def</span> <span class="fn">invoke</span>(<span class="pr">self</span>, <span class="pr">ctx</span>):</span></div>
+          <div class="cl hl"><span class="ln">1285</span><span class="lc">        <span class="kw">def</span> <span class="fn">_process_result</span>(value):</span></div>
+          <div class="cl hl"><span class="ln">1286</span><span class="lc">            <span class="kw">if</span> self.result_callback <span class="kw">is not</span> <span class="kw">None</span>:</span></div>
+          <div class="cl hl"><span class="ln">1287</span><span class="lc">                value <span class="op">=</span> ctx.invoke(</span></div>
+          <div class="cl hl"><span class="ln">1288</span><span class="lc">                    self.result_callback, value, <span class="op">**</span>ctx.params)</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="panel-right">
+      <div class="chat-head">
+        <div class="chat-head-left"><div class="chat-av">G</div> AI Assistant</div>
+        <div class="mode-toggle">
+          <div class="mode-opt on" onclick="this.parentElement.querySelectorAll('.mode-opt').forEach(o=>o.classList.remove('on'));this.classList.add('on')">Hybrid</div>
+          <div class="mode-opt" onclick="this.parentElement.querySelectorAll('.mode-opt').forEach(o=>o.classList.remove('on'));this.classList.add('on')">Vector</div>
+          <div class="mode-opt" onclick="this.parentElement.querySelectorAll('.mode-opt').forEach(o=>o.classList.remove('on'));this.classList.add('on')">Graph</div>
+        </div>
+      </div>
+
+      <div class="chat-msgs" id="chat-msgs">
+        <div class="msg-u"><div class="msg-u-bub">How does <code>invoke()</code> in Group handle subcommand routing?</div></div>
+        <div class="msg-a">
+          <div class="msg-a-av">G</div>
+          <div class="msg-a-body">
+            <p><code>Group.invoke()</code> handles routing through <strong>two-phase resolution</strong>:</p>
+            <p><strong>1.</strong> Calls <code>resolve_command()</code> to match input to a registered subcommand</p>
+            <p><strong>2.</strong> Creates a sub-context and delegates to the matched command's <code>invoke()</code></p>
+            <div class="msg-code">
+              <div class="msg-code-top"><span>core.py:1284 &mdash; <span style="color:var(--purple)">Group.invoke</span></span></div>
+              <div class="msg-code-body"><span class="kw">def</span> <span class="fn">invoke</span>(<span class="pr">self</span>, <span class="pr">ctx</span>):
+    cmd_name, cmd, args = self.<span class="fn">resolve_command</span>(ctx, ctx.args)
+    <span class="kw">if</span> cmd <span class="kw">is not</span> <span class="kw">None</span>:
+        ctx.invoked_subcommand = cmd_name
+        <span class="kw">with</span> cmd.<span class="fn">make_context</span>(...) <span class="kw">as</span> sub_ctx:
+            <span class="kw">return</span> sub_ctx.<span class="fn">invoke</span>(cmd)</div>
+            </div>
+            <p>If <code>invoke_without_command</code> is set and no subcommand is given, the Group runs as standalone.</p>
+            <div class="chips">
+              <div class="chip chip-v"><div class="chip-dot" style="background:var(--blue)"></div> core.py:1284 <span style="opacity:.5">0.94</span></div>
+              <div class="chip chip-g"><div class="chip-dot" style="background:var(--green)"></div> core.py:1198 <span style="opacity:.5">1-hop</span></div>
+              <div class="chip chip-g"><div class="chip-dot" style="background:var(--green)"></div> core.py:1165 <span style="opacity:.5">2-hop</span></div>
+              <div class="chip chip-v"><div class="chip-dot" style="background:var(--blue)"></div> core.py:892 <span style="opacity:.5">0.87</span></div>
+            </div>
+            <div class="trace">
+              <div class="trace-hd" onclick="let b=this.nextElementSibling,a=this.querySelector('.arr');b.classList.toggle('open');a.classList.toggle('open')"><span class="arr">&#9654;</span> Retrieval trace &mdash; 7 chunks merged</div>
+              <div class="trace-bd">
+                <div class="trace-step"><div class="trace-num tn-v">1</div><div>Vector: <strong style="color:var(--text-1)">4 chunks</strong> (cosine > 0.82)</div></div>
+                <div class="trace-step"><div class="trace-num tn-g">2</div><div>Graph: <strong style="color:var(--text-1)">+3 chunks</strong> via CALLS edges (2 hops)</div></div>
+                <div class="trace-step"><div class="trace-num tn-m">3</div><div>Merged: <strong style="color:var(--text-1)">7 unique</strong> re-ranked by hybrid score</div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="chat-input-area">
+        <div class="chat-ctx"><span style="font-size:10px;color:var(--text-4)">Context:</span><div class="ctx-chip">core.py <span class="ctx-x">&times;</span></div></div>
+        <div class="chat-box">
+          <textarea placeholder="Ask about the codebase..." rows="1" id="cinput"></textarea>
+          <button class="chat-send" id="btn-send">&#10148;</button>
+        </div>
+        <div class="chat-hint">Enter to send &middot; Shift+Enter for newline &middot; @file to add context</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal-overlay" id="modal">
+  <div class="modal">
+    <div class="modal-head"><h3>Add Repository</h3><span class="modal-x" id="btn-mx">&times;</span></div>
+    <div class="modal-body">
+      <div class="modal-tabs">
+        <div class="modal-tab active" onclick="this.parentElement.querySelectorAll('.modal-tab').forEach(t=>t.classList.remove('active'));this.classList.add('active')">GitHub URL</div>
+        <div class="modal-tab" onclick="this.parentElement.querySelectorAll('.modal-tab').forEach(t=>t.classList.remove('active'));this.classList.add('active')">Local Path</div>
+      </div>
+      <div class="modal-field"><div class="modal-label">Repository URL</div><input class="modal-input" placeholder="https://github.com/owner/repo"/><div class="modal-hint">Supports any public GitHub repository</div></div>
+      <div class="modal-field"><div class="modal-label">Branch (optional)</div><input class="modal-input" placeholder="main (default)"/><div class="modal-hint">Leave empty to use the default branch</div></div>
+      <div class="ingest-prog" id="iprog">
+        <div class="prog-bar"><div class="prog-fill" id="pfill"></div></div>
+        <div id="psteps">
+          <div class="prog-step active"><span class="check">&#9673;</span> Cloning repository...</div>
+          <div class="prog-step"><span class="check">&#9675;</span> Scanning Python files</div>
+          <div class="prog-step"><span class="check">&#9675;</span> Parsing AST with Tree-sitter</div>
+          <div class="prog-step"><span class="check">&#9675;</span> Building knowledge graph</div>
+          <div class="prog-step"><span class="check">&#9675;</span> Generating embeddings</div>
+        </div>
+      </div>
+    </div>
+    <div class="modal-foot"><button class="btn-ghost" id="btn-cancel">Cancel</button><button class="btn-primary" id="btn-ingest">Ingest Repository</button></div>
+  </div>
+</div>
+
+<script>
+const modal=document.getElementById('modal'),sb=document.getElementById('sidebar');
+document.getElementById('btn-sb').addEventListener('click',()=>sb.classList.toggle('collapsed'));
+document.getElementById('btn-new').addEventListener('click',()=>modal.classList.add('show'));
+document.getElementById('btn-tab').addEventListener('click',()=>modal.classList.add('show'));
+document.getElementById('btn-mx').addEventListener('click',()=>{modal.classList.remove('show');resetI()});
+document.getElementById('btn-cancel').addEventListener('click',()=>{modal.classList.remove('show');resetI()});
+modal.addEventListener('click',e=>{if(e.target===modal){modal.classList.remove('show');resetI()}});
+
+document.getElementById('btn-ingest').addEventListener('click',()=>{
+  const p=document.getElementById('iprog');p.classList.add('show');
+  const steps=p.querySelectorAll('.prog-step'),fill=document.getElementById('pfill');
+  let c=0;
+  const iv=setInterval(()=>{
+    if(c>0){steps[c-1].classList.remove('active');steps[c-1].classList.add('done');steps[c-1].querySelector('.check').textContent='\u2713'}
+    if(c<steps.length){steps[c].classList.add('active');steps[c].querySelector('.check').textContent='\u25C9';fill.style.width=((c+1)/steps.length*100)+'%';c++}
+    else{clearInterval(iv);setTimeout(()=>{modal.classList.remove('show');resetI()},800)}
+  },900);
+});
+
+function resetI(){const p=document.getElementById('iprog');p.classList.remove('show');p.querySelectorAll('.prog-step').forEach(s=>{s.classList.remove('done','active');s.querySelector('.check').textContent='\u25CB'});document.getElementById('pfill').style.width='0%'}
+
+document.getElementById('fsearch').addEventListener('input',function(){const q=this.value.toLowerCase();document.querySelectorAll('.file-item').forEach(f=>{f.style.display=f.querySelector('.file-name').textContent.toLowerCase().includes(q)?'flex':'none'})});
+document.querySelectorAll('.file-item').forEach(f=>f.addEventListener('click',function(){document.querySelectorAll('.file-item').forEach(x=>x.classList.remove('active'));this.classList.add('active')}));
+document.querySelectorAll('.gf-opt').forEach(o=>o.addEventListener('click',function(){document.querySelectorAll('.gf-opt').forEach(x=>x.classList.remove('on'));this.classList.add('on');const f=this.dataset.f;document.querySelectorAll('.edge').forEach(e=>{e.style.opacity=f==='all'?'1':e.classList.contains('edge-'+f)?'1':'0.05'})}));
+document.querySelectorAll('.node').forEach(n=>n.addEventListener('click',function(){document.querySelectorAll('.node').forEach(x=>x.classList.remove('sel'));this.classList.add('sel')}));
+
+function send(){const i=document.getElementById('cinput'),t=i.value.trim();if(!t)return;const m=document.getElementById('chat-msgs'),u=document.createElement('div');u.className='msg-u';u.innerHTML=`<div class="msg-u-bub">${t.replace(/`([^`]+)`/g,'<code>$1</code>')}</div>`;m.appendChild(u);i.value='';i.style.height='20px';setTimeout(()=>{const a=document.createElement('div');a.className='msg-a';a.innerHTML=`<div class="msg-a-av">G</div><div class="msg-a-body"><p style="color:var(--text-3);font-style:italic">Searching knowledge graph and vector store...</p></div>`;m.appendChild(a);m.scrollTop=m.scrollHeight},300);m.scrollTop=m.scrollHeight}
+document.getElementById('btn-send').addEventListener('click',send);
+document.getElementById('cinput').addEventListener('keydown',function(e){if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();send()}});
+document.getElementById('cinput').addEventListener('input',function(){this.style.height='20px';this.style.height=Math.min(this.scrollHeight,80)+'px'});
+</script>
+</body>
+</html>

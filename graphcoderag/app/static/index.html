@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GraphCodeRAG — AST-Aware Developer Assistant</title>
+<meta name="description" content="GraphCodeRAG: AI-powered code assistant with hybrid retrieval using AST-aware knowledge graphs and vector search.">
+
+<!-- Fonts -->
+<link href="https://fonts.googleapis.com/css2?family=Geist+Mono:wght@400;500;600&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600;9..40,700&display=swap" rel="stylesheet">
+
+<!-- Libraries -->
+<script src="https://d3js.org/d3.v7.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+
+<!-- Design System CSS -->
+<link rel="stylesheet" href="/static/styles/variables.css">
+<link rel="stylesheet" href="/static/styles/layout.css">
+<link rel="stylesheet" href="/static/styles/components.css">
+<link rel="stylesheet" href="/static/styles/graph.css">
+<link rel="stylesheet" href="/static/styles/code.css">
+<link rel="stylesheet" href="/static/styles/chat.css">
+</head>
+<body>
+
+<!-- ═══ Activity Bar ═══ -->
+<div class="activity-bar">
+  <div class="ab-logo">G</div>
+  <div class="ab-icon active" data-tip="Explorer" data-panel="explorer" id="btn-sb">&#9776;</div>
+  <div class="ab-icon" data-tip="Search" data-panel="search" id="ab-search">&#128269;</div>
+  <div class="ab-icon" data-tip="Graph" id="ab-graph">&#9672;</div>
+  <div class="ab-divider"></div>
+  <div class="ab-icon" data-tip="Evaluation" id="ab-eval">&#128202;</div>
+  <div class="ab-icon" data-tip="Ingest" id="ab-ingest">&#8615;</div>
+  <div class="ab-spacer"></div>
+  <div class="ab-icon" data-tip="History" id="ab-history">&#128337;<div class="badge"></div></div>
+  <div class="ab-icon" data-tip="Settings" id="ab-settings">&#9881;</div>
+</div>
+
+<!-- ═══ Sidebar ═══ -->
+<div class="sidebar" id="sidebar">
+  <div class="sb-header">
+    <span class="sb-title">Workspaces</span>
+    <button class="sb-add" id="btn-new" aria-label="Add repository">+</button>
+  </div>
+  <div class="sb-section">Active Sessions</div>
+  <div class="sb-cards" id="sb-cards">
+    <!-- Populated by sidebar.js -->
+  </div>
+</div>
+
+<!-- ═══ Main Area ═══ -->
+<div class="main">
+  <!-- Top Bar -->
+  <div class="topbar">
+    <div class="tabs" id="tabs-container">
+      <!-- Populated by tabs.js -->
+      <div class="tab-plus" id="btn-tab" aria-label="Add tab">+</div>
+    </div>
+    <div class="topbar-controls">
+      <div class="branch-btn" id="branch-btn">&#9095; <span id="branch-name">main</span> <span style="font-size:8px;color:var(--text-4)">&#9660;</span></div>
+      <div class="status-pill" id="status-pill"><div class="status-dot"></div> <span id="status-text">Connecting...</span></div>
+    </div>
+  </div>
+
+  <!-- Workspace -->
+  <div class="workspace">
+    <!-- File Explorer -->
+    <div class="panel-left">
+      <div class="stats-row">
+        <div class="stat-box"><div class="stat-val" id="stat-chunks" style="color:var(--purple)">—</div><div class="stat-label">Chunks</div></div>
+        <div class="stat-box"><div class="stat-val" id="stat-funcs" style="color:var(--blue)">—</div><div class="stat-label">Funcs</div></div>
+        <div class="stat-box"><div class="stat-val" id="stat-edges" style="color:var(--green)">—</div><div class="stat-label">Edges</div></div>
+        <div class="stat-box"><div class="stat-val" id="stat-classes" style="color:var(--amber)">—</div><div class="stat-label">Classes</div></div>
+      </div>
+      <div class="file-header">Files <span id="file-count">0</span></div>
+      <div class="file-search"><input placeholder="Search files..." id="fsearch"/></div>
+      <div class="file-list" id="flist">
+        <!-- Populated by files.js -->
+      </div>
+    </div>
+
+    <!-- Center Panel = Code Viewer (full height) -->
+    <div class="panel-center">
+      <div class="code-pane" style="flex:1">
+        <div class="code-header">
+          <div class="code-header-left">
+            <span class="cp-badge cp-cls" id="code-badge">—</span>
+            <span class="cp-path" id="code-path">No file selected</span>
+            <span class="cp-lines" id="code-lines"></span>
+          </div>
+          <span class="code-sel" id="code-sel"></span>
+        </div>
+        <div class="code-body" id="code-body">
+          <div class="code-empty">Select a node or file to view code</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Chat Panel -->
+    <div class="panel-right">
+      <div class="chat-head">
+        <div class="chat-head-left"><div class="chat-av">G</div> AI Assistant</div>
+        <div class="mode-toggle" id="mode-toggle">
+          <div class="mode-opt on" data-mode="hybrid">Hybrid</div>
+          <div class="mode-opt" data-mode="vector">Vector</div>
+          <div class="mode-opt" data-mode="graph">Graph</div>
+        </div>
+      </div>
+
+      <div class="chat-msgs" id="chat-msgs">
+        <!-- Populated by chat.js -->
+      </div>
+
+      <div class="chat-input-area">
+        <div class="chat-ctx" id="chat-ctx">
+          <span class="ctx-label">Context:</span>
+          <!-- Context chips added dynamically -->
+        </div>
+        <div class="chat-box">
+          <textarea placeholder="Ask about the codebase..." rows="1" id="cinput"></textarea>
+          <button class="chat-send" id="btn-send" aria-label="Send message">&#10148;</button>
+        </div>
+        <div class="chat-hint">Enter to send &middot; Shift+Enter for newline &middot; @file to add context</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ Add Repository Modal ═══ -->
+<div class="modal-overlay" id="modal">
+  <div class="modal">
+    <div class="modal-head"><h3>Add Repository</h3><span class="modal-x" id="btn-mx">&times;</span></div>
+    <div class="modal-body">
+      <div class="modal-tabs" id="modal-tabs">
+        <div class="modal-tab active" data-src="url">GitHub URL</div>
+        <div class="modal-tab" data-src="local">Local Path</div>
+      </div>
+      <div class="modal-field">
+        <div class="modal-label">Repository URL</div>
+        <input class="modal-input" id="input-repo" placeholder="https://github.com/owner/repo"/>
+        <div class="modal-hint">Supports any public GitHub repository</div>
+      </div>
+      <div class="modal-field">
+        <div class="modal-label">Branch (optional)</div>
+        <input class="modal-input" id="input-branch" placeholder="main (default)"/>
+        <div class="modal-hint">Leave empty to use the default branch</div>
+      </div>
+      <div class="ingest-prog" id="iprog">
+        <div class="prog-bar"><div class="prog-fill" id="pfill"></div></div>
+        <div id="psteps">
+          <div class="prog-step"><span class="check">&#9675;</span> Cloning repository</div>
+          <div class="prog-step"><span class="check">&#9675;</span> Scanning Python files</div>
+          <div class="prog-step"><span class="check">&#9675;</span> Parsing AST with Tree-sitter</div>
+          <div class="prog-step"><span class="check">&#9675;</span> Building knowledge graph</div>
+          <div class="prog-step"><span class="check">&#9675;</span> Generating embeddings</div>
+        </div>
+      </div>
+    </div>
+    <div class="modal-foot">
+      <button class="btn-ghost" id="btn-cancel">Cancel</button>
+      <button class="btn-primary" id="btn-ingest">Ingest Repository</button>
+    </div>
+  </div>
+</div>
+
+<!-- Toast Container -->
+<div class="toast-container" id="toasts"></div>
+
+<!-- ═══ Graph Overlay Panel ═══ -->
+<div class="graph-overlay" id="graph-overlay" style="display:none">
+  <div class="graph-panel">
+    <div class="graph-panel-header">
+      <span class="graph-title">&#9672; Knowledge Graph</span>
+      <div class="graph-filter" id="graph-filter">
+        <div class="gf-opt on" data-f="all">All</div>
+        <div class="gf-opt" data-f="call">Calls</div>
+        <div class="gf-opt" data-f="import">Imports</div>
+        <div class="gf-opt" data-f="contain">Contains</div>
+      </div>
+      <div style="flex:1"></div>
+      <div class="graph-toolbar">
+        <div class="g-btn" id="g-zoom-in">+</div>
+        <div class="g-btn" id="g-zoom-out">&minus;</div>
+        <div class="g-btn" id="g-reset">&#8634;</div>
+      </div>
+      <button class="eval-close" id="graph-close">&times;</button>
+    </div>
+    <div class="graph-area" id="graph-area">
+      <!-- D3.js renders SVG here -->
+      <div class="graph-legend">
+        <div class="leg-item"><div class="leg-dot" style="background:#3b82f6"></div> Function</div>
+        <div class="leg-item"><div class="leg-dot" style="background:#7c3aed"></div> Class</div>
+        <div class="leg-item"><div class="leg-dot" style="background:#22c55e"></div> Module</div>
+        <div class="leg-item"><div class="leg-line" style="background:#60a5fa"></div> Calls</div>
+        <div class="leg-item"><div class="leg-line" style="background:#4ade80;height:0;border-top:2px dashed #4ade80"></div> Imports</div>
+        <div class="leg-item"><div class="leg-line" style="background:#c084fc"></div> Contains</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ Evaluation Panel (overlay) ═══ -->
+<div class="eval-overlay" id="eval-overlay" style="display:none">
+  <div class="eval-panel">
+    <div class="eval-header">
+      <h2>&#128202; Evaluation — Standard RAG vs GraphCodeRAG</h2>
+      <button class="eval-close" id="eval-close">&times;</button>
+    </div>
+    <div class="eval-body" id="eval-body">
+      <div class="code-empty">Loading evaluation data...</div>
+    </div>
+  </div>
+</div>
+
+<!-- JavaScript Modules -->
+<script src="/static/scripts/api.js"></script>
+<script src="/static/scripts/state.js"></script>
+<script src="/static/scripts/sidebar.js"></script>
+<script src="/static/scripts/tabs.js"></script>
+<script src="/static/scripts/files.js"></script>
+<script src="/static/scripts/graph.js"></script>
+<script src="/static/scripts/code-viewer.js"></script>
+<script src="/static/scripts/chat.js"></script>
+<script src="/static/scripts/modal.js"></script>
+<script src="/static/scripts/evaluation.js"></script>
+<script src="/static/scripts/app.js"></script>
+</body>
+</html>

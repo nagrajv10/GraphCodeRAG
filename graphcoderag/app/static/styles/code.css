@@ -1,0 +1,33 @@
+/* ═══════════════════════════════════════════════════════════
+   GraphCodeRAG — Code Viewer
+   ═══════════════════════════════════════════════════════════ */
+
+.code-pane{display:flex;flex-direction:column;flex:1;min-height:0}
+
+.code-header{display:flex;align-items:center;justify-content:space-between;padding:7px 14px;background:rgba(255,255,255,.012);border-bottom:1px solid var(--border-1);font-size:11px}
+.code-header-left{display:flex;align-items:center;gap:8px}
+.cp-badge{padding:2px 8px;border-radius:4px;font-size:9px;font-weight:600;text-transform:uppercase}
+.cp-cls{background:var(--purple-dim);color:var(--purple)}
+.cp-func{background:var(--blue-dim);color:var(--blue)}
+.cp-mod{background:var(--green-dim);color:var(--green)}
+.cp-path{color:var(--text-3);font-family:var(--font-mono)}
+.cp-lines{color:var(--text-4);font-family:var(--font-mono);font-size:10px;background:rgba(255,255,255,.03);padding:1px 6px;border-radius:3px}
+.code-sel{font-size:10px;color:var(--text-4)}
+
+.code-body{flex:1;overflow:auto;padding:6px 0;font-family:var(--font-mono);font-size:11.5px;line-height:1.7}
+.cl{display:flex;padding:0 14px}
+.cl:hover{background:rgba(255,255,255,.012)}
+.cl.hl{background:rgba(168,85,247,.05);border-left:2px solid var(--purple)}
+.ln{width:40px;text-align:right;padding-right:16px;color:var(--text-4);user-select:none;flex-shrink:0;opacity:.4}
+.lc{color:var(--text-1);white-space:pre}
+
+/* Syntax highlighting tokens */
+.kw{color:var(--purple)}
+.fn{color:var(--blue)}
+.st{color:var(--amber)}
+.cm{color:var(--text-4);font-style:italic}
+.pr{color:#f472b6}
+.op{color:var(--text-4)}
+
+/* Empty state */
+.code-empty{display:flex;align-items:center;justify-content:center;height:100%;color:var(--text-4);font-size:11px}

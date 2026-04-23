@@ -1,0 +1,14 @@
+.env
+venv/
+__pycache__/
+*.pyc
+data/
+neo4j-install/
+neo4j-community.zip
+evaluation_results/
+test_*.py
+.claude/
+*.egg-info/
+.mypy_cache/
+.pytest_cache/
+*.log
