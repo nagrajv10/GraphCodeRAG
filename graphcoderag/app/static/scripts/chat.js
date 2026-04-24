@@ -11,6 +11,19 @@ const Chat = {
 
     // Send on button click
     sendBtn.addEventListener('click', () => this.send());
+    
+    // Demo Mode Button
+    const btnDemo = document.getElementById('btn-demo-mode');
+    if (btnDemo) {
+      btnDemo.addEventListener('click', () => this.openDemoModal());
+    }
+    
+    const btnDemoClose = document.getElementById('btn-demo-x');
+    if (btnDemoClose) {
+      btnDemoClose.addEventListener('click', () => {
+        document.getElementById('demo-modal').style.display = 'none';
+      });
+    }
 
     // Send on Enter (not Shift+Enter)
     input.addEventListener('keydown', (e) => {
@@ -57,6 +70,41 @@ const Chat = {
         }
       }
       msgs.scrollTop = msgs.scrollHeight;
+    }
+  },
+
+  async openDemoModal() {
+    const modal = document.getElementById('demo-modal');
+    const list = document.getElementById('demo-questions-list');
+    list.innerHTML = '<div style="color:var(--text-3); font-size:12px; padding:20px;">Loading SWE-bench test cases...</div>';
+    modal.style.display = 'flex';
+    
+    try {
+      const data = await API.get('/demo/questions');
+      if (!data || !data.questions || data.questions.length === 0) {
+        list.innerHTML = '<div style="color:var(--red); font-size:12px; padding:20px;">No benchmark questions found for this repository.</div>';
+        return;
+      }
+      
+      list.innerHTML = '';
+      data.questions.forEach(q => {
+        const div = document.createElement('div');
+        div.style.cssText = 'padding:12px; border:1px solid var(--border-2); border-radius:6px; cursor:pointer; background:var(--bg-1); transition:all 0.2s;';
+        div.innerHTML = `
+          <div style="font-weight:600; color:var(--purple); margin-bottom:6px; font-size:11px;">${this._escapeHTML(q.instance_id)}</div>
+          <div style="font-size:12px; color:var(--text-2); white-space:pre-wrap; font-family:var(--font-mono);">${this._escapeHTML(q.problem_statement).substring(0, 300)}...</div>
+        `;
+        div.onmouseover = () => div.style.borderColor = 'var(--purple)';
+        div.onmouseout = () => div.style.borderColor = 'var(--border-2)';
+        div.onclick = () => {
+          document.getElementById('cinput').value = q.problem_statement;
+          document.getElementById('cinput').style.height = '80px';
+          modal.style.display = 'none';
+        };
+        list.appendChild(div);
+      });
+    } catch (e) {
+      list.innerHTML = `<div style="color:var(--red); font-size:12px; padding:20px;">Error loading: ${e.message}</div>`;
     }
   },
 
@@ -144,6 +192,34 @@ _renderAIMessage(resp) {
     }
   } catch {
     bodyHTML = `<p>${this._escapeHTML(content)}</p>`;
+  }
+
+  // Handle Ground Truth Side-by-Side (Stacked)
+  if (resp.ground_truth) {
+    let gtHTML = '';
+    try {
+      const gtRawHTML = marked.parse("```python\\n" + resp.ground_truth + "\\n```");
+      gtHTML = typeof DOMPurify !== 'undefined' ? DOMPurify.sanitize(gtRawHTML) : `<pre><code>${this._escapeHTML(resp.ground_truth)}</code></pre>`;
+    } catch {
+      gtHTML = `<pre><code>${this._escapeHTML(resp.ground_truth)}</code></pre>`;
+    }
+    
+    bodyHTML = `
+      <div style="display:flex; flex-direction:column; gap:16px; margin-bottom:12px; border:1px solid var(--border-2); border-radius:8px; overflow:hidden;">
+        <div style="background:var(--bg-1); border-bottom:1px solid var(--border-2);">
+          <div style="padding:8px 12px; background:rgba(96,165,250,0.1); color:var(--blue); font-weight:600; font-size:11px; text-transform:uppercase; border-bottom:1px solid rgba(96,165,250,0.2);">
+            Our System's Generated Fix
+          </div>
+          <div style="padding:16px;">${bodyHTML}</div>
+        </div>
+        <div style="background:var(--bg-1);">
+          <div style="padding:8px 12px; background:rgba(74,222,128,0.1); color:var(--green); font-weight:600; font-size:11px; text-transform:uppercase; border-bottom:1px solid rgba(74,222,128,0.2);">
+            Actual SWE-Bench Developer Patch (Ground Truth)
+          </div>
+          <div style="padding:16px;">${gtHTML}</div>
+        </div>
+      </div>
+    `;
   }
 
   // Source chips

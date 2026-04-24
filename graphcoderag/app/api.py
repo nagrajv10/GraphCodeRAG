@@ -199,9 +199,57 @@ def chat(req: ChatRequest):
 
     # Run retrieval + generation with mode
     resp = _run_query(msg, active, mode=req.mode)
+    
+    # Check for Ground Truth match
+    from pathlib import Path
+    import json
+    data_path = Path(__file__).resolve().parent.parent.parent / "data" / "swebench" / "swebench_lite_selected.json"
+    if data_path.exists():
+        try:
+            with open(data_path, "r", encoding="utf-8") as f:
+                data = json.load(f)
+                for item in data:
+                    if msg.strip() == item.get("problem_statement", "").strip():
+                        resp["ground_truth"] = item.get("patch", "")
+                        break
+        except Exception as e:
+            pass
+            
     wm.update_chat(resp)
 
     return {"response": resp}
+
+
+@app.get("/api/demo/questions")
+def get_demo_questions():
+    wm = _get_wm()
+    active = wm.get_active()
+    if not active or not active.repo:
+        return {"questions": []}
+    
+    repo_name = active.repo.rstrip("/").split("/")[-1]
+    
+    from pathlib import Path
+    import json
+    data_path = Path(__file__).resolve().parent.parent.parent / "data" / "swebench" / "swebench_lite_selected.json"
+    if not data_path.exists():
+        return {"questions": []}
+        
+    try:
+        with open(data_path, "r", encoding="utf-8") as f:
+            data = json.load(f)
+            
+        questions = []
+        for item in data:
+            if item.get("repo", "").endswith(repo_name):
+                questions.append({
+                    "instance_id": item.get("instance_id", ""),
+                    "problem_statement": item.get("problem_statement", "")
+                })
+        return {"questions": questions}
+    except Exception as e:
+        logger.error(f"Error loading demo questions: {e}")
+        return {"questions": []}
 
 
 @app.get("/api/settings")

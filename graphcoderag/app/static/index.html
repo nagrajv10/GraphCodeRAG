@@ -118,6 +118,11 @@
           <span class="ctx-label">Context:</span>
           <!-- Context chips added dynamically -->
         </div>
+        <div class="demo-controls" style="margin-bottom: 8px; display: flex; justify-content: flex-end;">
+          <button id="btn-demo-mode" style="background: var(--purple-dim); color: var(--purple); border: 1px solid var(--purple); padding: 4px 10px; border-radius: 4px; font-size: 11px; cursor: pointer; transition: all 0.2s;">
+            ⚡ Load SWE-bench Demo
+          </button>
+        </div>
         <div class="chat-box">
           <textarea placeholder="Ask about the codebase..." rows="1" id="cinput"></textarea>
           <button class="chat-send" id="btn-send" aria-label="Send message">&#10148;</button>
@@ -259,18 +264,33 @@
 </div>
 
 <!-- JavaScript Modules -->
-<script src="/static/scripts/api.js"></script>
+<!-- ═══ SWE-bench Demo Modal ═══ -->
+<div class="modal-overlay" id="demo-modal" style="display: none; z-index: 400;">
+  <div class="modal" style="width: 800px; max-width: 90vw; max-height: 85vh; display: flex; flex-direction: column;">
+    <div class="modal-head">
+      <h3>Select SWE-bench Question</h3>
+      <span class="modal-x" id="btn-demo-x">&times;</span>
+    </div>
+    <div class="modal-body" style="overflow-y: auto; flex: 1;">
+      <div id="demo-questions-list" style="display: flex; flex-direction: column; gap: 10px;">
+        <!-- Populated dynamically -->
+      </div>
+    </div>
+  </div>
+</div>
+
 <script src="/static/scripts/state.js"></script>
-<script src="/static/scripts/sidebar.js"></script>
+<script src="/static/scripts/api.js"></script>
 <script src="/static/scripts/tabs.js"></script>
-<script src="/static/scripts/files.js"></script>
-<script src="/static/scripts/graph.js"></script>
-<script src="/static/scripts/code-viewer.js"></script>
-<script src="/static/scripts/chat.js"></script>
 <script src="/static/scripts/modal.js"></script>
-<script src="/static/scripts/evaluation.js"></script>
+<script src="/static/scripts/sidebar.js"></script>
+<script src="/static/scripts/files.js"></script>
+<script src="/static/scripts/code-viewer.js"></script>
 <script src="/static/scripts/search.js"></script>
+<script src="/static/scripts/chat.js"></script>
+<script src="/static/scripts/graph.js"></script>
 <script src="/static/scripts/settings.js"></script>
+<script src="/static/scripts/evaluation.js"></script>
 <script src="/static/scripts/app.js"></script>
 </body>
 </html>
