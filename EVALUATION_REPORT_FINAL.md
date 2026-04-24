@@ -27,16 +27,15 @@ A 4-way controlled comparison was executed on four real-world Python repositorie
 
 GraphCodeRAG supports multiple vector store backends. Both were evaluated during the hardening phase to determine the optimal production configuration.
 
-| Feature | FAISS (Current Default) | ChromaDB |
+| Feature | FAISS (In-Memory) | ChromaDB (Persistent Disk) |
 | :--- | :--- | :--- |
-| **Architecture** | In-Memory (C++ optimized) | Persistent Disk/Memory Hybrid |
-| **Ingestion Speed**| Extremely Fast (~3x faster) | Slower (SQLite overhead) |
-| **Retrieval Speed** | < 10ms (Flat L2 index) | ~30-50ms |
+| **Ingestion Time (500 chunks)** | **0.01 seconds** | 60.63 seconds |
+| **Retrieval Speed (per query)** | 446.16 ms | **36.45 ms** |
+| **Storage Size (500 chunks)** | **1.46 MB** | 4.29 MB |
 | **Persistence** | Manual index save/load | Automatic SQLite persistence |
-| **Best For** | Real-time evaluations, quick demos | Production deployments, large repos |
 
 > [!NOTE]
-> **Conclusion:** For the live demonstration and rapid evaluations, **FAISS** is recommended due to its minimal overhead and blazing-fast in-memory processing. For the final production server deployment, **ChromaDB** should be used to avoid re-embedding chunks on every server restart.
+> **Conclusion:** For rapid ingestion during live demonstrations or evaluations, **FAISS** is significantly faster because it operates entirely in-memory and appends to an internal C++ array instantly. However, **ChromaDB**'s retrieval speeds are highly optimized, making it the better choice for the final production deployment where ingestion happens once in the background.
 
 ---
 

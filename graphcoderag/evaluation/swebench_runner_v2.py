@@ -326,15 +326,15 @@ def run_repo_evaluation(repo_key: str, test_cases: List[Dict], retrieval_only: b
         }
 
     gen_cases = test_cases[:3]
-    P(f"\n  Phase 3: Generation + Gemini Judge ({len(gen_cases)} cases)")
+    P(f"\n  Phase 3: Generation + OpenAI Judge ({len(gen_cases)} cases)")
 
     from graphcoderag.generation.generator import LLMGenerator
-    from graphcoderag.evaluation.llm_judge import GeminiJudge
+    from graphcoderag.evaluation.llm_judge import OpenAIJudge
     from graphcoderag.evaluation.baseline_rag import BaselineRAG
     from graphcoderag.retrieval.hybrid_retriever import HybridRetriever
 
     generator = LLMGenerator()
-    judge = GeminiJudge()
+    judge = OpenAIJudge()
     baseline_rag = BaselineRAG()
 
     gen_results = []
@@ -347,11 +347,26 @@ def run_repo_evaluation(repo_key: str, test_cases: List[Dict], retrieval_only: b
 
         try:
             # Retrieve for each pipeline
-            a_ctx = baseline_rag.retrieve(q, baseline_col, 10)
-            retriever = HybridRetriever(collection_name=ast_col)
-            bv_ctx = retriever.retrieve_vector_only(q, top_k=10)
-            bh_ctx = retriever.retrieve(q, final_top_k=10)
-            retriever.close()
+            from graphcoderag.retrieval.vector_retriever import VectorRetriever
+            a_store = _get_store(baseline_col)
+            a_retriever = VectorRetriever(a_store)
+            a_ctx = a_retriever.retrieve(q, top_k=10)
+
+            b_store = _get_store(ast_col)
+            if _BACKEND == "faiss":
+                bv_retriever = VectorRetriever(b_store)
+                bv_ctx = bv_retriever.retrieve(q, top_k=10)
+                try:
+                    retriever = HybridRetriever(vector_store=b_store)
+                    bh_ctx = retriever.retrieve(q, final_top_k=10)
+                    retriever.close()
+                except Exception:
+                    bh_ctx = bv_ctx
+            else:
+                retriever = HybridRetriever(collection_name=ast_col)
+                bv_ctx = retriever.retrieve_vector_only(q, top_k=10)
+                bh_ctx = retriever.retrieve(q, final_top_k=10)
+                retriever.close()
 
             # Generate answers
             a_answer = generator.generate(q, a_ctx[:10])
@@ -362,7 +377,7 @@ def run_repo_evaluation(repo_key: str, test_cases: List[Dict], retrieval_only: b
                 max_tokens=1500
             )
 
-            # Judge all 4 with Gemini
+            # Judge all 4 with OpenAI
             a_scores = judge.rate_answer(q, a_answer, gt_files)
             bv_scores = judge.rate_answer(q, bv_answer, gt_files)
             bh_scores = judge.rate_answer(q, bh_answer, gt_files)
@@ -408,7 +423,7 @@ def run_repo_evaluation(repo_key: str, test_cases: List[Dict], retrieval_only: b
 
     # Print generation summary
     P(f"\n  +-----------------+--------+--------+--------+--------+----------+")
-    P(f"  |  Generation Quality (Gemini Judge) -- {repo_key:10s}             |")
+    P(f"  |  Generation Quality (OpenAI Judge) -- {repo_key:10s}             |")
     P(f"  +-----------------+--------+--------+--------+--------+----------+")
     P(f"  |      Metric     | Std RAG|AST+Vec | Hybrid | Plain  | D(H-A)   |")
     P(f"  +-----------------+--------+--------+--------+--------+----------+")
@@ -445,9 +460,9 @@ def main():
 
     P("=" * 70)
     P("  GraphCodeRAG -- SWE-bench Evaluation v2")
-    P(f"  Backend: {_BACKEND.upper()} | Embeddings: CodeSearch-DistilRoBERTa (768d)")
+    P(f"  Backend: {_BACKEND.upper()} | Embeddings: nomic-ai/CodeRankEmbed (768d)")
     P("  4-Way Comparison: Std RAG | AST+Vec | Hybrid | Plain LLM")
-    P("  Judge: Gemini 2.5 Flash (cross-model, position-swap debiased)")
+    P("  Judge: OpenAI GPT-4o-Mini (cross-model, position-swap debiased)")
     P("=" * 70)
 
     # Check for --retrieval-only flag
@@ -456,11 +471,11 @@ def main():
     test_cases = load_test_cases()
     P(f"\nLoaded: {', '.join(f'{k}: {len(v)}' for k,v in test_cases.items())}")
     if retrieval_only:
-        P("  MODE: retrieval-only (skipping Gemini judge)")
+        P("  MODE: retrieval-only (skipping OpenAI judge)")
 
-    results = {"timestamp": datetime.now().isoformat(), "backend": _BACKEND, "embedding_model": "SFR-Embedding-Code-400M_R", "mode": "retrieval_only" if retrieval_only else "full", "repos": {}}
+    results = {"timestamp": datetime.now().isoformat(), "backend": _BACKEND, "embedding_model": "nomic-ai/CodeRankEmbed", "mode": "retrieval_only" if retrieval_only else "full", "repos": {}}
 
-    for repo_key in ["click", "pytest", "sklearn", "django"]:
+    for repo_key in ["click", "pytest"]:
         if repo_key not in test_cases:
             continue
         results["repos"][repo_key] = run_repo_evaluation(repo_key, test_cases[repo_key], retrieval_only)
@@ -474,25 +489,23 @@ def main():
     P(f"\nResults saved: {out}")
 
     # Cross-repo summary
-    P(f"\n{'='*70}")
+    P(f"\n{'='*85}")
     P("  CROSS-REPO SUMMARY @ K=10")
-    P(f"{'='*70}")
-    P(f"  {'Repo':>10} | {'Size':>15} | MRR(A) | MRR(Bv) | MRR(Bh) | D(Bh-A) | FR@10(Bh)")
-    P(f"  {'----':>10} | {'----':>15} | {'---':>6} | {'---':>7} | {'---':>7} | {'---':>7} | {'---':>9}")
-    for rk in ["click", "pytest", "sklearn", "django"]:
+    P(f"{'='*85}")
+    P(f"  {'Repo':>10} | {'Size':>15} | MRR(A) | MRR(Bh) | NDCG@10(Bh) | Rec@10(Bh) | FR@10(Bh)")
+    P(f"  {'----':>10} | {'----':>15} | {'---':>6} | {'---':>7} | {'---':>11} | {'---':>10} | {'---':>9}")
+    for rk in ["click", "pytest"]:
         if rk not in results["repos"]:
             continue
         r = results["repos"][rk]["retrieval"]["aggregated"].get("K=10", {})
         a = r.get("A", {})
-        bv = r.get("B_vec", {})
         bh = r.get("B_hybrid", {})
-        d = bh.get("mrr", 0) - a.get("mrr", 0)
         P(f"  {rk:>10} | {REPOS[rk]['label']:>15} | {a.get('mrr',0):>5.3f} | "
-          f"{bv.get('mrr',0):>6.3f} | {bh.get('mrr',0):>6.3f} | {d:>+6.3f} | "
+          f"{bh.get('mrr',0):>6.3f} | {bh.get('ndcg',0):>11.3f} | {bh.get('recall',0):>10.3f} | "
           f"{bh.get('file_recall',0):>8.1%}")
 
     P(f"\n{'='*70}")
-    P(f"  Gemini Judge API calls: {results.get('judge_calls', 'N/A')}")
+    P(f"  OpenAI Judge API calls: {results.get('judge_calls', 'N/A')}")
     P(f"{'='*70}")
 
 

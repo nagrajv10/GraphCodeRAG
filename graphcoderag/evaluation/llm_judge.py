@@ -230,8 +230,8 @@ class GeminiJudge:
                         "response_mime_type": "application/json",
                     }
                 )
-                # Pace calls to stay under free tier rate limit (~10 RPM)
-                time.sleep(8)
+                # Pace calls to stay under rate limit
+                time.sleep(15)
                 return response.text
             except Exception as e:
                 if "429" in str(e) or "quota" in str(e).lower() or "resource" in str(e).lower():
@@ -424,5 +424,52 @@ class LLMJudge:
             )
             return result
         except (ValueError, KeyError, AttributeError) as e:
+            print(f"      [Judge Parse Error] {e} | Raw: {raw}", flush=True)
             default["reasoning"] = f"Score extraction error: {e}"
             return default
+
+class OpenAIJudge(GeminiJudge):
+    """Cross-model judge using OpenAI GPT for evaluation."""
+    
+    def __init__(self, api_key: str = None, model: str = None):
+        import openai
+        from graphcoderag.config import OPENAI_API_KEY
+        
+        self.api_key = api_key or OPENAI_API_KEY
+        self.model_name = model or "gpt-4o-mini"
+        
+        if not self.api_key:
+            raise ValueError("OPENAI_API_KEY not set in .env")
+            
+        self.client = openai.OpenAI(api_key=self.api_key)
+        self._call_count = 0
+
+    def _call_gemini(self, prompt: str, max_retries: int = 5) -> str:
+        """Call OpenAI API (overrides _call_gemini to reuse parsing logic)."""
+        import time
+        for attempt in range(max_retries):
+            try:
+                self._call_count += 1
+                response = self.client.chat.completions.create(
+                    model=self.model_name,
+                    response_format={"type": "json_object"},
+                    max_tokens=1024,
+                    temperature=0.0,
+                    messages=[
+                        {"role": "user", "content": prompt}
+                    ]
+                )
+                time.sleep(1)  # Pace calls
+                return response.choices[0].message.content
+            except Exception as e:
+                error_str = str(e).lower()
+                is_retryable = any(hint in error_str for hint in ["429", "rate", "overloaded", "529"])
+                if is_retryable:
+                    wait = 15 * (attempt + 1)
+                    print(f"  [Judge] OpenAI rate limited, waiting {wait}s...", flush=True)
+                    time.sleep(wait)
+                elif attempt < max_retries - 1:
+                    time.sleep(5)
+                else:
+                    return f"[OpenAI Error] {e}"
+        return "[OpenAI Error] Max retries exceeded"
