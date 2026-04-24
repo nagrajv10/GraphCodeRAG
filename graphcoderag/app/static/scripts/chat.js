@@ -152,15 +152,11 @@ const Chat = {
     if (response && response.response) {
       this._renderAIMessage(response.response);
     } else {
-      // Fallback mock response
-    // Fallback mock response
-    this._renderAIMessage(this._mockResponse(text));
-  } else {
-    this._renderAIMessage(this._mockResponse(text));
-  }
+      this._renderAIMessage(this._mockResponse(text));
+    }
 
-  msgs.scrollTop = msgs.scrollHeight;
-},
+    msgs.scrollTop = msgs.scrollHeight;
+  },
 
 /** Safe fallback if API fails */
 _mockResponse(query) {
