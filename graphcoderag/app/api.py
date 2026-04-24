@@ -581,7 +581,7 @@ def _load_graph_data(ws_id=None):
 
         # Try connected scoped, fallback to unconnected scoped
         result = _run_connected_query(prefix) if prefix else []
-        if not result and not prefix:
+        if not result:
             result = _run_connected_query(None)
 
         nodes_map = {}
@@ -625,7 +625,10 @@ def _load_graph_data(ws_id=None):
                 with gs.driver.session() as session:
                     return list(session.run(q, prefix=p))
                     
-            fallback = _run_node_query(prefix) if prefix else _run_node_query(None)
+            fallback = _run_node_query(prefix) if prefix else []
+            if not fallback:
+                fallback = _run_node_query(None)
+            
             for r in fallback:
                 fp = (r["file"] or "").replace("\\", "/")
                 nodes_map[r["name"]] = {
