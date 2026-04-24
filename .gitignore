@@ -1,14 +1,46 @@
+# === Secrets & Environment ===
 .env
+.env.*
+
+# === Python ===
 venv/
 __pycache__/
 *.pyc
-data/
-neo4j-install/
-neo4j-community.zip
-evaluation_results/
-test_*.py
-.claude/
+*.pyo
 *.egg-info/
 .mypy_cache/
 .pytest_cache/
 *.log
+dist/
+build/
+
+# === Data & Artifacts (large, generated) ===
+data/
+neo4j-install/
+neo4j-community.zip
+
+# === IDE / Editor ===
+.claude/
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# === Scratch / Temp Files ===
+_*.py
+test_*.py
+parse_results.py
+analyze_std_wins.py
+implementation_plan.md
+qa_samples.json
+
+# === UI Mockups (superseded by FastAPI frontend) ===
+ui_mockup*.html
+GraphCodeRAG_Website.html
+
+# === Legacy Docs (superseded by README) ===
+GraphCodeRAG_Frontend_Feature_Guide.md
+GraphCodeRAG_UI_Backend_Specification.md
+GraphCodeRAG_Evaluation_Guide.docx
+UI_DESIGN_SPECIFICATION.md
+EVALUATION_REPORT.md

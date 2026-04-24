@@ -33,6 +33,7 @@ class RetrievalResult:
     source: str                # "vector", "graph", or "hybrid"
     distance: int = 0          # Graph hop distance (0 for vector results)
     parent_class: str = ""
+    children_count: int = 0    # Added for Two-Tier UI visualization
 
     @property
     def display_name(self) -> str:
@@ -45,47 +46,96 @@ class VectorRetriever:
     """Retrieves code chunks via semantic similarity search."""
 
     def __init__(self, vector_store: Optional[VectorStore] = None):
-        self.store = vector_store or VectorStore()
+        if vector_store:
+            self.store = vector_store
+        else:
+            from graphcoderag.config import VECTOR_BACKEND
+            if VECTOR_BACKEND == "faiss":
+                from graphcoderag.storage.faiss_store import FaissVectorStore
+                self.store = FaissVectorStore()
+            else:
+                self.store = VectorStore()
 
     def retrieve(self, query: str, top_k: int = None) -> List[RetrievalResult]:
         """
         Search for code chunks semantically similar to the query.
-
-        Args:
-            query: Natural language question about the codebase.
-            top_k: Number of results to return. Defaults to config VECTOR_TOP_K.
-
-        Returns:
-            List of RetrievalResult objects sorted by score (highest first).
+        Implements Two-Tier Retrieval: fetches child chunks, resolves them
+        to their full AST parent, and aggregates scores for deduplication.
         """
         k = top_k or VECTOR_TOP_K
 
         if self.store.count() == 0:
             return []
 
-        raw_results = self.store.search(query, top_k=k)
+        # Over-fetch for deduplication (Gap 4)
+        fetch_k = k * 3
+        raw_results = self.store.search(query, top_k=fetch_k)
 
-        results = []
+        # Dictionary to store resolved parent results and aggregate scores
+        # Key: chunk_id, Value: dict containing 'result': RetrievalResult, 'child_scores': list of floats
+        resolved_results = {}
+
         for r in raw_results:
-            meta = r["metadata"]
-            # ChromaDB cosine distance: 0 = identical, 2 = opposite
-            # Convert to similarity: 1 - (distance / 2) for [0, 1] range
-            similarity = max(0.0, 1.0 - (r["distance"] / 2.0))
+            meta = r.get("metadata", {})
+            
+            # Convert FAISS/Chroma distance to similarity
+            dist = r.get("distance", 1.0)
+            similarity = max(0.0, 1.0 - (dist / 2.0))
 
-            results.append(RetrievalResult(
-                chunk_id=r["chunk_id"],
-                name=meta.get("name", ""),
-                file_path=meta.get("file_path", ""),
-                chunk_type=meta.get("chunk_type", ""),
-                start_line=meta.get("start_line", 0),
-                end_line=meta.get("end_line", 0),
-                source_code=r["document"],
-                docstring=meta.get("docstring", ""),
-                score=similarity,
-                source="vector",
-                parent_class=meta.get("parent_class", ""),
-            ))
+            # Parent Resolution (Gap 3)
+            parent_id = meta.get("parent_id")
+            if parent_id and hasattr(self.store, "get_chunk_metadata"):
+                parent_meta = self.store.get_chunk_metadata(parent_id)
+                if parent_meta:
+                    resolved_id = parent_id
+                    resolved_meta = parent_meta
+                else:
+                    resolved_id = r["chunk_id"]
+                    resolved_meta = meta
+            else:
+                resolved_id = r["chunk_id"]
+                resolved_meta = meta
 
-        # Sort by score descending
-        results.sort(key=lambda r: r.score, reverse=True)
-        return results
+            if resolved_id not in resolved_results:
+                # FAISS uses metadata to store source_code; Chroma uses 'document'
+                source_code = resolved_meta.get("source_code", r.get("document", ""))
+                res = RetrievalResult(
+                    chunk_id=resolved_id,
+                    name=resolved_meta.get("name", ""),
+                    file_path=resolved_meta.get("file_path", ""),
+                    chunk_type=resolved_meta.get("chunk_type", ""),
+                    start_line=resolved_meta.get("start_line", 0),
+                    end_line=resolved_meta.get("end_line", 0),
+                    source_code=source_code,
+                    docstring=resolved_meta.get("docstring", ""),
+                    score=similarity,
+                    source="vector",
+                    parent_class=resolved_meta.get("parent_class", ""),
+                )
+                resolved_results[resolved_id] = {
+                    "result": res,
+                    "child_scores": [similarity]
+                }
+            else:
+                # Add score for later aggregation
+                resolved_results[resolved_id]["child_scores"].append(similarity)
+
+        # Apply bounded score aggregation
+        final_results = []
+        for v in resolved_results.values():
+            res = v["result"]
+            child_scores = v["child_scores"]
+            n = len(child_scores)
+            
+            # Score Aggregation with Hard Cap
+            max_score = max(child_scores)
+            bonus = min(0.15, 0.05 * (n - 1))
+            res.score = min(1.0, max_score + bonus)
+            
+            final_results.append(res)
+
+        # Sort by aggregated score descending
+        final_results.sort(key=lambda x: x.score, reverse=True)
+        
+        # Truncate back to original requested top_K
+        return final_results[:k]

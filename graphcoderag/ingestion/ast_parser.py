@@ -91,11 +91,15 @@ class PythonASTParser:
         def _extract_node(ts_node, parent_class_name=None):
             """Recursively extract function and class definitions."""
             for child in ts_node.children:
-                if child.type == "function_definition":
+                if child.type in ("function_definition", "async_function_definition"):
                     ast_node = self._build_ast_node(
                         child, source_bytes, "function", parent_class_name
                     )
                     nodes.append(ast_node)
+                    # Recurse into function body to find nested functions
+                    body = self._find_child_by_type(child, "block")
+                    if body:
+                        _extract_node(body, parent_class_name=parent_class_name)
 
                 elif child.type == "class_definition":
                     ast_node = self._build_ast_node(
@@ -110,18 +114,20 @@ class PythonASTParser:
                 elif child.type == "decorated_definition":
                     # Handle decorated functions/classes
                     for sub in child.children:
-                        if sub.type in ("function_definition", "class_definition"):
-                            node_type = "function" if sub.type == "function_definition" else "class"
+                        if sub.type in ("function_definition", "async_function_definition", "class_definition"):
+                            node_type = "function" if "function_definition" in sub.type else "class"
                             ast_node = self._build_ast_node(
                                 child, source_bytes, node_type, parent_class_name
                             )
                             # Extract decorator names
                             ast_node.decorators = self._extract_decorators(child, source_bytes)
                             nodes.append(ast_node)
-                            if sub.type == "class_definition":
-                                body = self._find_child_by_type(sub, "block")
-                                if body:
-                                    _extract_node(body, parent_class_name=ast_node.name)
+                            
+                            # Recurse into body
+                            body = self._find_child_by_type(sub, "block")
+                            if body:
+                                p_name = ast_node.name if node_type == "class" else parent_class_name
+                                _extract_node(body, parent_class_name=p_name)
 
         _extract_node(tree.root_node)
         return nodes

@@ -117,18 +117,26 @@ def run_ingestion(
             if graph_store:
                 graph_store.close()
 
-    # Step 4: Store in ChromaDB vector store
-    console.print("[bold]Step 4/4:[/bold] Storing in ChromaDB vector store...")
+    # Step 4: Store in Vector store
+    console.print("[bold]Step 4/4:[/bold] Storing in vector store...")
     if skip_vector:
         console.print("  [yellow]Skipped (--skip-vector flag)[/yellow]\n")
     else:
         try:
-            from graphcoderag.storage.vector_store import VectorStore
-            vector_store = VectorStore()
+            from graphcoderag.config import VECTOR_BACKEND
+            if VECTOR_BACKEND == "faiss":
+                from graphcoderag.storage.faiss_store import FaissVectorStore
+                vector_store = FaissVectorStore()
+                console.print("  Using FAISS backend...")
+            else:
+                from graphcoderag.storage.vector_store import VectorStore
+                vector_store = VectorStore()
+                console.print("  Using ChromaDB backend...")
+                
             vector_store.clear()
             console.print(f"  Embedding and storing {len(all_chunks)} chunks...")
             vector_store.add_chunks(all_chunks)
-            console.print(f"  [green]Done![/green] Stored {vector_store.count()} chunks in ChromaDB\n")
+            console.print(f"  [green]Done![/green] Stored {vector_store.count()} embeddings in vector store\n")
         except Exception as e:
             console.print(f"  [red]Vector store error: {e}[/red]")
             console.print(f"  [yellow]Hint: Check your OPENAI_API_KEY in .env or set USE_LOCAL_EMBEDDINGS=true[/yellow]\n")

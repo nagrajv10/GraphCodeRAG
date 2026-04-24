@@ -38,6 +38,8 @@ class CodeChunk:
     signature: Optional[str]     # Function signature (for functions)
     parent_class: Optional[str]  # Parent class name (for methods)
     decorators: List[str] = field(default_factory=list)
+    parent_id: Optional[str] = None # ID of the parent chunk (if this is a child)
+    is_child: bool = False       # True if this is a split child chunk
 
     @property
     def display_name(self) -> str:
@@ -98,7 +100,7 @@ class CodeChunker:
             if node.parent_class:
                 display_name = f"{node.parent_class}.{node.name}"
 
-            chunks.append(CodeChunk(
+            parent_chunk = CodeChunk(
                 chunk_id=chunk_id,
                 file_path=rel_file_path,
                 chunk_type=node.node_type,
@@ -110,7 +112,45 @@ class CodeChunker:
                 signature=node.signature,
                 parent_class=node.parent_class,
                 decorators=node.decorators,
-            ))
+            )
+            chunks.append(parent_chunk)
+
+            # --- Two-Tier Chunking (Child Splitting) ---
+            if len(node.source_code) > 1500:
+                # Pre-compute header to preserve context for the embedding model (Option A)
+                header_parts = [f"# File: {rel_file_path}"]
+                if node.parent_class:
+                    header_parts.append(f"# Class: {node.parent_class}")
+                header_parts.append(f"# {node.node_type.title()}: {node.name}")
+                header_text = "\n".join(header_parts) + "\n"
+
+                source = node.source_code
+                step = 1300  # 1500 max length - 200 overlap
+                
+                for i in range(0, len(source), step):
+                    snippet = source[i:i+1500]
+                    # Inject header text directly into the child snippet
+                    child_source = header_text + snippet
+                    
+                    # Gap 6: Consistent ID hashing
+                    child_id = self._generate_id(rel_file_path, f"{node.name}_child_{i}", node.start_line, node.end_line)
+                    
+                    child_chunk = CodeChunk(
+                        chunk_id=child_id,
+                        file_path=rel_file_path,
+                        chunk_type=node.node_type,
+                        name=f"{node.name} (Part {i//step + 1})",
+                        source_code=child_source,
+                        start_line=node.start_line,
+                        end_line=node.end_line,
+                        docstring=node.docstring,
+                        signature=node.signature,
+                        parent_class=node.parent_class,
+                        decorators=node.decorators,
+                        parent_id=chunk_id,
+                        is_child=True
+                    )
+                    chunks.append(child_chunk)
 
         return chunks
 

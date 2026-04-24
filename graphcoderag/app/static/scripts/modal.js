@@ -5,14 +5,48 @@
 const Modal = {
   init() {
     const modal = document.getElementById('modal');
-    const open = () => modal.classList.add('show');
-    const close = () => { modal.classList.remove('show'); this._reset(); };
+    // Add accessibility attributes
+    modal.setAttribute('role', 'dialog');
+    modal.setAttribute('aria-modal', 'true');
+    modal.setAttribute('aria-labelledby', 'modal-title');
+    
+    const open = () => { 
+      modal.classList.add('show'); 
+      document.getElementById('input-repo').focus(); 
+      document.body.style.overflow = 'hidden';
+    };
+    const close = () => { 
+      modal.classList.remove('show'); 
+      this._reset(); 
+      document.body.style.overflow = '';
+    };
 
     document.getElementById('btn-new').addEventListener('click', open);
     document.getElementById('btn-tab').addEventListener('click', open);
     document.getElementById('btn-mx').addEventListener('click', close);
     document.getElementById('btn-cancel').addEventListener('click', close);
     modal.addEventListener('click', e => { if (e.target === modal) close(); });
+    
+    // Esc key to close
+    document.addEventListener('keydown', e => {
+      if (e.key === 'Escape' && modal.classList.contains('show')) close();
+    });
+    
+    // Simple Focus Trap
+    const focusable = modal.querySelectorAll('button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])');
+    const firstFocusable = focusable[0];
+    const lastFocusable = focusable[focusable.length - 1];
+    modal.addEventListener('keydown', function(e) {
+      if (e.key === 'Tab') {
+        if (e.shiftKey && document.activeElement === firstFocusable) {
+          lastFocusable.focus();
+          e.preventDefault();
+        } else if (!e.shiftKey && document.activeElement === lastFocusable) {
+          firstFocusable.focus();
+          e.preventDefault();
+        }
+      }
+    });
 
     // Modal tabs
     document.querySelectorAll('#modal-tabs .modal-tab').forEach(t => {
@@ -39,12 +73,27 @@ const Modal = {
     const fill = document.getElementById('pfill');
     let current = 0;
 
-    // Try real API first, fall back to simulation
+    // Start loading animation immediately
+    const iv = setInterval(() => {
+      if (current > 0 && current < steps.length - 1) { 
+        steps[current-1].classList.remove('active'); 
+        steps[current-1].classList.add('done'); 
+        steps[current-1].querySelector('.check').textContent = '✓'; 
+      }
+      if (current < steps.length - 1) {
+        steps[current].classList.add('active'); 
+        steps[current].querySelector('.check').textContent = '◉';
+        fill.style.width = ((current+1)/steps.length*100) + '%'; 
+        current++;
+      }
+    }, 1500); // Progress every 1.5s but stop before the last step
+
     try {
       const result = await API.post('/workspaces', { repo_url: repoUrl, branch });
+      clearInterval(iv);
       if (result && result.status === 'ok') {
-        // Animate through all steps quickly
-        for (let i = 0; i < steps.length; i++) {
+        // Finish remaining steps instantly
+        for (let i = current; i < steps.length; i++) {
           if (i > 0) { steps[i-1].classList.remove('active'); steps[i-1].classList.add('done'); steps[i-1].querySelector('.check').textContent = '✓'; }
           steps[i].classList.add('active'); steps[i].querySelector('.check').textContent = '◉';
           fill.style.width = ((i+1)/steps.length*100) + '%';
@@ -55,20 +104,12 @@ const Modal = {
         setTimeout(() => { document.getElementById('modal').classList.remove('show'); this._reset(); Events.emit('workspace:reload'); }, 600);
         return;
       }
-    } catch(e) { /* Fall through to simulation */ }
-
-    // Simulation fallback (mock mode)
-    const iv = setInterval(() => {
-      if (current > 0) { steps[current-1].classList.remove('active'); steps[current-1].classList.add('done'); steps[current-1].querySelector('.check').textContent = '✓'; }
-      if (current < steps.length) {
-        steps[current].classList.add('active'); steps[current].querySelector('.check').textContent = '◉';
-        fill.style.width = ((current+1)/steps.length*100) + '%'; current++;
-      } else {
-        clearInterval(iv);
-        Toast.success(`Ingested ${repoUrl} (demo mode)`);
-        setTimeout(() => { document.getElementById('modal').classList.remove('show'); this._reset(); }, 800);
-      }
-    }, 900);
+    } catch(e) { 
+      clearInterval(iv);
+      // Fall through to error handling
+      Toast.error(`Ingestion failed: ${e.message}`);
+      this._reset();
+    }
   },
 
   _reset() {

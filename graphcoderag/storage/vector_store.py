@@ -65,6 +65,13 @@ class VectorStore:
             chunks: List of CodeChunk objects to store.
             batch_size: Number of chunks to upsert per batch (for rate limiting).
         """
+        for c in chunks:
+            if getattr(c, "is_child", False):
+                raise NotImplementedError(
+                    "ChromaDB backend does not yet support Two-Tier Child Chunking. "
+                    "Please use FAISS backend (VECTOR_BACKEND='faiss') or implement child/parent metadata resolution in ChromaDB."
+                )
+
         for i in range(0, len(chunks), batch_size):
             batch = chunks[i:i + batch_size]
             self.collection.upsert(

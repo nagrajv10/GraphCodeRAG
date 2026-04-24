@@ -1,0 +1,1397 @@
+{
+  "timestamp": "2026-04-18T12:24:37.584604",
+  "num_cases": 15,
+  "config": {
+    "generator_temperature": 0.0,
+    "system_prompt_version": "relaxed_v2",
+    "judge_context_symmetric": true,
+    "paths_evaluated": [
+      "rag_hybrid",
+      "vector_only",
+      "plain_claude"
+    ]
+  },
+  "retrieval": {
+    "K=5": {
+      "hybrid": {
+        "file_recall": 0.7444444444444444,
+        "hit_rate": 1.0
+      },
+      "vector_only": {
+        "file_recall": 0.7444444444444444,
+        "hit_rate": 1.0
+      },
+      "delta": {
+        "file_recall": 0.0,
+        "hit_rate": 0.0
+      }
+    },
+    "K=10": {
+      "hybrid": {
+        "file_recall": 0.8666666666666667,
+        "hit_rate": 1.0
+      },
+      "vector_only": {
+        "file_recall": 0.8666666666666667,
+        "hit_rate": 1.0
+      },
+      "delta": {
+        "file_recall": 0.0,
+        "hit_rate": 0.0
+      }
+    },
+    "K=15": {
+      "hybrid": {
+        "file_recall": 0.9444444444444444,
+        "hit_rate": 1.0
+      },
+      "vector_only": {
+        "file_recall": 0.8888888888888888,
+        "hit_rate": 1.0
+      },
+      "delta": {
+        "file_recall": 0.0556,
+        "hit_rate": 0.0
+      }
+    },
+    "per_case": [
+      {
+        "question": "How does Click's Group class handle subcommand routing when invoke() is called?",
+        "category": "control_flow",
+        "hybrid_files": [
+          "src/click/core.py",
+          "src/click/core.py",
+          "src/click/core.py",
+          "src/click/core.py",
+          "src/click/core.py",
+          "src/click/core.py",
+          "src/click/core.py",
+          "src/click/core.py",
+          "src/click/core.py",
+          "src/click/core.py",
+          "src/click/__init__.py",
+          "src/click/decorators.py",
+          "src/click/shell_completion.py",
+          "src/click/termui.py",
+          "src/click/types.py"
+        ],
+        "vector_files": [
+          "src/click/core.py",
+          "src/click/core.py",
+          "src/click/core.py",
+          "src/click/core.py",
+          "src/click/core.py",
+          "src/click/core.py",
+          "src/click/core.py",
+          "src/click/core.py",
+          "src/click/core.py",
+          "src/click/core.py",
+          "src/click/core.py",
+          "src/click/core.py",
+          "src/click/core.py",
+          "src/click/core.py",
+          "src/click/core.py"
+        ],
+        "relevant_files": [
+          "src/click/core.py"
+        ],
+        "hybrid_sources": {
+          "vector": 8,
+          "hybrid": 2,
+          "graph": 5
+        },
+        "new_from_graph": [
+          "src/click/__init__.py",
+          "src/click/termui.py",
+          "src/click/decorators.py",
+          "src/click/shell_completion.py",
+          "src/click/types.py"
+        ]
+      },
+      {
+        "question": "What is the class hierarchy of BaseCommand, Command, MultiCommand, and Group?",
+        "category": "architecture",
+        "hybrid_files": [
+          "src/click/core.py",
+          "src/click/core.py",
+          "src/click/core.py",
+          "src/click/core.py",
+          "src/click/core.py",
+          "src/click/core.py",
+          "src/click/core.py",
+          "src/click/core.py",
+          "src/click/core.py",
+          "src/click/core.py",
+          "src/click/decorators.py",
+          "src/click/shell_completion.py",
+          "src/click/__init__.py",
+          "src/click/globals.py",
+          "src/click/utils.py"
+        ],
+        "vector_files": [
+          "src/click/core.py",
+          "src/click/core.py",
+          "src/click/core.py",
+          "src/click/core.py",
+          "src/click/core.py",
+          "src/click/core.py",
+          "src/click/core.py",
+          "src/click/core.py",
+          "src/click/core.py",
+          "src/click/core.py",
+          "examples/aliases/aliases.py",
+          "src/click/core.py",
+          "tests/typing/typing_aliased_group.py",
+          "examples/aliases/aliases.py",
+          "examples/completion/completion.py"
+        ],
+        "relevant_files": [
+          "src/click/core.py"
+        ],
+        "hybrid_sources": {
+          "vector": 8,
+          "hybrid": 2,
+          "graph": 5
+        },
+        "new_from_graph": [
+          "src/click/__init__.py",
+          "src/click/decorators.py",
+          "src/click/shell_completion.py",
+          "src/click/utils.py",
+          "src/click/globals.py"
+        ]
+      },
+      {
+        "question": "How does Click handle type conversion for parameters?",
+        "category": "type_system",
+        "hybrid_files": [
+          "src/click/types.py",
+          "src/click/types.py",
+          "src/click/types.py",
+          "src/click/types.py",
+          "src/click/types.py",
+          "src/click/core.py",
+          "src/click/types.py",
+          "src/click/types.py",
+          "src/click/types.py",
+          "src/click/types.py",
+          "src/click/__init__.py",
+          "src/click/termui.py",
+          "src/click/termui.py",
+          "src/click/termui.py",
+          "src/click/termui.py"
+        ],
+        "vector_files": [
+          "src/click/types.py",
+          "src/click/types.py",
+          "src/click/types.py",
+          "src/click/types.py",
+          "src/click/types.py",
+          "src/click/core.py",
+          "src/click/types.py",
+          "src/click/types.py",
+          "src/click/types.py",
+          "src/click/types.py",
+          "src/click/types.py",
+          "src/click/types.py",
+          "tests/typing/typing_options.py",
+          "src/click/parser.py",
+          "src/click/types.py"
+        ],
+        "relevant_files": [
+          "src/click/core.py",
+          "src/click/types.py"
+        ],
+        "hybrid_sources": {
+          "vector": 8,
+          "hybrid": 2,
+          "graph": 5
+        },
+        "new_from_graph": [
+          "src/click/termui.py",
+          "src/click/__init__.py"
+        ]
+      },
+      {
+        "question": "How does CliRunner work for testing CLI applications?",
+        "category": "testing",
+        "hybrid_files": [
+          "src/click/testing.py",
+          "src/click/testing.py",
+          "src/click/testing.py",
+          "src/click/testing.py",
+          "src/click/testing.py",
+          "src/click/testing.py",
+          "src/click/testing.py",
+          "src/click/testing.py",
+          "src/click/testing.py",
+          "examples/complex/complex/commands/cmd_status.py",
+          "src/click/testing.py",
+          "src/click/testing.py",
+          "src/click/testing.py",
+          "src/click/testing.py",
+          "src/click/testing.py"
+        ],
+        "vector_files": [
+          "src/click/testing.py",
+          "src/click/testing.py",
+          "src/click/testing.py",
+          "src/click/testing.py",
+          "src/click/testing.py",
+          "src/click/testing.py",
+          "src/click/testing.py",
+          "src/click/testing.py",
+          "src/click/testing.py",
+          "examples/complex/complex/commands/cmd_status.py",
+          "examples/complex/complex/cli.py",
+          "examples/validation/validation.py",
+          "src/click/_termui_impl.py",
+          "src/click/types.py",
+          "src/click/shell_completion.py"
+        ],
+        "relevant_files": [
+          "src/click/testing.py"
+        ],
+        "hybrid_sources": {
+          "vector": 10,
+          "graph": 5
+        },
+        "new_from_graph": []
+      },
+      {
+        "question": "What decorators does Click provide and how do they work?",
+        "category": "api_surface",
+        "hybrid_files": [
+          "src/click/decorators.py",
+          "src/click/decorators.py",
+          "src/click/decorators.py",
+          "src/click/parser.py",
+          "src/click/decorators.py",
+          "examples/repo/repo.py",
+          "examples/naval/naval.py",
+          "src/click/decorators.py",
+          "src/click/decorators.py",
+          "src/click/termui.py",
+          "src/click/__init__.py",
+          "src/click/core.py",
+          "src/click/types.py",
+          "src/click/utils.py",
+          "src/click/types.py"
+        ],
+        "vector_files": [
+          "src/click/decorators.py",
+          "src/click/decorators.py",
+          "src/click/decorators.py",
+          "src/click/parser.py",
+          "src/click/decorators.py",
+          "examples/repo/repo.py",
+          "examples/naval/naval.py",
+          "src/click/decorators.py",
+          "src/click/decorators.py",
+          "src/click/termui.py",
+          "src/click/decorators.py",
+          "src/click/decorators.py",
+          "src/click/globals.py",
+          "src/click/decorators.py",
+          "src/click/decorators.py"
+        ],
+        "relevant_files": [
+          "src/click/core.py",
+          "src/click/decorators.py"
+        ],
+        "hybrid_sources": {
+          "vector": 7,
+          "hybrid": 3,
+          "graph": 5
+        },
+        "new_from_graph": [
+          "src/click/utils.py",
+          "src/click/__init__.py",
+          "src/click/core.py",
+          "src/click/types.py"
+        ]
+      },
+      {
+        "question": "How does Click parse command-line arguments?",
+        "category": "parsing",
+        "hybrid_files": [
+          "src/click/core.py",
+          "src/click/parser.py",
+          "examples/naval/naval.py",
+          "src/click/testing.py",
+          "src/click/parser.py",
+          "src/click/parser.py",
+          "src/click/parser.py",
+          "src/click/core.py",
+          "src/click/core.py",
+          "src/click/core.py",
+          "src/click/decorators.py",
+          "src/click/shell_completion.py",
+          "src/click/__init__.py",
+          "src/click/globals.py",
+          "src/click/utils.py"
+        ],
+        "vector_files": [
+          "src/click/core.py",
+          "src/click/parser.py",
+          "examples/naval/naval.py",
+          "src/click/testing.py",
+          "src/click/parser.py",
+          "src/click/parser.py",
+          "src/click/core.py",
+          "src/click/parser.py",
+          "src/click/core.py",
+          "src/click/core.py",
+          "src/click/parser.py",
+          "src/click/parser.py",
+          "src/click/decorators.py",
+          "src/click/core.py",
+          "src/click/core.py"
+        ],
+        "relevant_files": [
+          "src/click/parser.py",
+          "src/click/core.py"
+        ],
+        "hybrid_sources": {
+          "vector": 9,
+          "hybrid": 1,
+          "graph": 5
+        },
+        "new_from_graph": [
+          "src/click/shell_completion.py",
+          "src/click/globals.py",
+          "src/click/__init__.py",
+          "src/click/utils.py"
+        ]
+      },
+      {
+        "question": "How does Click handle shell completion?",
+        "category": "completion",
+        "hybrid_files": [
+          "src/click/types.py",
+          "src/click/types.py",
+          "examples/completion/completion.py",
+          "src/click/shell_completion.py",
+          "src/click/types.py",
+          "src/click/core.py",
+          "src/click/shell_completion.py",
+          "src/click/core.py",
+          "src/click/shell_completion.py",
+          "examples/completion/completion.py",
+          "src/click/shell_completion.py",
+          "src/click/shell_completion.py",
+          "src/click/shell_completion.py"
+        ],
+        "vector_files": [
+          "src/click/types.py",
+          "src/click/types.py",
+          "examples/completion/completion.py",
+          "src/click/shell_completion.py",
+          "src/click/types.py",
+          "src/click/core.py",
+          "examples/completion/completion.py",
+          "src/click/shell_completion.py",
+          "src/click/core.py",
+          "src/click/shell_completion.py",
+          "examples/completion/completion.py",
+          "src/click/core.py",
+          "src/click/shell_completion.py",
+          "src/click/shell_completion.py",
+          "src/click/shell_completion.py"
+        ],
+        "relevant_files": [
+          "src/click/shell_completion.py"
+        ],
+        "hybrid_sources": {
+          "vector": 9,
+          "hybrid": 1,
+          "graph": 3
+        },
+        "new_from_graph": []
+      },
+      {
+        "question": "What exception hierarchy does Click use?",
+        "category": "error_handling",
+        "hybrid_files": [
+          "src/click/exceptions.py",
+          "src/click/exceptions.py",
+          "src/click/exceptions.py",
+          "src/click/exceptions.py",
+          "src/click/exceptions.py",
+          "src/click/core.py",
+          "src/click/exceptions.py",
+          "src/click/exceptions.py",
+          "src/click/exceptions.py",
+          "src/click/exceptions.py",
+          "src/click/termui.py",
+          "src/click/__init__.py",
+          "src/click/types.py",
+          "src/click/parser.py",
+          "src/click/termui.py"
+        ],
+        "vector_files": [
+          "src/click/exceptions.py",
+          "src/click/exceptions.py",
+          "src/click/exceptions.py",
+          "src/click/exceptions.py",
+          "src/click/exceptions.py",
+          "src/click/exceptions.py",
+          "src/click/core.py",
+          "src/click/exceptions.py",
+          "src/click/exceptions.py",
+          "src/click/exceptions.py",
+          "src/click/exceptions.py",
+          "src/click/exceptions.py",
+          "src/click/exceptions.py",
+          "src/click/exceptions.py",
+          "src/click/exceptions.py"
+        ],
+        "relevant_files": [
+          "src/click/core.py",
+          "src/click/exceptions.py"
+        ],
+        "hybrid_sources": {
+          "vector": 8,
+          "hybrid": 2,
+          "graph": 5
+        },
+        "new_from_graph": [
+          "src/click/termui.py",
+          "src/click/__init__.py",
+          "src/click/parser.py",
+          "src/click/types.py"
+        ]
+      },
+      {
+        "question": "How does Click's Context object work?",
+        "category": "state_management",
+        "hybrid_files": [
+          "src/click/core.py",
+          "src/click/globals.py",
+          "src/click/core.py",
+          "src/click/core.py",
+          "src/click/core.py",
+          "src/click/core.py",
+          "src/click/globals.py",
+          "src/click/globals.py",
+          "src/click/decorators.py",
+          "src/click/core.py",
+          "src/click/shell_completion.py",
+          "src/click/__init__.py",
+          "src/click/utils.py",
+          "src/click/termui.py",
+          "src/click/types.py"
+        ],
+        "vector_files": [
+          "src/click/core.py",
+          "src/click/globals.py",
+          "src/click/core.py",
+          "src/click/core.py",
+          "src/click/core.py",
+          "src/click/core.py",
+          "src/click/globals.py",
+          "src/click/globals.py",
+          "src/click/decorators.py",
+          "src/click/core.py",
+          "src/click/globals.py",
+          "src/click/parser.py",
+          "src/click/globals.py",
+          "src/click/core.py",
+          "src/click/parser.py"
+        ],
+        "relevant_files": [
+          "src/click/globals.py",
+          "src/click/core.py"
+        ],
+        "hybrid_sources": {
+          "vector": 6,
+          "hybrid": 4,
+          "graph": 5
+        },
+        "new_from_graph": [
+          "src/click/__init__.py",
+          "src/click/termui.py",
+          "src/click/shell_completion.py",
+          "src/click/utils.py",
+          "src/click/types.py"
+        ]
+      },
+      {
+        "question": "How does Click format help text?",
+        "category": "help_system",
+        "hybrid_files": [
+          "examples/naval/naval.py",
+          "src/click/termui.py",
+          "src/click/core.py",
+          "src/click/exceptions.py",
+          "src/click/core.py",
+          "src/click/core.py",
+          "src/click/parser.py",
+          "tests/typing/typing_help_option.py",
+          "src/click/core.py",
+          "src/click/formatting.py",
+          "src/click/__init__.py",
+          "src/click/types.py",
+          "src/click/utils.py",
+          "src/click/types.py",
+          "src/click/utils.py"
+        ],
+        "vector_files": [
+          "examples/naval/naval.py",
+          "src/click/termui.py",
+          "src/click/core.py",
+          "src/click/exceptions.py",
+          "src/click/core.py",
+          "src/click/core.py",
+          "src/click/formatting.py",
+          "src/click/parser.py",
+          "tests/typing/typing_help_option.py",
+          "src/click/core.py",
+          "tests/typing/typing_options.py",
+          "src/click/termui.py",
+          "tests/typing/typing_simple_example.py",
+          "src/click/core.py",
+          "examples/termui/termui.py"
+        ],
+        "relevant_files": [
+          "src/click/utils.py",
+          "src/click/formatting.py",
+          "src/click/core.py"
+        ],
+        "hybrid_sources": {
+          "vector": 9,
+          "hybrid": 1,
+          "graph": 5
+        },
+        "new_from_graph": [
+          "src/click/utils.py",
+          "src/click/__init__.py",
+          "src/click/types.py"
+        ]
+      },
+      {
+        "question": "How does Click handle environment variables for options?",
+        "category": "env_vars",
+        "hybrid_files": [
+          "examples/completion/completion.py",
+          "src/click/core.py",
+          "src/click/core.py",
+          "examples/complex/complex/cli.py",
+          "src/click/core.py",
+          "examples/naval/naval.py",
+          "src/click/parser.py",
+          "examples/repo/repo.py",
+          "src/click/parser.py",
+          "tests/typing/typing_version_option.py",
+          "src/click/decorators.py",
+          "src/click/shell_completion.py",
+          "src/click/__init__.py",
+          "src/click/globals.py",
+          "src/click/utils.py"
+        ],
+        "vector_files": [
+          "examples/completion/completion.py",
+          "src/click/core.py",
+          "src/click/core.py",
+          "examples/complex/complex/cli.py",
+          "src/click/core.py",
+          "examples/naval/naval.py",
+          "src/click/parser.py",
+          "examples/repo/repo.py",
+          "src/click/parser.py",
+          "tests/typing/typing_version_option.py",
+          "examples/validation/validation.py",
+          "examples/complex/complex/commands/cmd_init.py",
+          "examples/naval/naval.py",
+          "src/click/core.py",
+          "src/click/core.py"
+        ],
+        "relevant_files": [
+          "src/click/core.py",
+          "src/click/types.py"
+        ],
+        "hybrid_sources": {
+          "vector": 10,
+          "graph": 5
+        },
+        "new_from_graph": [
+          "src/click/__init__.py",
+          "src/click/decorators.py",
+          "src/click/shell_completion.py",
+          "src/click/utils.py",
+          "src/click/globals.py"
+        ]
+      },
+      {
+        "question": "What is the difference between Click options and arguments?",
+        "category": "parameters",
+        "hybrid_files": [
+          "src/click/parser.py",
+          "src/click/core.py",
+          "examples/naval/naval.py",
+          "tests/typing/typing_options.py",
+          "examples/validation/validation.py",
+          "src/click/core.py",
+          "src/click/core.py",
+          "src/click/decorators.py",
+          "src/click/decorators.py",
+          "src/click/core.py",
+          "src/click/shell_completion.py",
+          "src/click/__init__.py",
+          "src/click/exceptions.py",
+          "src/click/utils.py",
+          "src/click/utils.py"
+        ],
+        "vector_files": [
+          "src/click/parser.py",
+          "src/click/core.py",
+          "examples/naval/naval.py",
+          "tests/typing/typing_options.py",
+          "examples/validation/validation.py",
+          "src/click/core.py",
+          "src/click/decorators.py",
+          "src/click/decorators.py",
+          "src/click/core.py",
+          "src/click/core.py",
+          "src/click/parser.py",
+          "src/click/core.py",
+          "examples/naval/naval.py",
+          "src/click/shell_completion.py",
+          "tests/typing/typing_help_option.py"
+        ],
+        "relevant_files": [
+          "src/click/core.py",
+          "src/click/decorators.py"
+        ],
+        "hybrid_sources": {
+          "vector": 6,
+          "hybrid": 4,
+          "graph": 5
+        },
+        "new_from_graph": [
+          "src/click/utils.py",
+          "src/click/__init__.py",
+          "src/click/exceptions.py"
+        ]
+      },
+      {
+        "question": "How does pass_context and pass_obj work for dependency injection?",
+        "category": "dependency_injection",
+        "hybrid_files": [
+          "src/click/decorators.py",
+          "src/click/decorators.py",
+          "src/click/decorators.py",
+          "src/click/globals.py",
+          "src/click/core.py",
+          "src/click/core.py",
+          "src/click/core.py",
+          "src/click/core.py",
+          "src/click/core.py",
+          "src/click/core.py",
+          "src/click/__init__.py",
+          "src/click/shell_completion.py",
+          "src/click/termui.py",
+          "src/click/types.py",
+          "src/click/termui.py"
+        ],
+        "vector_files": [
+          "src/click/decorators.py",
+          "src/click/decorators.py",
+          "src/click/decorators.py",
+          "src/click/globals.py",
+          "src/click/core.py",
+          "src/click/core.py",
+          "src/click/core.py",
+          "src/click/core.py",
+          "src/click/core.py",
+          "src/click/core.py",
+          "src/click/decorators.py",
+          "src/click/core.py",
+          "src/click/parser.py",
+          "src/click/globals.py",
+          "src/click/globals.py"
+        ],
+        "relevant_files": [
+          "src/click/globals.py",
+          "src/click/core.py",
+          "src/click/decorators.py"
+        ],
+        "hybrid_sources": {
+          "vector": 9,
+          "hybrid": 1,
+          "graph": 5
+        },
+        "new_from_graph": [
+          "src/click/shell_completion.py",
+          "src/click/termui.py",
+          "src/click/__init__.py",
+          "src/click/types.py"
+        ]
+      },
+      {
+        "question": "How does Click handle prompting users for input?",
+        "category": "interactive",
+        "hybrid_files": [
+          "src/click/termui.py",
+          "tests/typing/typing_options.py",
+          "tests/typing/typing_simple_example.py",
+          "src/click/termui.py",
+          "tests/typing/typing_help_option.py",
+          "examples/completion/completion.py",
+          "examples/naval/naval.py",
+          "tests/typing/typing_version_option.py",
+          "src/click/shell_completion.py",
+          "examples/termui/termui.py",
+          "src/click/__init__.py",
+          "src/click/core.py",
+          "src/click/types.py",
+          "src/click/utils.py",
+          "src/click/types.py"
+        ],
+        "vector_files": [
+          "src/click/termui.py",
+          "tests/typing/typing_options.py",
+          "tests/typing/typing_simple_example.py",
+          "src/click/termui.py",
+          "tests/typing/typing_help_option.py",
+          "examples/completion/completion.py",
+          "examples/naval/naval.py",
+          "examples/termui/termui.py",
+          "tests/typing/typing_version_option.py",
+          "src/click/shell_completion.py",
+          "src/click/core.py",
+          "examples/completion/completion.py",
+          "src/click/core.py",
+          "examples/completion/completion.py",
+          "examples/inout/inout.py"
+        ],
+        "relevant_files": [
+          "src/click/termui.py",
+          "src/click/core.py",
+          "src/click/decorators.py"
+        ],
+        "hybrid_sources": {
+          "vector": 9,
+          "hybrid": 1,
+          "graph": 5
+        },
+        "new_from_graph": [
+          "src/click/utils.py",
+          "src/click/__init__.py",
+          "src/click/types.py"
+        ]
+      },
+      {
+        "question": "How does Click handle file path validation and the Path type?",
+        "category": "file_handling",
+        "hybrid_files": [
+          "src/click/types.py",
+          "src/click/utils.py",
+          "src/click/types.py",
+          "src/click/types.py",
+          "examples/validation/validation.py",
+          "examples/complex/complex/cli.py",
+          "src/click/types.py",
+          "examples/completion/completion.py",
+          "examples/complex/complex/commands/cmd_init.py",
+          "src/click/utils.py",
+          "src/click/__init__.py",
+          "src/click/_termui_impl.py",
+          "src/click/termui.py",
+          "src/click/_compat.py",
+          "src/click/_compat.py"
+        ],
+        "vector_files": [
+          "src/click/types.py",
+          "src/click/utils.py",
+          "src/click/types.py",
+          "src/click/types.py",
+          "examples/validation/validation.py",
+          "examples/complex/complex/cli.py",
+          "src/click/types.py",
+          "examples/completion/completion.py",
+          "src/click/utils.py",
+          "examples/complex/complex/commands/cmd_init.py",
+          "src/click/types.py",
+          "src/click/types.py",
+          "src/click/types.py",
+          "examples/complex/complex/cli.py",
+          "src/click/exceptions.py"
+        ],
+        "relevant_files": [
+          "src/click/types.py"
+        ],
+        "hybrid_sources": {
+          "vector": 9,
+          "hybrid": 1,
+          "graph": 5
+        },
+        "new_from_graph": [
+          "src/click/termui.py",
+          "src/click/__init__.py",
+          "src/click/_termui_impl.py",
+          "src/click/_compat.py"
+        ]
+      }
+    ]
+  },
+  "generation": {
+    "rag_avg": {
+      "accuracy": 4.8,
+      "completeness": 4.73,
+      "helpfulness": 4.8,
+      "avg_score": 4.78
+    },
+    "vec_avg": {
+      "accuracy": 4.73,
+      "completeness": 4.67,
+      "helpfulness": 4.73,
+      "avg_score": 4.71
+    },
+    "plain_avg": {
+      "accuracy": 4.8,
+      "completeness": 4.8,
+      "helpfulness": 4.8,
+      "avg_score": 4.8
+    },
+    "wins_rag_vs_plain": {
+      "rag": 2,
+      "plain": 3,
+      "tie": 10
+    },
+    "wins_rag_vs_vec": {
+      "rag": 2,
+      "vec": 1,
+      "tie": 12
+    },
+    "per_case": [
+      {
+        "question": "How does Click's Group class handle subcommand routing when invoke() is called?",
+        "category": "control_flow",
+        "rag_answer": "Click's `Group` class handles subcommand routing by using the `invoke()` method to call the appropriate subcommand based on the command line arguments. When a `Group` instance is invoked, it first parses the command line arguments to determine which subcommand should be executed. It then calls the `invoke()` method of the corresponding subcommand with the remaining arguments.\n\nHere's a simplified breakdown of how this works:\n\n1. **Parsing Arguments**: The `Group` class uses its `parse_args()` method to parse the command line arguments and identify the intended subcommand.\n2. **Finding Subcommand**: Once the subcommand is identified, the `Group` class looks up the corresponding subcommand instance in its `_commands` dictionary.\n3. **Invoking Subcommand**: The `Group` class then calls the `i",
+        "vec_answer": "Click's `Group` class handles subcommand routing in the following way:\n\n1. When a command is invoked on a `Group`, it first checks if the command name matches any of the commands directly registered to the group.\n\n2. If no direct match is found, it then looks for a nested group with a matching name and recursively calls `invoke()` on that nested group.\n\n3. This recursive process continues until either:\n   - A matching command is found and executed.\n   - No more groups are found to search through (i.e., we've reached the deepest level of nesting).\n\n4. If no matching command or subcommand is found at any level, a `CommandNotFound` exception is raised.\n\n5. The `invoke()` method on the group also handles passing along context information and ensuring that the correct environment is set up for ",
+        "plain_answer": "Click, a popular command-line interface (CLI) creation library for Python, provides a robust system for building complex CLIs with multiple subcommands. The `Group` class in Click plays a crucial role in managing these subcommands and routing them appropriately.\n\nWhen the `invoke()` method of a `Group` instance is called, it follows a specific sequence to determine which subcommand should be executed:\n\n1. **Argument Parsing**: The first step involves parsing the command-line arguments provided when invoking the CLI. Click uses its built-in argument parser to break down the input into options and positional arguments.\n\n2. **Subcommand Identification**: Once the arguments are parsed, Click identifies the main command (the top-level command) and then looks for a subcommand based on the subseq",
+        "rag_scores": {
+          "accuracy": 5.0,
+          "completeness": 5.0,
+          "helpfulness": 5.0,
+          "reasoning": "The answer accurately describes how Click's Group class handles subcommand routing, covers all important aspects of the process, and provides a clear, actionable explanation with code examples.",
+          "avg_score": 5.0
+        },
+        "vec_scores": {
+          "accuracy": 4.0,
+          "completeness": 4.0,
+          "helpfulness": 4.0,
+          "reasoning": "The answer is mostly accurate, covers the key aspects of how Click's Group class handles subcommand routing, and provides useful information for developers.",
+          "avg_score": 4.0
+        },
+        "plain_scores": {
+          "accuracy": 5.0,
+          "completeness": 5.0,
+          "helpfulness": 5.0,
+          "reasoning": "The answer accurately describes the process of subcommand routing in Click's Group class, covers all important aspects, and provides a clear example. It is helpful for developers looking to understand how Click handles subcommands.",
+          "avg_score": 5.0
+        }
+      },
+      {
+        "question": "What is the class hierarchy of BaseCommand, Command, MultiCommand, and Group?",
+        "category": "architecture",
+        "rag_answer": "The class hierarchy for `BaseCommand`, `Command`, `MultiCommand`, and `Group` in Click can be described as follows:\n\n1. **BaseCommand**: This is an abstract base class that defines the basic structure and methods for command objects. It includes properties like `name`, `help`, and `callback`.\n\n2. **Command** (inherits from BaseCommand): This class represents a single command. It allows you to define a callback function that will be executed when the command is invoked.\n\n3. **MultiCommand** (also inherits from BaseCommand): This class represents a group of commands. It can contain other commands and subgroups, allowing for nested command structures. MultiCommand also includes methods like `get_command` which is used to retrieve a specific command within the group.\n\n4. **Group** (inherits fr",
+        "vec_answer": "The class hierarchy for `BaseCommand`, `Command`, `MultiCommand`, and `Group` in Click can be described as follows:\n\n1. **BaseCommand**: This is an abstract base class that defines the basic structure and methods for command objects. It includes common functionality such as handling arguments, options, and context.\n\n2. **Command**: This class inherits from `BaseCommand`. It represents a single command that can be executed. Commands are typically used to perform specific actions or tasks when invoked by the user.\n\n3. **MultiCommand**: This class also inherits from `BaseCommand` but is designed to handle multiple subcommands. A `MultiCommand` acts as a container for other commands, allowing users to execute different subcommands through it. It provides methods like `get_command` and `list_co",
+        "plain_answer": "The Click CLI (Command Line Interface) library in Python provides a robust framework for building command-line applications. The core classes that form the basis of this framework are `BaseCommand`, `Command`, `MultiCommand`, and `Group`. These classes define the structure and behavior of commands, subcommands, and groups within a Click application.\n\n### Class Hierarchy\n\n1. **BaseCommand**\n   - This is an abstract base class from which all command types in Click inherit.\n   - It defines the basic interface for executing commands and handling options and arguments.\n   - `BaseCommand` itself does not provide any concrete implementation; it serves as a template for other classes.\n\n2. **Command**\n   - A subclass of `BaseCommand`, representing a single command that can be executed.\n   - Command",
+        "rag_scores": {
+          "accuracy": 5.0,
+          "completeness": 5.0,
+          "helpfulness": 5.0,
+          "reasoning": "The answer is factually correct, comprehensive, and actionable. It accurately describes the class hierarchy of BaseCommand, Command, MultiCommand, and Group in Click.",
+          "avg_score": 5.0
+        },
+        "vec_scores": {
+          "accuracy": 5.0,
+          "completeness": 5.0,
+          "helpfulness": 5.0,
+          "reasoning": "The answer accurately describes the class hierarchy of BaseCommand, Command, MultiCommand, and Group in Click. It provides a clear explanation of each class's role and how they relate to each other. The representation is comprehensive and actionable.",
+          "avg_score": 5.0
+        },
+        "plain_scores": {
+          "accuracy": 5.0,
+          "completeness": 5.0,
+          "helpfulness": 5.0,
+          "reasoning": "The answer accurately describes the class hierarchy of BaseCommand, Command, MultiCommand, and Group in Click. It provides a clear explanation of each class's role and how they relate to each other. The example usage is also helpful for understanding how these classes are used in practice.",
+          "avg_score": 5.0
+        }
+      },
+      {
+        "question": "How does Click handle type conversion for parameters?",
+        "category": "type_system",
+        "rag_answer": "Click handles type conversion for parameters through its `ParamType` class and its subclasses. The process involves several key components:\n\n1. **Base Class: `ParamType`**\n   - The base class defines a method `convert` that is responsible for converting the input value to the correct type.\n   - This method is called when a parameter's value needs to be converted, provided the value is not `None`.\n\n2. **Subclass: `UnprocessedParamType`**\n   - This subclass of `ParamType` simply returns the input value without any conversion. It is defined in `src\\click\\types.py` at lines 198-204.\n   ```python\n   class UnprocessedParamType(ParamType):\n       name = \"text\"\n\n       def convert(\n           self, value: t.Any, param: Parameter | None, ctx: Context | None\n       ) -> t.Any:\n           return valu",
+        "vec_answer": "Click handles type conversion for parameters through a series of mechanisms, primarily defined in the `click.types` module. The core functionality is encapsulated within the `ParamType` class and its subclasses.\n\n### Key Components:\n\n1. **Base Class: `ParamType`**\n   - This is an abstract base class that defines the interface for type conversion.\n   - It includes a method `convert`, which must be implemented by any subclass to define how values should be converted to the desired type.\n   - The `__call__` method in `ParamType` calls this `convert` method if the value is not `None`.\n\n2. **Subclasses:**\n   - **`UnprocessedParamType`**: A simple subclass that directly returns the input value without any conversion.\n     ```python\n     class UnprocessedParamType(ParamType):\n         name = \"tex",
+        "plain_answer": "Click is a popular command-line interface (CLI) creation library in Python that simplifies the process of building command line tools. One of its key features is automatic type conversion, which allows developers to specify types for their command line arguments and options, and Click will automatically convert user input to the specified type.\n\n### Type Conversion Mechanism\n\nClick handles type conversion through a combination of built-in converters and custom converters. Here\u2019s how it works:\n\n1. **Built-In Converters**:\n   - Click provides several built-in converters that handle common types such as integers (`int`), floats (`float`), strings (`str`), booleans (`bool`), dates (`date`), times (`time`), and more.\n   - For example, if you specify a parameter type as `int`, Click will automat",
+        "rag_scores": {
+          "accuracy": 5.0,
+          "completeness": 5.0,
+          "helpfulness": 5.0,
+          "reasoning": "The answer accurately describes Click's type conversion mechanism, covering all important aspects including the base `ParamType` class, specific subclasses like `UnprocessedParamType`, `Tuple`, and `_NumberParamTypeBase`, as well as the utility function `convert_type`. It provides clear explanations and code snippets for each component, making it very useful for developers.",
+          "avg_score": 5.0
+        },
+        "vec_scores": {
+          "accuracy": 5.0,
+          "completeness": 5.0,
+          "helpfulness": 5.0,
+          "reasoning": "The answer accurately describes Click's type conversion mechanism, including the base class `ParamType`, subclasses like `IntParamType` and `Tuple`, and utility functions. It also provides a clear example of how type conversion works in practice.",
+          "avg_score": 5.0
+        },
+        "plain_scores": {
+          "accuracy": 5.0,
+          "completeness": 5.0,
+          "helpfulness": 5.0,
+          "reasoning": "The answer is factually correct, comprehensive, and actionable. It accurately describes Click's type conversion mechanism, including both built-in and custom converters, error handling, and provides examples to illustrate these concepts.",
+          "avg_score": 5.0
+        }
+      },
+      {
+        "question": "How does CliRunner work for testing CLI applications?",
+        "category": "testing",
+        "rag_answer": "`CliRunner` is a class provided by Click, a popular Python library for creating command-line interfaces (CLIs). It allows you to test your CLIs in isolation without affecting the global environment. Here\u2019s how it works:\n\n1. **Isolation**: `CliRunner` creates an isolated environment where tests can run without interfering with other tests or the system's state.\n\n2. **Command Invocation**: You can invoke a CLI command using `CliRunner.invoke()`. This method takes the command to be invoked, arguments for the command, and optional parameters like input data, environment variables, and more.\n\n3. **Result Object**: The `invoke()` method returns a `Result` object that contains information about the execution of the command. This includes:\n   - `stdout_bytes`: Output from standard output.\n   - `st",
+        "vec_answer": "`CliRunner` is a class provided by Click, a popular Python library for creating command-line interfaces (CLIs). It allows you to test your CLIs in isolation without affecting the global environment. Here\u2019s how it works:\n\n1. **Isolation**: `CliRunner` creates an isolated environment where tests can run without interfering with other tests or the system's state.\n\n2. **Command Invocation**: You can invoke a CLI command using `CliRunner.invoke()`. This method takes the command to be invoked, arguments for the command, and optional parameters like input data, environment variables, and more.\n\n3. **Result Object**: The `invoke()` method returns a `Result` object that contains information about the execution of the command. This includes:\n   - `stdout_bytes`: Output from standard output.\n   - `st",
+        "plain_answer": "CliRunner is a powerful tool provided by the Click library, which is widely used for creating command-line interfaces (CLIs) in Python applications. It allows developers to test their CLIs without having to run them in an actual terminal environment. This makes it easier and faster to write tests for CLI applications.\n\nHere's how CliRunner works:\n\n1. **Creating a CliRunner Instance**: The first step is to create an instance of the `CliRunner` class. This can be done by simply importing the `CliRunner` from the `click.testing` module.\n\n2. **Executing Commands**: Once you have a `CliRunner` instance, you can use it to execute commands as if they were being run in a terminal. The `invoke` method of the `CliRunner` is used for this purpose. It takes the command to be executed and any arguments",
+        "rag_scores": {
+          "accuracy": 5.0,
+          "completeness": 5.0,
+          "helpfulness": 5.0,
+          "reasoning": "The answer is factually correct, comprehensive, and actionable. It accurately describes how CliRunner works for testing CLI applications in Click.",
+          "avg_score": 5.0
+        },
+        "vec_scores": {
+          "accuracy": 5.0,
+          "completeness": 5.0,
+          "helpfulness": 5.0,
+          "reasoning": "The answer is factually correct, comprehensive, and actionable. It accurately describes how CliRunner works for testing CLI applications in Click.",
+          "avg_score": 5.0
+        },
+        "plain_scores": {
+          "accuracy": 5.0,
+          "completeness": 5.0,
+          "helpfulness": 5.0,
+          "reasoning": "The answer is accurate, comprehensive, and helpful. It provides a detailed explanation of how CliRunner works for testing CLI applications using Click, including code examples.",
+          "avg_score": 5.0
+        }
+      },
+      {
+        "question": "What decorators does Click provide and how do they work?",
+        "category": "api_surface",
+        "rag_answer": "Click provides several useful decorators to simplify the creation of command-line interfaces (CLIs). These decorators help in defining commands, options, arguments, and other components of a CLI. Here\u2019s an overview of some key decorators provided by Click:\n\n1. **`@click.command()`**:\n   - This decorator is used to define a new command.\n   - It can take various parameters such as `name`, `help`, `short_help`, etc., to customize the command.\n\n2. **`@click.option()`**:\n   - This decorator is used to add options to a command.\n   - Options are specified as keyword arguments, and they can be optional or required.\n   - Parameters like `flag_value`, `multiple`, `nargs`, etc., allow for more complex option handling.\n\n3. **`@click.argument()`**:\n   - Similar to `@click.option()`, this decorator is u",
+        "vec_answer": "Click provides several useful decorators to simplify the creation of command-line interfaces (CLIs). These decorators help in defining commands, options, arguments, and other components of a CLI. Here\u2019s an overview of some key decorators provided by Click:\n\n1. **`@click.command()`**:\n   - This decorator is used to define a new command.\n   - It can take various parameters such as `name`, `help`, etc., to customize the command.\n\n2. **`@click.option()`**:\n   - This decorator is used to add options to a command.\n   - Options are optional parameters that users can provide when running the command.\n   - Parameters like `--option-name` or `-o` can be specified, and they can have default values.\n\n3. **`@click.argument()`**:\n   - This decorator is used to define positional arguments for a command.\n",
+        "plain_answer": "Click is a popular Python library for creating command-line interfaces (CLIs). It provides several decorators that help in defining and configuring commands, options, arguments, and other components of a CLI application. Below are some of the key decorators provided by Click:\n\n1. **@click.command()**: This decorator is used to define a new command. When you decorate a function with `@click.command()`, it turns that function into a command that can be invoked from the command line.\n\n   ```python\n   import click\n\n   @click.command()\n   def hello():\n       click.echo('Hello, World!')\n   ```\n\n2. **@click.option()**: This decorator is used to define options for a command. Options are optional parameters that users can provide when invoking a command.\n\n   ```python\n   @click.command()\n   @click.",
+        "rag_scores": {
+          "accuracy": 5.0,
+          "completeness": 5.0,
+          "helpfulness": 5.0,
+          "reasoning": "The answer is factually correct, comprehensive, and actionable. It accurately describes all the key decorators provided by Click and provides a practical example demonstrating their usage.",
+          "avg_score": 5.0
+        },
+        "vec_scores": {
+          "accuracy": 5.0,
+          "completeness": 5.0,
+          "helpfulness": 5.0,
+          "reasoning": "The answer is factually correct, comprehensive, and actionable. It accurately describes the decorators provided by Click and provides a practical example demonstrating their usage.",
+          "avg_score": 5.0
+        },
+        "plain_scores": {
+          "accuracy": 5.0,
+          "completeness": 5.0,
+          "helpfulness": 5.0,
+          "reasoning": "The answer is factually correct, comprehensive, and actionable. It accurately describes the decorators provided by Click and provides clear examples of how to use them.",
+          "avg_score": 5.0
+        }
+      },
+      {
+        "question": "How does Click parse command-line arguments?",
+        "category": "parsing",
+        "rag_answer": "Click parses command-line arguments by following these steps:\n\n1. **Initialization**: When a Click command is defined, it sets up parameters with specific attributes such as `type`, `nargs`, and `callback`. These attributes define how the argument should be processed.\n\n2. **Parsing**: When the command is invoked, Click processes each argument according to its definition:\n   - **Type Casting**: Each argument is cast to the specified type using the parameter's `type` attribute.\n   - **Handling Multiple Values**: If the parameter expects multiple values (e.g., `nargs > 1`), Click handles splitting and casting these values accordingly.\n\n3. **Default Values and Callbacks**:\n   - If a default value is provided, it is used if no argument is given.\n   - If a callback function is defined, it can mo",
+        "vec_answer": "Click is a popular Python library for creating command-line interfaces (CLIs). It provides a powerful and flexible framework for building CLIs, with features such as automatic help generation, argument parsing, and more. Here\u2019s how Click parses command-line arguments:\n\n### 1. **Command Definition**\nFirst, you define your CLI commands using classes like `click.Command`, `click.Group`, or `click.MultiCommand`. Each command can have parameters (options and arguments) that are defined using decorators like `@click.option` and `@click.argument`.\n\n```python\nimport click\n\n@click.command()\n@click.option('--count', default=1, help='Number of greetings.')\n@click.argument('name')\ndef hello(count, name):\n    \"\"\"Simple program that greets NAME for a total of COUNT times.\"\"\"\n    for _ in range(count):\n ",
+        "plain_answer": "Click is a popular Python library for creating command-line interfaces (CLIs). It simplifies the process of writing user-friendly command line tools by providing a simple and intuitive API. When it comes to parsing command-line arguments, Click follows a structured approach that allows developers to define commands, options, and parameters in a declarative manner.\n\n### Basic Structure\n\nA Click application typically consists of one or more commands, each with its own set of options and parameters. Here's a basic example:\n\n```python\nimport click\n\n@click.command()\n@click.option('--count', default=1, help='Number of greetings.')\n@click.argument('name', nargs=-1)\ndef hello(count, name):\n    \"\"\"Simple program that greets NAME for a total of COUNT times.\"\"\"\n    for _ in range(count):\n        clic",
+        "rag_scores": {
+          "accuracy": 4.0,
+          "completeness": 4.0,
+          "helpfulness": 4.0,
+          "reasoning": "The answer is accurate, comprehensive, and helpful. It covers all the key aspects of how Click parses command-line arguments, including type casting, default values, callbacks, environment variables, error handling, completion, and usage/help messages.",
+          "avg_score": 4.0
+        },
+        "vec_scores": {
+          "accuracy": 4.0,
+          "completeness": 4.0,
+          "helpfulness": 4.0,
+          "reasoning": "The answer provides a detailed and accurate explanation of how Click parses command-line arguments. It covers all the important aspects, including command definition, creating the parser, parsing arguments, handling options, positional arguments, defaults, required parameters, error handling, and customization. The explanation is clear and actionable.",
+          "avg_score": 4.0
+        },
+        "plain_scores": {
+          "accuracy": 5.0,
+          "completeness": 5.0,
+          "helpfulness": 5.0,
+          "reasoning": "The answer is factually correct, comprehensive, and actionable. It provides a detailed explanation of Click's parsing mechanism, including the basic structure, parsing process, advanced features, and examples.",
+          "avg_score": 5.0
+        }
+      },
+      {
+        "question": "How does Click handle shell completion?",
+        "category": "completion",
+        "rag_answer": "Click handles shell completion through a combination of built-in types, custom types, and the `shell_complete` method. Here\u2019s how it works:\n\n1. **Built-in Types**: Click provides several built-in types that support shell completion out-of-the-box. For example:\n   - `click.Path`: This type supports file path completions.\n     ```python\n     # src\\click\\types.py:1041-1057\n     def shell_complete(self, ctx: Context, param: Parameter, incomplete: str) -> list[CompletionItem]:\n         from click.shell_completion import CompletionItem\n         type = \"dir\" if self.dir_okay and not self.file_okay else \"file\"\n         return [CompletionItem(incomplete, type=type)]\n     ```\n   - `click.File`: This type supports file path completions for files.\n     ```python\n     # src\\click\\types.py:858-872\n     ",
+        "vec_answer": "Click handles shell completion through a combination of built-in types and custom completions. The process involves several key components:\n\n1. **CompletionItem Class**: This class (`src\\click\\shell_completion.py:57-91`) represents a completion value and metadata about the value. It can indicate special shell handling, such as file or directory paths.\n\n2. **Parameter.shell_complete Method**: This method (`src\\click\\core.py:2622-2643`) is responsible for returning completions for a parameter. If a custom `shell_complete` function was provided during initialization, it uses that; otherwise, it falls back to the type's `shell_complete` method.\n\n3. **ParamType.shell_complete Method**: This method (`src\\click\\types.py:145-160`) is overridden in specific types like `File.File.shell_complete` and",
+        "plain_answer": "Click is a popular Python library for creating command-line interfaces (CLIs). It provides a simple and powerful way to define commands, options, arguments, and subcommands. One of its features is built-in support for shell completion, which enhances the user experience by providing auto-completion capabilities in various shells like Bash, Zsh, Fish, and PowerShell.\n\n### How Click Handles Shell Completion\n\n1. **Automatic Generation of Completion Scripts**:\n   - When you create a Click application, it automatically generates completion scripts for each supported shell. These scripts are typically named after your command or application.\n   - For example, if your application is named `myapp`, the completion script will be named something like `_myapp`.\n\n2. **Completion Script Format**:\n   - ",
+        "rag_scores": {
+          "accuracy": 4.0,
+          "completeness": 4.0,
+          "helpfulness": 4.0,
+          "reasoning": "The answer is accurate, comprehensive, and helpful. It covers all the important aspects of how Click handles shell completion, including built-in types, custom types, and the `shell_complete` method. The explanation is clear and provides specific code references where applicable.",
+          "avg_score": 4.0
+        },
+        "vec_scores": {
+          "accuracy": 5.0,
+          "completeness": 5.0,
+          "helpfulness": 5.0,
+          "reasoning": "The answer accurately describes how Click handles shell completion, covering all key components and providing a clear example. It is comprehensive and actionable.",
+          "avg_score": 5.0
+        },
+        "plain_scores": {
+          "accuracy": 5.0,
+          "completeness": 5.0,
+          "helpfulness": 5.0,
+          "reasoning": "The answer is factually correct, comprehensive, and actionable. It covers all important aspects of how Click handles shell completion and provides specific examples.",
+          "avg_score": 5.0
+        }
+      },
+      {
+        "question": "What exception hierarchy does Click use?",
+        "category": "error_handling",
+        "rag_answer": "Click uses a specific exception hierarchy to handle errors and exceptions in command-line interfaces. The primary base class for all Click exceptions is `ClickException`. Here\u2019s the hierarchy based on the provided code context:\n\n1. **ClickException**\n   - This is the base class for all Click exceptions.\n   - It has a method `__str__` that returns the exception message.\n     ```python\n     def __str__(self) -> str:\n         return self.message\n     ```\n   - It also has a method `format_message` which can be overridden to provide custom error messages.\n     ```python\n     def format_message(self) -> str:\n         return self.message\n     ```\n\n2. **UsageError**\n   - Inherits from `ClickException`.\n   - This is used for signaling usage errors, typically aborting further handling.\n   - It has a",
+        "vec_answer": "Click uses a specific exception hierarchy to handle errors and exceptions in command-line interfaces. The primary base class for all Click exceptions is `ClickException`. Here\u2019s the hierarchy based on the provided code context:\n\n1. **ClickException**\n   - This is the base class for all Click exceptions.\n   - It has a method `__str__` that returns the exception message.\n   - It also has a method `format_message` which can be overridden to provide custom error messages.\n\n2. **UsageError (src\\click\\exceptions.py:56-92)**\n   - Inherits from `ClickException`.\n   - Used for signaling usage errors, typically aborting further handling.\n   - Has an attribute `exit_code` set to 2.\n   - The `show` method is overridden to display the error message and help information if available.\n\n3. **BadParameter ",
+        "plain_answer": "Click is a popular command-line interface (CLI) toolkit for Python, designed to make it easy to create powerful and user-friendly command line tools. It uses a specific exception hierarchy to handle errors and exceptions that may occur during the execution of CLI commands. Understanding this hierarchy can help in debugging and handling errors effectively.\n\n### Click Exception Hierarchy\n\nClick defines several custom exceptions that are used throughout its codebase to handle different types of errors and exceptional situations. The primary base class for all Click exceptions is `ClickException`. Below is a detailed breakdown of the exception hierarchy:\n\n1. **ClickException**\n   - This is the base class for all Click-specific exceptions.\n   - It provides a default message that can be overridd",
+        "rag_scores": {
+          "accuracy": 4.0,
+          "completeness": 3.0,
+          "helpfulness": 4.0,
+          "reasoning": "The answer is mostly accurate and covers the main exception hierarchy in Click. However, it misses some specific exceptions like `BadArgumentUsage` and does not provide a complete explanation of the `__str__` method for `ClickException`. The helpfulness is good as it provides code snippets and explanations.",
+          "avg_score": 3.67
+        },
+        "vec_scores": {
+          "accuracy": 4.0,
+          "completeness": 3.0,
+          "helpfulness": 4.0,
+          "reasoning": "The answer is mostly accurate and covers the main exception classes in Click. However, it misses some important details such as `MissingParameter` and `Abort`, which are part of the provided reference answer. The explanation is clear and actionable.",
+          "avg_score": 3.67
+        },
+        "plain_scores": {
+          "accuracy": 4.0,
+          "completeness": 4.0,
+          "helpfulness": 4.0,
+          "reasoning": "The answer is factually correct, covers all important aspects of Click's exception hierarchy, and provides a clear example of how these exceptions can be used in a CLI application. It would be useful for developers looking to understand and handle errors effectively in their Click-based applications.",
+          "avg_score": 4.0
+        }
+      },
+      {
+        "question": "How does Click's Context object work?",
+        "category": "state_management",
+        "rag_answer": "Click's `Context` object is a central part of the framework that encapsulates all the necessary information and state during the execution of a command. It acts as a container for various attributes and methods that are used to manage the flow, parameters, and output of commands.\n\nHere\u2019s how it works:\n\n1. **Initialization**: When a command is invoked, a `Context` object is created. This context is initialized with the program name (`prog_name`) and any additional arguments (`args`). It also inherits some settings from its parent context if it's part of a nested command structure.\n\n2. **Parameter Management**: The context manages all parameters passed to the command. These include both positional arguments and options. Parameters are stored in `ctx.params`, which is a dictionary where keys ",
+        "vec_answer": "Click's `Context` object is a central part of the framework that encapsulates all the necessary information and state during the execution of a command. It acts as a container for various attributes and methods that are used to manage the flow, parameters, and output of commands.\n\nHere\u2019s how it works:\n\n1. **Initialization**: When a command is invoked, a `Context` object is created. This context is initialized with the program name (`prog_name`) and any additional arguments (`args`). It also inherits some settings from its parent context if it's part of a nested command structure.\n\n2. **Parameter Management**: The context manages all parameters passed to the command. These include both positional arguments and options. Parameters are stored in `ctx.params`, which is a dictionary where keys ",
+        "plain_answer": "Click is a popular command-line interface (CLI) creation library for Python, known for its simplicity and flexibility. One of the core components of Click is the `Context` object, which plays a crucial role in managing the state and configuration of commands during execution.\n\n### What is the Context Object?\n\nThe `Context` object in Click represents the current state of a command invocation. It encapsulates various pieces of information that are relevant to the command being executed, such as:\n\n- **Command**: The currently executing command.\n- **Parent Context**: A reference to the parent context if this command is nested within another command.\n- **Parameters**: Values for parameters passed to the command.\n- **Input/Output Streams**: File-like objects for standard input, output, and error",
+        "rag_scores": {
+          "accuracy": 5.0,
+          "completeness": 5.0,
+          "helpfulness": 5.0,
+          "reasoning": "The answer accurately describes the Click Context object, covering its initialization, parameter management, output handling, error handling, state management, invocation, and shell completion. It provides a comprehensive overview that would be very useful for developers working with Click.",
+          "avg_score": 5.0
+        },
+        "vec_scores": {
+          "accuracy": 5.0,
+          "completeness": 5.0,
+          "helpfulness": 5.0,
+          "reasoning": "The answer accurately describes the Click Context object, covering its initialization, parameter management, output handling, error handling, state management, invocation, and shell completion. It provides a comprehensive overview that would be very useful for developers working with Click.",
+          "avg_score": 5.0
+        },
+        "plain_scores": {
+          "accuracy": 5.0,
+          "completeness": 5.0,
+          "helpfulness": 5.0,
+          "reasoning": "The answer accurately describes the Click Context object, its components, and how it works. It covers all important aspects of the context's functionality and provides a clear example usage. The explanation is detailed and actionable.",
+          "avg_score": 5.0
+        }
+      },
+      {
+        "question": "How does Click format help text?",
+        "category": "help_system",
+        "rag_answer": "Click formats help text by using a combination of classes and methods to generate structured and readable output. The primary class involved in this process is `HelpFormatter`, which is defined in the `click.formatting` module.\n\nHere\u2019s how it works:\n\n1. **HelpFormatter Class**: This class is responsible for formatting the help text. It has methods like `write_usage`, `write_heading`, `write_paragraph`, and `write_dl` to handle different types of content.\n\n2. **Formatting Methods**:\n   - `write_usage`: Formats the usage line, which includes the program name and its arguments.\n   - `write_heading`: Writes a heading for sections in the help text.\n   - `write_paragraph`: Ensures that paragraphs are properly formatted with indentation.\n   - `write_dl`: Formats definition lists, typically used t",
+        "vec_answer": "Click formats help text using the `HelpFormatter` class, which is defined in `src\\click\\formatting.py`. The formatting process involves several key steps:\n\n1. **Creating a Formatter Instance**: When a command or group's help is requested, Click creates an instance of `HelpFormatter`. This is done through the `Context.Context.make_formatter` method (file: `src\\click\\core.py`, line 561).\n\n2. **Formatting Help Content**: The formatter then formats the help content by calling methods like `write_usage`, `write_heading`, and `write_dl`. These methods are part of the `HelpFormatter` class.\n\n3. **Writing Usage Information**: The `write_usage` method formats the usage information for a command or group. It calculates the appropriate indentation and wraps text to fit within the terminal width (file",
+        "plain_answer": "Click is a popular command-line interface (CLI) creation library for Python, known for its simplicity and flexibility. One of its key features is its ability to format text in a way that enhances readability and user experience when creating CLI applications. Here\u2019s how Click formats text:\n\n1. **Text Wrapping**: Click automatically wraps long lines of text to fit the terminal width. This ensures that output remains readable even on different screen sizes.\n\n2. **Styling**: Click supports basic styling options such as bold, underline, and color. You can apply these styles to text using the `click.style()` function. For example:\n   ```python\n   import click\n\n   styled_text = click.style('Hello, World!', fg='red', bg='yellow', bold=True)\n   print(styled_text)\n   ```\n\n3. **Text Alignment**: Cli",
+        "rag_scores": {
+          "accuracy": 5.0,
+          "completeness": 5.0,
+          "helpfulness": 5.0,
+          "reasoning": "The answer accurately describes how Click formats help text using the HelpFormatter class and its methods. It covers all important aspects of the formatting process and provides a clear example of how it is used in Click commands.",
+          "avg_score": 5.0
+        },
+        "vec_scores": {
+          "accuracy": 5.0,
+          "completeness": 5.0,
+          "helpfulness": 5.0,
+          "reasoning": "The answer accurately describes the Click `HelpFormatter` class and its methods for formatting help text. It covers all important aspects of how Click generates formatted help output, including creating a formatter instance, writing usage information, formatting options and commands, and re-indenting text. The provided code snippet is also helpful and demonstrates the implementation details.",
+          "avg_score": 5.0
+        },
+        "plain_scores": {
+          "accuracy": 4.0,
+          "completeness": 4.0,
+          "helpfulness": 4.0,
+          "reasoning": "The answer is accurate, comprehensive, and helpful. It covers the key features of Click's text formatting capabilities in detail and provides examples to illustrate how these features can be used.",
+          "avg_score": 4.0
+        }
+      },
+      {
+        "question": "How does Click handle environment variables for options?",
+        "category": "env_vars",
+        "rag_answer": "Click allows you to specify environment variables that can be used as defaults for command-line options. This is done using the `envvar` parameter in the option decorator.\n\nFor example, consider the following command:\n\n```python\n@click.command()\n@click.option('--config', envvar='REPO_CONFIG')\ndef my_command(config):\n    print(f\"Config: {config}\")\n```\n\nIn this case, if the user does not provide a value for `--config` on the command line, Click will look for an environment variable named `REPO_CONFIG`. If it finds one, it will use its value as the default for the `config` option.\n\nThis feature is useful when you want to allow users to configure your application without having to specify command-line options every time they run it. They can simply set the appropriate environment variables ins",
+        "vec_answer": "Click allows you to specify environment variables that can be used as defaults for command-line options. This is done using the `envvar` parameter in the option decorator.\n\nFor example, consider the following command:\n\n```python\n@click.command()\n@click.option('--config', envvar='REPO_CONFIG')\ndef my_command(config):\n    print(f\"Config: {config}\")\n```\n\nIn this case, if the user does not provide a value for `--config` on the command line, Click will look for an environment variable named `REPO_CONFIG`. If it finds one, it will use its value as the default for the `config` option.\n\nThis feature is useful when you want to allow users to configure your application without having to specify command-line options every time they run it. They can simply set the appropriate environment variables ins",
+        "plain_answer": "Click is a popular Python library used to create command-line interfaces (CLIs). It provides a simple way to define and manage options, arguments, and other parameters that users can pass when running your CLI application. One of the features Click offers is the ability to automatically use environment variables as default values for options.\n\nHere's how Click handles environment variables for options:\n\n1. **Automatic Environment Variable Support**: When you define an option in a Click command, you can specify an `envvar` parameter. This tells Click to look for an environment variable with the same name (or a specified prefix) and use its value as the default if no other value is provided by the user.\n\n2. **Environment Variable Prefixing**: If you don't explicitly set an `envvar`, Click wi",
+        "rag_scores": {
+          "accuracy": 5.0,
+          "completeness": 5.0,
+          "helpfulness": 5.0,
+          "reasoning": "The answer accurately describes how Click handles environment variables for options, covers all important aspects, and provides a clear example. It is helpful for developers looking to understand this feature.",
+          "avg_score": 5.0
+        },
+        "vec_scores": {
+          "accuracy": 5.0,
+          "completeness": 5.0,
+          "helpfulness": 5.0,
+          "reasoning": "The answer accurately describes how Click handles environment variables for options, covers all important aspects, and provides a clear example. It is helpful for developers looking to understand and implement this feature in their applications.",
+          "avg_score": 5.0
+        },
+        "plain_scores": {
+          "accuracy": 4.0,
+          "completeness": 4.0,
+          "helpfulness": 4.0,
+          "reasoning": "The answer is factually correct, covers most important aspects, and provides actionable information. It accurately describes how Click handles environment variables for options, including the precedence of values and error handling.",
+          "avg_score": 4.0
+        }
+      },
+      {
+        "question": "What is the difference between Click options and arguments?",
+        "category": "parameters",
+        "rag_answer": "In Click, options and arguments are two different types of parameters that can be used in command-line interfaces (CLIs) to accept input from users.\n\n**Options**:\n- Options are typically specified with a short or long prefix, such as `-f` or `--file`.\n- They are usually optional and allow the user to provide additional information about how the command should behave.\n- Options can be used multiple times if they support it (e.g., `-v -v -v` for verbose output).\n- Examples of options include file paths, flags, and configuration settings.\n\n**Arguments**:\n- Arguments are positional parameters that must be provided in a specific order.\n- They are usually required and represent the main data or resources that the command will operate on.\n- Arguments do not have prefixes; they are simply listed i",
+        "vec_answer": "In Click, options and arguments are two different types of parameters that can be defined for a command.\n\nOptions are typically used to provide optional settings or flags that modify how a command behaves. They are usually specified with a short name (e.g., `-v` for verbose mode) and/or a long name (e.g., `--verbose`). Options can have default values, and they can be required or optional.\n\nArguments, on the other hand, are used to provide positional data that is essential for the command to function. They do not have names like options do; instead, their position in the command line determines which argument they correspond to. Arguments cannot have default values, and they must always be provided when the command is invoked.\n\nIn summary, options are optional settings that modify how a com",
+        "plain_answer": "Click is a popular Python library for creating command-line interfaces (CLIs). It provides a simple way to define commands, options, and arguments that users can interact with when running your application from the command line.\nOptions and arguments are two types of parameters that you can use in Click commands. They serve different purposes and have different characteristics:\n1. Options: Options are optional parameters that modify the behavior of a command. They are typically specified using flags or switches, and they can be provided in any order on the command line. For example, consider the following Click command:\n```\n@click.command()\n@click.option('--verbose', is_flag=True)\ndef my_command(verbose):\n    if verbose:\n        print(\"Verbose mode enabled\")\n    else:\n        print(\"Verbos",
+        "rag_scores": {
+          "accuracy": 5.0,
+          "completeness": 5.0,
+          "helpfulness": 5.0,
+          "reasoning": "The answer correctly distinguishes between Click options and arguments, providing accurate definitions and examples for each. It covers all important aspects of the topic and is clear and actionable.",
+          "avg_score": 5.0
+        },
+        "vec_scores": {
+          "accuracy": 5.0,
+          "completeness": 5.0,
+          "helpfulness": 5.0,
+          "reasoning": "The answer correctly distinguishes between Click options and arguments, explaining their purpose, characteristics, and usage. It accurately reflects the reference answer and provides clear, concise information.",
+          "avg_score": 5.0
+        },
+        "plain_scores": {
+          "accuracy": 5.0,
+          "completeness": 5.0,
+          "helpfulness": 5.0,
+          "reasoning": "The answer accurately describes the difference between Click options and arguments, providing clear examples and explanations. It covers all important aspects of both types of parameters and is helpful for developers.",
+          "avg_score": 5.0
+        }
+      },
+      {
+        "question": "How does pass_context and pass_obj work for dependency injection?",
+        "category": "dependency_injection",
+        "rag_answer": "In Click, `pass_context` and `pass_obj` are decorators that allow you to inject the current context or a specific object into your command functions. This is useful for implementing dependency injection in your commands.\n\n### `@click.pass_context`\n\nThe `@click.pass_context` decorator allows you to pass the current context (`Context`) object to your command function. The context object contains information about the current invocation, such as the arguments passed, the parent context, and any other data that has been added to the context during the execution of the command.\n\nHere's an example:\n\n```python\nimport click\n\n@click.group()\n@click.pass_context\ndef cli(ctx):\n    ctx.obj = {}\n\n@cli.command()\n@click.pass_context\ndef add_item(ctx, item):\n    ctx.obj['item'] = item\n    click.echo(f\"Item",
+        "vec_answer": "In Click, `pass_context` and `pass_obj` are decorators that allow you to inject the current context or a specific object into your command functions. This is useful for implementing dependency injection in your commands.\n\n### `@click.pass_context`\n\nThe `@click.pass_context` decorator allows you to pass the current context (`Context`) object to your command function. The context object contains information about the current invocation, such as the arguments passed, the parent context, and any other data that has been added to the context during the execution of the command.\n\nHere's an example:\n\n```python\nimport click\n\n@click.group()\n@click.pass_context\ndef cli(ctx):\n    ctx.obj = {}\n\n@cli.command()\n@click.pass_context\ndef add_item(ctx, item):\n    ctx.obj['item'] = item\n    click.echo(f\"Item",
+        "plain_answer": "In the Click CLI library, `pass_context` and `pass_obj` are decorators that facilitate dependency injection (DI) in command-line interfaces (CLIs). These decorators allow you to inject dependencies into your commands without having to manually manage them. Let's delve into how they work.\n\n### pass_context\n\nThe `@click.pass_context` decorator is used to pass the context of a Click command to another function or method. The context object contains information about the current invocation, such as the command being run, the arguments passed, and any options set.\n\n#### How it works:\n\n1. **Context Creation**: When a Click command is invoked, a context object is created and passed implicitly to all functions decorated with `@click.pass_context`.\n\n2. **Dependency Injection**: You can inject this ",
+        "rag_scores": {
+          "accuracy": 5.0,
+          "completeness": 5.0,
+          "helpfulness": 5.0,
+          "reasoning": "The answer accurately describes how `pass_context` and `pass_obj` work in Click for dependency injection, provides clear examples, and covers all important aspects of the topic.",
+          "avg_score": 5.0
+        },
+        "vec_scores": {
+          "accuracy": 5.0,
+          "completeness": 5.0,
+          "helpfulness": 5.0,
+          "reasoning": "The answer accurately describes the functionality of `pass_context` and `pass_obj` in Click, provides clear examples, and covers all important aspects of dependency injection using these decorators.",
+          "avg_score": 5.0
+        },
+        "plain_scores": {
+          "accuracy": 5.0,
+          "completeness": 5.0,
+          "helpfulness": 5.0,
+          "reasoning": "The answer is factually correct, comprehensive, and actionable. It accurately explains how pass_context and pass_obj work in Click CLI for dependency injection.",
+          "avg_score": 5.0
+        }
+      },
+      {
+        "question": "How does Click handle prompting users for input?",
+        "category": "interactive",
+        "rag_answer": "Click handles prompting users for input through the `prompt` function, which is defined in `src\\click\\termui.py`. This function allows you to prompt a user for input with various options such as hiding the input, providing default values, and confirming the input.\n\nHere's a breakdown of how it works:\n\n1. **Prompt Function**: The `prompt` function takes several parameters:\n   - `text`: The text to show for the prompt.\n   - `default`: An optional default value if no input is provided.\n   - `hide_input`: A boolean indicating whether the input should be hidden (e.g., for passwords).\n   - `confirmation_prompt`: Whether to ask for confirmation of the input.\n\n2. **Prompt Construction**: The function constructs a prompt string using `_build_prompt`, which handles formatting based on the parameters",
+        "vec_answer": "Click handles prompting users for input through the `prompt` function defined in `src\\click\\termui.py`. This function allows you to prompt a user for input with various options such as hiding the input, providing default values, and confirming the input.\n\nHere's a breakdown of how it works:\n\n1. **Prompt Function**: The `prompt` function is used to display a prompt message to the user and capture their input.\n   ```python\n   def prompt(\n       text: str,\n       default: t.Any | None = None,\n       hide_input: bool = False,\n       confirmation_prompt: bool | str = False,\n       type: ParamType | t.Any | None = None,\n       value_proc: t.Callable[[str], t.Any] | None = None,\n       prompt_suffix: str = \": \",\n       show_default: bool = True,\n       err: bool = False,\n       show_choices: bool",
+        "plain_answer": "Click is a popular Python library used to create command-line interfaces (CLIs). It provides a simple and powerful way to build CLIs with minimal effort. One of its features is handling user input, including prompting users for information during the execution of a CLI.\n\n### How Click Handles Prompting Users for Input\n\n1. **Prompt Functionality**:\n   - Click provides a built-in function called `click.prompt()` that allows you to prompt the user for input.\n   - This function can be used to ask for various types of data, such as strings, integers, or even passwords.\n\n2. **Basic Usage**:\n   ```python\n   import click\n\n   name = click.prompt('What is your name?')\n   print(f'Hello, {name}!')\n   ```\n\n3. **Default Values and Validation**:\n   - You can provide a default value for the prompt using t",
+        "rag_scores": {
+          "accuracy": 5.0,
+          "completeness": 5.0,
+          "helpfulness": 5.0,
+          "reasoning": "The answer accurately describes how Click handles prompting users for input, including the `prompt` function's parameters and its implementation details. It covers all important aspects and provides a clear, actionable explanation.",
+          "avg_score": 5.0
+        },
+        "vec_scores": {
+          "accuracy": 4.0,
+          "completeness": 4.0,
+          "helpfulness": 4.0,
+          "reasoning": "The answer is mostly accurate, comprehensive, and helpful. It correctly describes the `prompt` function in Click, its parameters, and how it handles user input, type conversion, and confirmation prompts. However, it does not explicitly mention that the `click.prompt()` function can be used with a type parameter for automatic type conversion.",
+          "avg_score": 4.0
+        },
+        "plain_scores": {
+          "accuracy": 5.0,
+          "completeness": 5.0,
+          "helpfulness": 5.0,
+          "reasoning": "The answer is factually correct, comprehensive, and actionable. It covers all important aspects of how Click handles prompting users for input.",
+          "avg_score": 5.0
+        }
+      },
+      {
+        "question": "How does Click handle file path validation and the Path type?",
+        "category": "file_handling",
+        "rag_answer": "Click handles file path validation through its `Path` type, which is a subclass of `click.types.Type`. The `Path` type provides several parameters to control how paths are validated:\n\n1. **exists**: If set to `True`, the path must exist.\n2. **file_okay**: If set to `False`, the path cannot be a file.\n3. **dir_okay**: If set to `False`, the path cannot be a directory.\n4. **readable**: If set to `True`, the path must be readable.\n5. **writable**: If set to `True`, the path must be writable.\n6. **resolve_path**: If set to `True`, the path will be resolved to an absolute path.\n\nWhen a command is invoked, Click uses these parameters to validate the provided paths. For example, in the `cli` function from `examples\\complex\\complex\\cli.py`:\n\n```python\n@click.command(cls=ComplexCLI, context_setting",
+        "vec_answer": "Click handles file path validation through its `Path` type, which is a subclass of `String`. The `Path` type provides several parameters to control how paths are validated:\n\n1. **exists**: If set to `True`, the path must exist.\n2. **file_okay**: If set to `False`, the path cannot be a file.\n3. **dir_okay**: If set to `False`, the path cannot be a directory.\n4. **readable**: If set to `True`, the path must be readable.\n5. **writable**: If set to `True`, the path must be writable.\n6. **executable**: If set to `True`, the path must be executable.\n\nWhen a command is invoked, Click uses these parameters to validate the provided path. For example, in the `cli` function from `examples\\complex\\complex\\cli.py`:\n\n```python\n@click.command(cls=ComplexCLI, context_settings=CONTEXT_SETTINGS)\n@click.opti",
+        "plain_answer": "Click is a popular command-line interface (CLI) creation library for Python, known for its simplicity and flexibility. One of its powerful features is the `Path` type, which provides robust handling of file paths in command-line arguments. This feature ensures that users provide valid file paths and can handle different path formats gracefully.\n\n### File Path Validation with Click's Path Type\n\n1. **Basic Usage**:\n   The `Path` type from Click allows you to specify a parameter that expects a file or directory path. It automatically validates the path and raises an error if the path is invalid.\n\n   ```python\n   import click\n\n   @click.command()\n   @click.argument('filename', type=click.Path(exists=True, file_okay=True, dir_okay=False))\n   def read_file(filename):\n       with open(filename) a",
+        "rag_scores": {
+          "accuracy": 5.0,
+          "completeness": 5.0,
+          "helpfulness": 5.0,
+          "reasoning": "The answer accurately describes how Click handles file path validation through its Path type, including the parameters it provides and an example of its usage in a command. It also mentions the shell_complete method for providing completions, which is relevant to understanding how Click integrates with shells.",
+          "avg_score": 5.0
+        },
+        "vec_scores": {
+          "accuracy": 5.0,
+          "completeness": 5.0,
+          "helpfulness": 5.0,
+          "reasoning": "The answer accurately describes how Click handles file path validation through its Path type, including the parameters it provides and an example of its usage in a command. It also mentions the shell_complete method for providing shell completions, which is relevant to the topic.",
+          "avg_score": 5.0
+        },
+        "plain_scores": {
+          "accuracy": 5.0,
+          "completeness": 5.0,
+          "helpfulness": 5.0,
+          "reasoning": "The answer is factually correct, comprehensive, and actionable. It covers all important aspects of Click's Path type, including basic usage, validation options, custom error messages, handling different path formats, and path conversion.",
+          "avg_score": 5.0
+        }
+      }
+    ]
+  },
+  "ablation": {
+    "api_surface": {
+      "rag": 5.0,
+      "vec": 5.0,
+      "plain": 5.0,
+      "delta_rag_vs_plain": 0.0,
+      "delta_rag_vs_vec": 0.0
+    },
+    "architecture": {
+      "rag": 5.0,
+      "vec": 5.0,
+      "plain": 5.0,
+      "delta_rag_vs_plain": 0.0,
+      "delta_rag_vs_vec": 0.0
+    },
+    "completion": {
+      "rag": 4.0,
+      "vec": 5.0,
+      "plain": 5.0,
+      "delta_rag_vs_plain": -1.0,
+      "delta_rag_vs_vec": -1.0
+    },
+    "control_flow": {
+      "rag": 5.0,
+      "vec": 4.0,
+      "plain": 5.0,
+      "delta_rag_vs_plain": 0.0,
+      "delta_rag_vs_vec": 1.0
+    },
+    "dependency_injection": {
+      "rag": 5.0,
+      "vec": 5.0,
+      "plain": 5.0,
+      "delta_rag_vs_plain": 0.0,
+      "delta_rag_vs_vec": 0.0
+    },
+    "env_vars": {
+      "rag": 5.0,
+      "vec": 5.0,
+      "plain": 4.0,
+      "delta_rag_vs_plain": 1.0,
+      "delta_rag_vs_vec": 0.0
+    },
+    "error_handling": {
+      "rag": 3.67,
+      "vec": 3.67,
+      "plain": 4.0,
+      "delta_rag_vs_plain": -0.33,
+      "delta_rag_vs_vec": 0.0
+    },
+    "file_handling": {
+      "rag": 5.0,
+      "vec": 5.0,
+      "plain": 5.0,
+      "delta_rag_vs_plain": 0.0,
+      "delta_rag_vs_vec": 0.0
+    },
+    "help_system": {
+      "rag": 5.0,
+      "vec": 5.0,
+      "plain": 4.0,
+      "delta_rag_vs_plain": 1.0,
+      "delta_rag_vs_vec": 0.0
+    },
+    "interactive": {
+      "rag": 5.0,
+      "vec": 4.0,
+      "plain": 5.0,
+      "delta_rag_vs_plain": 0.0,
+      "delta_rag_vs_vec": 1.0
+    },
+    "parameters": {
+      "rag": 5.0,
+      "vec": 5.0,
+      "plain": 5.0,
+      "delta_rag_vs_plain": 0.0,
+      "delta_rag_vs_vec": 0.0
+    },
+    "parsing": {
+      "rag": 4.0,
+      "vec": 4.0,
+      "plain": 5.0,
+      "delta_rag_vs_plain": -1.0,
+      "delta_rag_vs_vec": 0.0
+    },
+    "state_management": {
+      "rag": 5.0,
+      "vec": 5.0,
+      "plain": 5.0,
+      "delta_rag_vs_plain": 0.0,
+      "delta_rag_vs_vec": 0.0
+    },
+    "testing": {
+      "rag": 5.0,
+      "vec": 5.0,
+      "plain": 5.0,
+      "delta_rag_vs_plain": 0.0,
+      "delta_rag_vs_vec": 0.0
+    },
+    "type_system": {
+      "rag": 5.0,
+      "vec": 5.0,
+      "plain": 5.0,
+      "delta_rag_vs_plain": 0.0,
+      "delta_rag_vs_vec": 0.0
+    }
+  }
+}

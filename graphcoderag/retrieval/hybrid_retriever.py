@@ -62,12 +62,18 @@ class HybridRetriever:
             collection_name: Optional ChromaDB collection name (for multi-repo eval).
         """
         if vector_store is None and collection_name:
-            vector_store = VectorStore(collection_name=collection_name)
+            from graphcoderag.config import VECTOR_BACKEND
+            if VECTOR_BACKEND == "faiss":
+                from graphcoderag.storage.faiss_store import FaissVectorStore
+                vector_store = FaissVectorStore(collection_name=collection_name)
+            else:
+                from graphcoderag.storage.vector_store import VectorStore
+                vector_store = VectorStore(collection_name=collection_name)
         self.vector_retriever = VectorRetriever(vector_store)
         try:
             self.graph_retriever = GraphRetriever(graph_store)
         except Exception as e:
-            print(f"[WARN] Graph store unavailable ({e}), using vector-only mode")
+            logger.warning(f"Graph store unavailable ({e}), using vector-only mode")
             self.graph_retriever = None
         self.vector_weight = vector_weight
         self.graph_weight = graph_weight
@@ -211,8 +217,8 @@ class HybridRetriever:
 
         This ensures graph genuinely improves results without hurting top rankings.
         """
-        ALPHA = 0.8           # Semantic similarity dominates
-        MIN_SIM_THRESHOLD = 0.15  # Graph chunk must be at least this relevant
+        ALPHA = 0.75          # Semantic similarity dominates but graph gets 25% weight
+        MIN_SIM_THRESHOLD = 0.20  # Graph chunk must be reasonably relevant (increased for Two-Tier)
         LOCK_RATIO = 0.5      # Protect top 50% of vector results from displacement
 
         if not vector_results:
@@ -251,10 +257,10 @@ class HybridRetriever:
         # ---- Step 3: Score graph chunks using stored embeddings ----
         graph_candidates = []
         try:
-            from graphcoderag.storage.embedding import embed_texts
+            from graphcoderag.storage.embedding import embed_texts, embed_query
             import numpy as np
 
-            q_emb = embed_texts([query])[0]  # (768,), L2-normalized
+            q_emb = embed_query(query)[0]  # (768,), L2-normalized, with query prefix
 
             # Try to get embeddings from the AST vector store directly
             # This is faster and more accurate than re-embedding chunk names
@@ -291,9 +297,16 @@ class HybridRetriever:
                 hybrid_score = ALPHA * scaled_cos_sim + (1 - ALPHA) * graph_proximity
 
                 # Cross-file bonus: graph's core strength
+                # Cross-file bonus: graph's core strength
                 is_cross_file = gr.file_path not in vector_files
                 if is_cross_file:
                     hybrid_score *= 1.15
+                    
+                # Two-Tier Visualization: How many vector chunks led to this graph node?
+                children_count = sum(1 for vr in vector_results if vr.file_path == gr.file_path and vr.chunk_id != gr.chunk_id)
+                if children_count == 0 and not is_cross_file:
+                    # If it's in the same file but not exact match, count it as related
+                    children_count = 1
 
                 result = RetrievalResult(
                     chunk_id=gr.chunk_id,
@@ -306,6 +319,7 @@ class HybridRetriever:
                     score=hybrid_score,
                     source="graph",
                     distance=gr.distance,
+                    children_count=children_count,
                 )
                 graph_candidates.append(result)
 
@@ -363,12 +377,13 @@ class HybridRetriever:
                             merged[cid].end_line = meta.get("end_line", 0)
                             if not merged[cid].name:
                                 merged[cid].name = meta.get("name", "")
-            elif hasattr(store, 'metadata'):
+            elif hasattr(store, 'metadata') and isinstance(store.metadata, dict):
                 # FAISS path — use stored metadata
                 for cid in graph_only_ids:
                     if cid in merged and cid in store.metadata:
                         meta = store.metadata[cid]
-                        merged[cid].source_code = meta.get("document", "")
+                        # In Two-Tier FAISS, raw code is in "source_code", not "document"
+                        merged[cid].source_code = meta.get("source_code", "")
                         merged[cid].start_line = meta.get("start_line", 0)
                         merged[cid].end_line = meta.get("end_line", 0)
                         if not merged[cid].name:
@@ -378,7 +393,11 @@ class HybridRetriever:
 
     def close(self):
         """Close underlying stores."""
-        self.graph_retriever.close()
+        if hasattr(self, 'graph_retriever') and self.graph_retriever:
+            try:
+                self.graph_retriever.close()
+            except Exception:
+                pass
 
     def get_retrieval_stats(
         self, query: str, vector_top_k: int = None, graph_hops: int = None

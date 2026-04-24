@@ -34,7 +34,7 @@ logger = logging.getLogger(__name__)
 
 # ── App Setup ──
 app = FastAPI(title="GraphCodeRAG", version="1.0.0")
-app.add_middleware(CORSMiddleware, allow_origins=["*"], allow_methods=["*"], allow_headers=["*"])
+app.add_middleware(CORSMiddleware, allow_origins=["http://localhost:8000", "http://127.0.0.1:8000"], allow_methods=["*"], allow_headers=["*"])
 
 # Singleton state
 _wm: Optional[WorkspaceManager] = None
@@ -45,13 +45,6 @@ def _get_wm() -> WorkspaceManager:
     global _wm
     if _wm is None:
         _wm = WorkspaceManager()
-        # Auto-create workspace for existing data
-        if not _wm.get_all_workspaces():
-            stats = _load_stats()
-            if stats.get("chunks", 0) > 0:
-                ws = _wm.create_workspace("click", "main")
-                ws.stats = stats
-                _wm.update_stats(stats)
     return _wm
 
 
@@ -109,8 +102,11 @@ def close_workspace(workspace_id: str):
     return {"status": "ok"}
 
 
+from fastapi import BackgroundTasks
+import urllib.parse
+
 @app.post("/api/workspaces")
-def create_workspace(req: IngestRequest):
+def create_workspace(req: IngestRequest, background_tasks: BackgroundTasks):
     wm = _get_wm()
     repo_input = req.repo_url.strip()
     branch = req.branch.strip() or "main"
@@ -118,9 +114,15 @@ def create_workspace(req: IngestRequest):
     if not repo_input:
         raise HTTPException(400, "Repository URL/path is required")
 
-    err = _ingest_and_create_workspace(wm, repo_input, branch)
-    if err:
-        raise HTTPException(500, err)
+    # SSRF Mitigation: only allow specific domains
+    if repo_input.startswith(("http://", "https://")):
+        parsed = urllib.parse.urlparse(repo_input)
+        allowed_domains = ["github.com", "gitlab.com", "bitbucket.org"]
+        if parsed.hostname not in allowed_domains:
+            raise HTTPException(400, f"SSRF Protection: Domain {parsed.hostname} is not allowed.")
+
+    # Run ingest in background so it doesn't block the UI
+    background_tasks.add_task(_ingest_and_create_workspace, wm, repo_input, branch)
 
     active = wm.get_active()
     return {
@@ -164,6 +166,14 @@ def get_files():
     return {"files": _load_file_list(ws_id)}
 
 
+@app.get("/api/graph")
+def get_graph():
+    wm = _get_wm()
+    active = wm.get_active()
+    ws_id = active.workspace_id if active else None
+    return _load_graph_data(ws_id)
+
+
 @app.get("/api/chat/history")
 def get_chat_history():
     wm = _get_wm()
@@ -194,6 +204,99 @@ def chat(req: ChatRequest):
     return {"response": resp}
 
 
+@app.get("/api/settings")
+def get_settings():
+    """Return current configuration settings from .env and config.py"""
+    import graphcoderag.config as cfg
+    return {
+        "use_local_llm": cfg.USE_LOCAL_LLM,
+        "local_llm_model": getattr(cfg, "LOCAL_LLM_MODEL", "qwen2.5-coder:7b-instruct"),
+        "use_local_embeddings": cfg.USE_LOCAL_EMBEDDINGS,
+        "vector_backend": cfg.VECTOR_BACKEND,
+    }
+
+class SettingsUpdate(BaseModel):
+    use_local_llm: bool
+    local_llm_model: str
+    use_local_embeddings: bool
+    vector_backend: str
+
+from fastapi import Request
+
+@app.put("/api/settings")
+def update_settings(req: SettingsUpdate, request: Request):
+    """Update settings (mocked for demo, would normally write to .env)"""
+    if request.client.host not in ("127.0.0.1", "::1", "localhost"):
+        raise HTTPException(403, "Forbidden: Settings can only be modified locally")
+    import graphcoderag.config as cfg
+    from pathlib import Path
+    
+    cfg.USE_LOCAL_LLM = req.use_local_llm
+    cfg.LOCAL_LLM_MODEL = req.local_llm_model
+    cfg.USE_LOCAL_EMBEDDINGS = req.use_local_embeddings
+    cfg.VECTOR_BACKEND = req.vector_backend
+    
+    # Write back to .env to persist across reloads
+    env_path = Path(__file__).resolve().parent.parent.parent / ".env"
+    if env_path.exists():
+        lines = env_path.read_text(encoding="utf-8").splitlines()
+        for i, line in enumerate(lines):
+            if line.startswith("VECTOR_BACKEND="):
+                lines[i] = f'VECTOR_BACKEND="{req.vector_backend}"'
+            elif line.startswith("USE_LOCAL_LLM="):
+                lines[i] = f'USE_LOCAL_LLM={"true" if req.use_local_llm else "false"}'
+            elif line.startswith("LOCAL_LLM_MODEL="):
+                lines[i] = f'LOCAL_LLM_MODEL="{req.local_llm_model}"'
+            elif line.startswith("USE_LOCAL_EMBEDDINGS="):
+                lines[i] = f'USE_LOCAL_EMBEDDINGS={"true" if req.use_local_embeddings else "false"}'
+        env_path.write_text("\n".join(lines) + "\n", encoding="utf-8")
+        
+    return {"status": "success", "message": "Settings updated for this session."}
+
+class SearchRequest(BaseModel):
+    query: str
+    top_k: int = 15
+
+@app.post("/api/search")
+def global_search(req: SearchRequest):
+    wm = _get_wm()
+    active = wm.get_active()
+    if not active:
+        raise HTTPException(400, "No active workspace")
+
+    try:
+        # Load vector store using the configured backend
+        from graphcoderag.config import VECTOR_BACKEND
+        if VECTOR_BACKEND == "faiss":
+            from graphcoderag.storage.faiss_store import FaissVectorStore
+            vs = FaissVectorStore(collection_name=f"ws_{active.workspace_id}")
+        else:
+            from graphcoderag.storage.vector_store import VectorStore
+            vs = VectorStore(collection_name=f"ws_{active.workspace_id}")
+
+        results = vs.search(req.query, top_k=req.top_k)
+        
+        # Format results for frontend
+        formatted = []
+        for r in results:
+            meta = r.get("metadata", {})
+            formatted.append({
+                "chunk_id": r["chunk_id"],
+                "file": meta.get("file_path", ""),
+                "name": meta.get("name", ""),
+                "type": meta.get("chunk_type", "function"),
+                "line_start": meta.get("start_line", 0),
+                "line_end": meta.get("end_line", 0),
+                "docstring": meta.get("docstring", ""),
+                "similarity": 1.0 - r.get("distance", 0.0)
+            })
+            
+        return {"results": formatted}
+    except Exception as e:
+        logger.error(f"Search failed: {e}")
+        raise HTTPException(500, "Internal Server Error")
+
+
 @app.get("/api/graph/node/{name:path}")
 def get_graph_node(name: str):
     """Get source code for a specific graph node by reading from disk."""
@@ -220,23 +323,33 @@ def get_graph_node(name: str):
 
         # Read actual source code from disk
         if file_path and start and end:
-            for repo_dir in REPOS_DIR.iterdir():
-                candidate = repo_dir / file_path.replace("/", os.sep)
-                if not candidate.exists():
-                    # Try without leading src/ prefix
-                    parts = file_path.split("/")
-                    for i in range(len(parts)):
-                        alt = repo_dir / os.sep.join(parts[i:])
-                        if alt.exists():
-                            candidate = alt
+            try:
+                candidate = Path(file_path)
+                if candidate.is_absolute() and candidate.exists():
+                    lines = candidate.read_text(encoding="utf-8", errors="replace").splitlines()
+                    source_code = "\n".join(lines[max(0,start-1):end])
+                else:
+                    for repo_dir in REPOS_DIR.iterdir():
+                        candidate = repo_dir / file_path.replace("/", os.sep)
+                        if not candidate.exists():
+                            # Try without leading src/ prefix
+                            parts = file_path.split("/")
+                            for i in range(len(parts)):
+                                alt = repo_dir / os.sep.join(parts[i:])
+                                if alt.exists():
+                                    candidate = alt
+                                    break
+                                # Also try adding src/ if missing
+                                alt_src = repo_dir / "src" / os.sep.join(parts[i:])
+                                if alt_src.exists():
+                                    candidate = alt_src
+                                    break
+                        if candidate.exists():
+                            lines = candidate.read_text(encoding="utf-8", errors="replace").splitlines()
+                            source_code = "\n".join(lines[max(0,start-1):end])
                             break
-                if candidate.exists():
-                    try:
-                        lines = candidate.read_text(encoding="utf-8", errors="replace").splitlines()
-                        source_code = "\n".join(lines[max(0,start-1):end])
-                    except Exception:
-                        pass
-                    break
+            except Exception as e:
+                logger.error(f"Failed reading code from disk for node {name}: {e}")
 
         return {
             "entity_name": rec["name"],
@@ -252,7 +365,7 @@ def get_graph_node(name: str):
         raise
     except Exception as e:
         logger.error(f"Node lookup failed: {e}")
-        raise HTTPException(500, str(e))
+        raise HTTPException(500, "Internal Server Error")
 
 
 @app.get("/api/file-content")
@@ -262,14 +375,17 @@ def get_file_content(path: str = ""):
         raise HTTPException(400, "path parameter required")
     # Find file in repo directory
     for repo_dir in REPOS_DIR.iterdir():
-        candidate = repo_dir / path
+        candidate = (repo_dir / path).resolve()
+        if not str(candidate).startswith(str(repo_dir.resolve())):
+            continue
         if candidate.exists() and candidate.is_file():
             try:
                 content = candidate.read_text(encoding="utf-8", errors="replace")
                 return {"path": path, "content": content, "lines": content.count('\n') + 1}
             except Exception as e:
-                raise HTTPException(500, str(e))
-    raise HTTPException(404, f"File not found: {path}")
+                logger.error(f"File read error: {e}")
+                raise HTTPException(500, "Internal Server Error")
+    raise HTTPException(404, "File not found")
 
 
 # ═══════════════════════════════════════════════════════════════
@@ -372,7 +488,13 @@ def _ingest_and_create_workspace(wm: WorkspaceManager, repo_input: str, branch: 
         gs.store_edges(all_edges)
         gs.close()
 
-        vs = VectorStore(collection_name=f"ws_{ws_id}")
+        from graphcoderag.config import VECTOR_BACKEND
+        if VECTOR_BACKEND == "faiss":
+            from graphcoderag.storage.faiss_store import FaissVectorStore
+            vs = FaissVectorStore(collection_name=f"ws_{ws_id}")
+        else:
+            vs = VectorStore(collection_name=f"ws_{ws_id}")
+            
         vs.add_chunks(all_chunks)
 
         # Create workspace
@@ -445,75 +567,84 @@ def _load_graph_data(ws_id=None):
         gs = GraphStore()
         prefix = _get_repo_prefix()
 
-        def _run_node_query(p=None):
-            if p:
+        def _run_connected_query(p=None):
+            q = (
+                "MATCH (a)-[r]->(b) "
+                f"WHERE a.chunk_id IS NOT NULL AND b.chunk_id IS NOT NULL {('AND a.file_path CONTAINS $prefix' if p else '')} "
+                "RETURN a.name AS a_name, labels(a)[0] AS a_label, a.file_path AS a_file, a.parent_class AS a_parent, "
+                "b.name AS b_name, labels(b)[0] AS b_label, b.file_path AS b_file, b.parent_class AS b_parent, "
+                "type(r) AS rel "
+                "LIMIT 80"
+            )
+            with gs.driver.session() as session:
+                return list(session.run(q, prefix=p))
+
+        # Try connected scoped, fallback to unconnected scoped
+        result = _run_connected_query(prefix) if prefix else []
+        if not result and not prefix:
+            result = _run_connected_query(None)
+
+        nodes_map = {}
+        edges = []
+
+        if result:
+            for r in result:
+                # Add source node
+                if r["a_name"] not in nodes_map:
+                    fp = (r["a_file"] or "").replace("\\", "/")
+                    nodes_map[r["a_name"]] = {
+                        "name": r["a_name"],
+                        "label": r["a_label"] or "Function",
+                        "file": fp.split("/")[-1] if fp else "",
+                        "display": r["a_name"].split(".")[-1] if "." in r["a_name"] else r["a_name"],
+                        "parent": r["a_parent"] or "",
+                    }
+                # Add target node
+                if r["b_name"] not in nodes_map:
+                    fp = (r["b_file"] or "").replace("\\", "/")
+                    nodes_map[r["b_name"]] = {
+                        "name": r["b_name"],
+                        "label": r["b_label"] or "Function",
+                        "file": fp.split("/")[-1] if fp else "",
+                        "display": r["b_name"].split(".")[-1] if "." in r["b_name"] else r["b_name"],
+                        "parent": r["b_parent"] or "",
+                    }
+                # Add edge
+                edges.append({"source": r["a_name"], "target": r["b_name"], "type": r["rel"]})
+
+        # Fallback to standalone nodes if no edges exist at all
+        if not nodes_map:
+            def _run_node_query(p=None):
                 q = (
                     "MATCH (n) WHERE n.chunk_id IS NOT NULL AND n.name IS NOT NULL "
-                    "AND n.file_path CONTAINS $prefix "
+                    f"{'AND n.file_path CONTAINS $prefix ' if p else ''}"
                     "RETURN n.name AS name, labels(n)[0] AS label, n.file_path AS file, "
                     "n.parent_class AS parent "
-                    "ORDER BY n.name LIMIT 40"
+                    "LIMIT 40"
                 )
                 with gs.driver.session() as session:
                     return list(session.run(q, prefix=p))
-            else:
-                q = (
-                    "MATCH (n) WHERE n.chunk_id IS NOT NULL AND n.name IS NOT NULL "
-                    "RETURN n.name AS name, labels(n)[0] AS label, n.file_path AS file, "
-                    "n.parent_class AS parent "
-                    "ORDER BY n.name LIMIT 40"
-                )
-                with gs.driver.session() as session:
-                    return list(session.run(q))
+                    
+            fallback = _run_node_query(prefix) if prefix else _run_node_query(None)
+            for r in fallback:
+                fp = (r["file"] or "").replace("\\", "/")
+                nodes_map[r["name"]] = {
+                    "name": r["name"],
+                    "label": r["label"] or "Function",
+                    "file": fp.split("/")[-1] if fp else "",
+                    "display": r["name"].split(".")[-1] if "." in r["name"] else r["name"],
+                    "parent": r["parent"] or "",
+                }
 
-        # Try scoped, fallback to unscoped
-        result = _run_node_query(prefix) if prefix else []
-        if not result:
-            result = _run_node_query(None)
-
-        nodes = []
-        for r in result:
-            if not r["name"]:
-                continue
-            fp = (r["file"] or "").replace("\\", "/")
-            fname = fp.split("/")[-1] if fp else ""
-            full_name = r["name"]
-            short_name = full_name.split(".")[-1] if "." in full_name else full_name
-            label = r["label"] or "Function"
-
-            # Build display name with file context for ambiguous names
-            if len(short_name) <= 3 and fname:
-                # Very short names like "A", "B" — add file module context
-                module = fname.replace(".py", "")
-                display = f"{module}.{short_name}"
-            elif label == "Function":
-                display = short_name + "()"
-            else:
-                display = short_name
-
-            nodes.append({
-                "name": full_name,
-                "label": label,
-                "file": fname,
-                "display": display,
-                "parent": r["parent"] or "",
-            })
-
-        # Get edges between these nodes
-        node_names = [n["name"] for n in nodes]
-        edge_query = (
-            "MATCH (a)-[r]->(b) WHERE a.name IN $names AND b.name IN $names "
-            "RETURN a.name AS source, b.name AS target, type(r) AS rel LIMIT 80"
-        )
-        with gs.driver.session() as session:
-            edge_result = list(session.run(edge_query, names=node_names))
-            name_set = set(node_names)
-            edges = [
-                {"source": r["source"], "target": r["target"], "type": r["rel"]}
-                for r in edge_result
-                if r["source"] in name_set and r["target"] in name_set
-                   and r["source"] != r["target"]
-            ]
+        nodes = list(nodes_map.values())
+        
+        # Post-process display names to add context for short names
+        for n in nodes:
+            if len(n["display"]) <= 3 and n["file"]:
+                module = n["file"].replace(".py", "")
+                n["display"] = f"{module}.{n['display']}"
+            elif n["label"] == "Function":
+                n["display"] += "()"
 
         gs.close()
         return {"nodes": nodes, "edges": edges}
@@ -582,114 +713,90 @@ def _check_neo4j():
 @app.get("/api/evaluation")
 def get_evaluation():
     """Return evaluation metrics from actual evaluation runs on SWE-bench Lite."""
-    return {
-        "study": {
-            "title": "Retrieval & Generation Evaluation -- SWE-bench Lite",
-            "instances": 60,
-            "repositories": ["pallets/click", "pytest-dev/pytest", "scikit-learn/sklearn", "django/django"],
-            "evaluation_files": [
-                "swebench_v2_20260421_173828.json (4 repos, 60 instances, retrieval)",
-                "eval_20260418_124609.json (Click, 15 cases, 3-way generation)",
+    eval_dir = Path(__file__).resolve().parent.parent.parent / "evaluation_results"
+    latest_file = None
+    
+    if eval_dir.exists():
+        json_files = list(eval_dir.glob("swebench_v2_*.json"))
+        if json_files:
+            latest_file = sorted(json_files)[-1]
+            
+    if not latest_file:
+        # Fallback empty state
+        return {
+            "study": {"title": "No Evaluation Data Found", "instances": 0, "repositories": []},
+            "methods": [],
+            "metrics": {},
+            "per_repo": [],
+            "key_findings": ["Run swebench_runner_v2.py to generate evaluation metrics."]
+        }
+
+    try:
+        data = json.loads(latest_file.read_text(encoding="utf-8"))
+        repos = data.get("repos", {})
+        
+        metrics_dict = {}
+        per_repo_list = []
+        
+        for repo_name, repo_data in repos.items():
+            agg = repo_data.get("retrieval", {}).get("aggregated", {}).get("K=5", {})
+            if not agg:
+                continue
+                
+            standard = agg.get("A", {})
+            hybrid = agg.get("B_hybrid", {})
+            
+            mrr_g = hybrid.get("mrr", 0)
+            mrr_s = standard.get("mrr", 0)
+            
+            delta = mrr_g - mrr_s
+            pct_delta = f"+{(delta / mrr_s * 100):.1f}%" if mrr_s > 0 and delta > 0 else f"{(delta / (mrr_s or 1) * 100):.1f}%"
+            
+            metrics_dict[f"mrr_{repo_name}"] = {
+                "label": f"MRR@5 ({repo_name})",
+                "description": f"Dynamic evaluation result from {latest_file.name}",
+                "values": {"graphcoderag": mrr_g, "standard_rag": mrr_s},
+                "repo": repo_name
+            }
+            
+            per_repo_list.append({
+                "repo": repo_name,
+                "instances": len(repo_data.get("per_case", [])),
+                "graphcoderag_mrr": mrr_g,
+                "standard_mrr": mrr_s,
+                "delta_mrr": pct_delta,
+                "finding": f"GraphCodeRAG achieved an MRR of {mrr_g:.3f} compared to Standard RAG's {mrr_s:.3f}."
+            })
+            
+        return {
+            "study": {
+                "title": f"Retrieval Evaluation -- {latest_file.name}",
+                "instances": sum(r["instances"] for r in per_repo_list),
+                "repositories": list(repos.keys()),
+            },
+            "methods": [
+                {
+                    "name": "GraphCodeRAG (AST+Vec)",
+                    "description": "AST-aware chunking + hybrid retrieval",
+                    "color": "#a855f7",
+                },
+                {
+                    "name": "Standard RAG",
+                    "description": "Character-based chunking + vector similarity",
+                    "color": "#60a5fa",
+                },
             ],
-        },
-        "methods": [
-            {
-                "name": "GraphCodeRAG (AST+Vec)",
-                "description": "AST-aware chunking (Tree-sitter) + vector search (MiniLM-L6-v2)",
-                "color": "#a855f7",
-            },
-            {
-                "name": "Standard RAG",
-                "description": "Character-based chunking (512 char, 50 overlap) + vector similarity",
-                "color": "#60a5fa",
-            },
-        ],
-        "metrics": {
-            "mrr_pytest": {
-                "label": "MRR@5 (pytest)",
-                "description": "AST chunking shows +27.2% MRR improvement on medium repos",
-                "values": {"graphcoderag": 0.467, "standard_rag": 0.367},
-                "repo": "pytest",
-            },
-            "mrr_sklearn": {
-                "label": "MRR@5 (sklearn)",
-                "description": "AST chunking shows +161% MRR improvement on large noisy repos",
-                "values": {"graphcoderag": 0.217, "standard_rag": 0.083},
-                "repo": "sklearn",
-            },
-            "mrr_click": {
-                "label": "MRR@5 (click)",
-                "description": "Standard RAG wins on small repos where overlap context helps",
-                "values": {"graphcoderag": 0.830, "standard_rag": 0.933},
-                "repo": "click",
-            },
-            "mrr_django": {
-                "label": "MRR@5 (django)",
-                "description": "Both methods converge on large repos. Standard RAG wins by 2.8%",
-                "values": {"graphcoderag": 0.589, "standard_rag": 0.606},
-                "repo": "django",
-            },
-            "file_recall_pytest": {
-                "label": "File Recall@10 (pytest)",
-                "description": "AST chunking finds 12.6% more relevant files",
-                "values": {"graphcoderag": 0.600, "standard_rag": 0.533},
-                "repo": "pytest",
-            },
-        },
-        "per_repo": [
-            {
-                "repo": "pytest", "instances": 15,
-                "graphcoderag_mrr": 0.467, "standard_mrr": 0.367,
-                "graphcoderag_recall": 0.467, "standard_recall": 0.400,
-                "delta_mrr": "+27.2%",
-                "finding": "Medium repo (9.5K vs 3K chunks) -- AST chunking reduces noise by 3.2x, improving MRR by +27.2%.",
-            },
-            {
-                "repo": "sklearn", "instances": 15,
-                "graphcoderag_mrr": 0.217, "standard_mrr": 0.083,
-                "graphcoderag_recall": 0.267, "standard_recall": 0.133,
-                "delta_mrr": "+161%",
-                "finding": "41K vs 6K chunks -- AST reduces noise by 6.9x. Standard RAG drowns in noisy fragments.",
-            },
-            {
-                "repo": "click", "instances": 15,
-                "graphcoderag_mrr": 0.830, "standard_mrr": 0.933,
-                "graphcoderag_recall": 0.789, "standard_recall": 0.811,
-                "delta_mrr": "-11.0%",
-                "finding": "Small repo -- character overlap provides useful cross-function context. Both achieve 100% hit rate.",
-            },
-            {
-                "repo": "django", "instances": 15,
-                "graphcoderag_mrr": 0.596, "standard_mrr": 0.614,
-                "graphcoderag_recall": 0.800, "standard_recall": 0.800,
-                "delta_mrr": "-2.9%",
-                "finding": "Large repo -- both methods converge. Same file recall (80%), comparable MRR.",
-            },
-        ],
-        "generation": {
-            "title": "Generation Quality -- LLM Judge (Click, 15 cases)",
-            "judge_model": "Gemini 2.5 Flash",
-            "scale": "1-5",
-            "scores": {
-                "rag_hybrid": {"accuracy": 4.80, "completeness": 4.73, "helpfulness": 4.80, "avg": 4.78},
-                "vector_only": {"accuracy": 4.73, "completeness": 4.67, "helpfulness": 4.73, "avg": 4.71},
-                "plain_llm": {"accuracy": 4.80, "completeness": 4.80, "helpfulness": 4.80, "avg": 4.80},
-            },
-            "pairwise": {
-                "rag_vs_plain": {"rag_wins": 2, "ties": 10, "plain_wins": 3},
-                "rag_vs_vector": {"rag_wins": 2, "ties": 12, "vector_wins": 1},
-            },
-            "note": "All paths score 4.7+/5.0. Click is small and well-documented, compressing RAG advantage.",
-        },
-        "key_findings": [
-            "AST-aware chunking provides +27% MRR on medium repos (pytest) and +161% on large repos (sklearn)",
-            "The key advantage is noise reduction: 41K char chunks -> 6K AST chunks (6.9x) on sklearn",
-            "Standard RAG wins on small repos (click) where character overlap provides cross-function context",
-            "Both methods converge at scale (django, 300k LOC) -- same 80% file recall",
-            "RAG beats Vector-Only in generation quality: 2W-12T-1L (LLM Judge)",
-            "Crossover point: AST chunking helps when char chunks exceed ~5K (medium+ repos)",
-        ],
-    }
+            "metrics": metrics_dict,
+            "per_repo": per_repo_list,
+            "key_findings": [
+                f"Parsed from local execution: {latest_file.name}",
+                "Metrics represent K=5 retrieval evaluation.",
+                "Generation quality evaluation requires running the LLM-as-a-judge pipeline."
+            ]
+        }
+    except Exception as e:
+        logger.error(f"Failed to parse eval file: {e}")
+        raise HTTPException(500, "Internal Server Error")
 
 
 # ═══════════════════════════════════════════════════════════════

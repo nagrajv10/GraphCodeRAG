@@ -35,6 +35,11 @@ const Evaluation = {
   render(d) {
     const body = document.getElementById('eval-body');
 
+    if (!d || !d.methods || d.methods.length === 0) {
+      body.innerHTML = '<div class="code-empty">No evaluation data available yet. Run the evaluation script to populate results.</div>';
+      return;
+    }
+
     // --- Method legend (only 2 methods now) ---
     const legendHTML = d.methods.map(m => `
       <div class="ev-method">

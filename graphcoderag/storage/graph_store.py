@@ -70,6 +70,11 @@ class GraphStore:
         Args:
             chunks: List of CodeChunk objects.
         """
+        # --- Two-Tier Chunking Filter ---
+        # The graph database only stores structural Parent chunks.
+        # Child chunks (is_child=True) are strictly for vector search dilution prevention.
+        parent_chunks = [c for c in chunks if not getattr(c, "is_child", False)]
+
         with self.driver.session() as session:
             # Batch by node label for type-safe MERGE
             for chunk_type, label in [("function", "Function"), ("class", "Class"), ("module", "Module")]:
@@ -86,7 +91,7 @@ class GraphStore:
                         "parent_class": c.parent_class or "",
                         "chunk_type": c.chunk_type,
                     }
-                    for c in chunks if c.chunk_type == chunk_type
+                    for c in parent_chunks if c.chunk_type == chunk_type
                 ]
                 if not batch:
                     continue

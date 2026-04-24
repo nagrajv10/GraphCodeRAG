@@ -35,8 +35,29 @@ const Chat = {
       });
     });
 
-    // Render initial demo conversation
-    Events.on('chat:init', () => this._renderDemoChat());
+    // Load chat history on init
+    Events.on('chat:init', () => this.loadHistory());
+    Events.on('workspace:activated', () => this.loadHistory());
+  },
+
+  async loadHistory() {
+    const data = await API.get('/chat/history');
+    const msgs = document.getElementById('chat-msgs');
+    msgs.innerHTML = '';
+    
+    if (data && data.history && data.history.length > 0) {
+      for (const msg of data.history) {
+        if (msg.role === 'user') {
+          const userMsg = document.createElement('div');
+          userMsg.className = 'msg-u';
+          userMsg.innerHTML = `<div class="msg-u-bub">${this._escapeHTML(msg.content).replace(/`([^`]+)`/g, '<code>$1</code>')}</div>`;
+          msgs.appendChild(userMsg);
+        } else {
+          this._renderAIMessage(msg);
+        }
+      }
+      msgs.scrollTop = msgs.scrollHeight;
+    }
   },
 
   /** Send user message */
@@ -84,44 +105,70 @@ const Chat = {
       this._renderAIMessage(response.response);
     } else {
       // Fallback mock response
-      this._renderAIMessage(this._mockResponse(text));
-    }
+    // Fallback mock response
+    this._renderAIMessage(this._mockResponse(text));
+  } else {
+    this._renderAIMessage(this._mockResponse(text));
+  }
 
-    msgs.scrollTop = msgs.scrollHeight;
-  },
+  msgs.scrollTop = msgs.scrollHeight;
+},
 
-  /** Render an AI response message */
-  _renderAIMessage(resp) {
-    const msgs = document.getElementById('chat-msgs');
-    const msg = document.createElement('div');
-    msg.className = 'msg-a';
+/** Safe fallback if API fails */
+_mockResponse(query) {
+  return {
+    content: "Sorry, the backend API is unreachable or returned an error. Please ensure the backend is running and connected.",
+    trace: { vector_count: 0, graph_count: 0, merged_count: 0, sources: [] }
+  };
+},
 
-    const content = resp.content || resp.answer || 'I couldn\'t generate a response.';
-    const trace = resp.trace || {};
-    const sources = trace.sources || [];
+/** Render an AI response message */
+_renderAIMessage(resp) {
+  const msgs = document.getElementById('chat-msgs');
+  const msg = document.createElement('div');
+  msg.className = 'msg-a';
 
-    // Parse markdown in content
-    let bodyHTML = '';
-    try {
-      bodyHTML = marked.parse(content);
-    } catch {
+  const content = resp.content || resp.answer || 'I couldn\'t generate a response.';
+  const trace = resp.trace || {};
+  const sources = trace.sources || [];
+
+  // Parse markdown in content and sanitize to prevent XSS
+  let bodyHTML = '';
+  try {
+    const rawHTML = marked.parse(content);
+    // Use DOMPurify if loaded, else fallback to strict escaping
+    if (typeof DOMPurify !== 'undefined') {
+      bodyHTML = DOMPurify.sanitize(rawHTML);
+    } else {
       bodyHTML = `<p>${this._escapeHTML(content)}</p>`;
     }
+  } catch {
+    bodyHTML = `<p>${this._escapeHTML(content)}</p>`;
+  }
 
-    // Source chips
-    let chipsHTML = '';
-    if (sources.length > 0) {
-      chipsHTML = '<div class="chips">' + sources.map(s => {
-        const isGraph = s.source === 'graph' || s.source === 'hybrid';
-        const cls = isGraph ? 'chip-g' : 'chip-v';
-        const dotColor = isGraph ? 'var(--green)' : 'var(--blue)';
-        const score = s.score ? s.score.toFixed(2) : (s.hops ? `${s.hops}-hop` : '');
-        return `<div class="chip ${cls}" data-name="${s.name || ''}" data-file="${s.file || ''}">
-          <div class="chip-dot" style="background:${dotColor}"></div>
-          ${s.file ? s.file.split('/').pop() : ''}${s.name ? ':' + s.name : ''} <span style="opacity:.5">${score}</span>
-        </div>`;
-      }).join('') + '</div>';
-    }
+  // Source chips
+  let chipsHTML = '';
+  if (sources.length > 0) {
+    chipsHTML = '<div class="chips">' + sources.map(s => {
+      const isGraph = s.source === 'graph' || s.source === 'hybrid';
+      const cls = isGraph ? 'chip-g' : 'chip-v';
+      const dotColor = isGraph ? 'var(--green)' : 'var(--blue)';
+      const score = s.score ? s.score.toFixed(2) : '';
+      
+      // Feature: Two-Tier visualization based on child count
+      let connectionLabel = score;
+      if (s.children_count > 0) {
+        connectionLabel = `Vector (${s.children_count} matched) &rarr; Parent`;
+      } else if (s.hops) {
+        connectionLabel = `${s.hops}-hop dependency`;
+      }
+      
+      return `<div class="chip ${cls}" data-name="${this._escapeHTML(s.name || '')}" data-file="${this._escapeHTML(s.file || '')}">
+        <div class="chip-dot" style="background:${dotColor}"></div>
+        ${s.file ? this._escapeHTML(s.file.split('/').pop()) : ''}${s.name ? ':' + this._escapeHTML(s.name) : ''} <span style="opacity:.6; margin-left:4px;">${connectionLabel}</span>
+      </div>`;
+    }).join('') + '</div>';
+  }
 
     // Retrieval trace
     let traceHTML = '';
@@ -166,51 +213,6 @@ const Chat = {
       const graphNodes = sources.filter(s => s.source === 'graph' || s.source === 'hybrid').map(s => s.name);
       Events.emit('graph:highlight', graphNodes);
     }
-  },
-
-  /** Render the initial demo chat */
-  _renderDemoChat() {
-    const msgs = document.getElementById('chat-msgs');
-    msgs.innerHTML = '';
-
-    // User message
-    const user = document.createElement('div');
-    user.className = 'msg-u';
-    user.innerHTML = `<div class="msg-u-bub">How does <code>invoke()</code> in Group handle subcommand routing?</div>`;
-    msgs.appendChild(user);
-
-    // AI response with all features
-    this._renderAIMessage({
-      content: '`Group.invoke()` handles routing through **two-phase resolution**:\n\n**1.** Calls `resolve_command()` to match input to a registered subcommand\n\n**2.** Creates a sub-context and delegates to the matched command\'s `invoke()`\n\nIf `invoke_without_command` is set and no subcommand is given, the Group runs as standalone.',
-      trace: {
-        vector_count: 4,
-        graph_count: 3,
-        merged_count: 7,
-        sources: [
-          { file: 'core.py', name: 'invoke', source: 'vector', score: 0.94 },
-          { file: 'core.py', name: 'resolve_cmd', source: 'graph', hops: 1, score: 0.88 },
-          { file: 'core.py', name: 'make_context', source: 'graph', hops: 2, score: 0.82 },
-          { file: 'core.py', name: 'parse_args', source: 'vector', score: 0.87 },
-        ],
-      },
-    });
-  },
-
-  /** Generate a mock response when backend is unavailable */
-  _mockResponse(query) {
-    return {
-      role: 'assistant',
-      content: `I analyzed the codebase for your query: **"${query}"**\n\nBased on the knowledge graph traversal and vector search, here are the relevant findings from the repository. The hybrid retrieval combined both similarity-based and structural context to provide a comprehensive answer.\n\n> *Note: This is a demo response. Connect the backend for real answers.*`,
-      trace: {
-        vector_count: 3,
-        graph_count: 2,
-        merged_count: 5,
-        sources: [
-          { file: 'core.py', name: 'invoke', source: 'vector', score: 0.91 },
-          { file: 'core.py', name: 'resolve_cmd', source: 'graph', score: 0.85 },
-        ],
-      },
-    };
   },
 
   _escapeHTML(str) {

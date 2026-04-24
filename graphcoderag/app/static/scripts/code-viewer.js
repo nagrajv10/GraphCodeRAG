@@ -5,6 +5,8 @@
 const CodeViewer = {
   init() {
     Events.on('node:selected', (node) => this.loadNodeCode(node));
+    Events.on('file:selected', (file) => this.loadFileCode(file));
+    Events.on('code:load', (data) => this.loadCodeSlice(data));
     Events.on('code:show', (data) => this.render(data));
   },
 
@@ -29,12 +31,62 @@ const CodeViewer = {
     } else {
       // Minimal fallback
       this.render({
-        file: node.file ? `click/${node.file}` : '',
+        file: node.file ? `${node.file}` : '',
         entity_name: node.id,
         entity_type: node.type || 'function',
         line_start: 1, line_end: 1,
         source_lines: [{num:1, code: `<span class="cm"># Code for ${node.id} (connect backend for full source)</span>`, hl: false}],
       });
+    }
+  },
+
+  /** Load full file code from the backend API */
+  async loadFileCode(fileInfo) {
+    const data = await API.get(`/file-content?path=${encodeURIComponent(fileInfo.path)}`);
+    if (data && data.content) {
+      const lines = data.content.split('\n').map((line, i) => ({
+        num: i + 1,
+        code: this._highlightPython(line),
+        hl: false,
+      }));
+      this.render({
+        file: fileInfo.path,
+        entity_name: fileInfo.name,
+        entity_type: 'module',
+        line_start: 1,
+        line_end: lines.length,
+        source_lines: lines,
+      });
+    } else {
+      this.render({
+        file: fileInfo.path,
+        entity_name: fileInfo.name,
+        entity_type: 'module',
+        line_start: 1, line_end: 1,
+        source_lines: [{num:1, code: `<span class="cm"># Could not load file: ${fileInfo.path}</span>`, hl: false}],
+      });
+    }
+  },
+
+  /** Load a specific slice of code (e.g., from search results) */
+  async loadCodeSlice(data) {
+    const fileData = await API.get(`/file-content?path=${encodeURIComponent(data.file)}`);
+    if (fileData && fileData.content) {
+      const lines = fileData.content.split('\n').map((line, i) => ({
+        num: i + 1,
+        code: this._highlightPython(line),
+        hl: (i + 1 >= data.line_start && i + 1 <= data.line_end)
+      }));
+      this.render({
+        file: data.file,
+        entity_name: `Search Match: L${data.line_start}-${data.line_end}`,
+        entity_type: 'function',
+        line_start: 1,
+        line_end: lines.length,
+        source_lines: lines,
+      });
+      // Give DOM time to render before scrolling
+      setTimeout(() => this.scrollToLine(data.line_start), 150);
     }
   },
 

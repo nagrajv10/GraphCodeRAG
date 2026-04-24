@@ -157,10 +157,17 @@ def ingest_repo(repo_key: str, collection_name: str) -> int:
     except Exception as e:
         P(f"  [WARN] Neo4j unavailable: {e}")
 
-    # Store in ChromaDB with specific collection
-    vs = VectorStore(collection_name=collection_name)
+    # Store in Vector Store with specific collection
+    from graphcoderag.config import VECTOR_BACKEND
+    if VECTOR_BACKEND == "faiss":
+        from graphcoderag.storage.faiss_store import FaissVectorStore
+        vs = FaissVectorStore(collection_name=collection_name)
+    else:
+        from graphcoderag.storage.vector_store import VectorStore
+        vs = VectorStore(collection_name=collection_name)
+        
     vs.add_chunks(all_chunks)
-    P(f"  ChromaDB[{collection_name}]: {len(all_chunks)} chunks stored")
+    P(f"  Vector Store [{collection_name}]: {len(all_chunks)} chunks stored")
 
     return len(all_chunks)
 
@@ -335,14 +342,23 @@ def run_generation_eval(
     }
 
 
-def run_swebench_evaluation():
-    """Main entry point for the SWE-bench evaluation."""
+def run_swebench_evaluation(skip_generation=True) -> Dict[str, Any]:
+    """Run the end-to-end SWE-bench evaluation."""
+    test_cases = load_test_cases()
+    if not test_cases:
+        P("No test cases found. Ensure data/swebench/swebench_lite_selected.json exists.")
+        return {}
+
+    results = {
+        "timestamp": datetime.now().isoformat(),
+        "repos": {},
+    }
+
     P("=" * 70)
     P("  GraphCodeRAG — SWE-bench Lite Evaluation")
     P("  3-Repo Comparison: GraphRAG vs Standard Vector RAG")
     P("=" * 70)
 
-    test_cases = load_test_cases()
     P(f"\nLoaded test cases:")
     for repo, cases in test_cases.items():
         P(f"  {repo}: {len(cases)} instances")
@@ -367,9 +383,15 @@ def run_swebench_evaluation():
         collection = cfg["collection"]
 
         # Check if already ingested
-        from graphcoderag.storage.vector_store import VectorStore
-        vs = VectorStore(collection_name=collection)
-        existing = vs.collection.count()
+        from graphcoderag.config import VECTOR_BACKEND
+        if VECTOR_BACKEND == "faiss":
+            from graphcoderag.storage.faiss_store import FaissVectorStore
+            vs = FaissVectorStore(collection_name=collection)
+            existing = vs.count()
+        else:
+            from graphcoderag.storage.vector_store import VectorStore
+            vs = VectorStore(collection_name=collection)
+            existing = vs.collection.count()
         if existing > 0:
             P(f"  [SKIP] Already ingested ({existing} chunks in {collection})")
         else:
@@ -400,18 +422,20 @@ def run_swebench_evaluation():
             P()
 
         # Phase 3: Generation quality (sample 5 per repo to save time)
-        gen_cases = test_cases[repo_key][:5]  # First 5 for generation
-        P(f"\n  --- Generation Quality (first {len(gen_cases)} cases) ---")
-        gen_results = run_generation_eval(repo_key, collection, gen_cases)
-
-        # Print generation summary
-        P(f"\n  Generation Summary for {repo_key}:")
-        P(f"  {'Metric':>15} | {'RAG':>8} | {'Vec':>8} | {'Plain':>8}")
-        for metric in ["accuracy", "completeness", "helpfulness", "avg_score"]:
-            r = gen_results["averages"]["rag"].get(metric, 0)
-            v = gen_results["averages"]["vec"].get(metric, 0)
-            p = gen_results["averages"]["plain"].get(metric, 0)
-            P(f"  {metric:>15} | {r:>7.2f} | {v:>7.2f} | {p:>7.2f}")
+        gen_results = {"averages": {"rag": {}, "vec": {}, "plain": {}}}
+        if not skip_generation:
+            gen_cases = test_cases[repo_key][:5]  # First 5 for generation
+            P(f"\n  --- Generation Quality (first {len(gen_cases)} cases) ---")
+            gen_results = run_generation_eval(repo_key, collection, gen_cases)
+            
+            # Print generation summary
+            P(f"\n  Generation Summary for {repo_key}:")
+            P(f"  {'Metric':>15} | {'RAG':>8} | {'Vec':>8} | {'Plain':>8}")
+            for metric in ["accuracy", "completeness", "helpfulness", "avg_score"]:
+                r = gen_results["averages"]["rag"].get(metric, 0)
+                v = gen_results["averages"]["vec"].get(metric, 0)
+                p = gen_results["averages"]["plain"].get(metric, 0)
+                P(f"  {metric:>15} | {r:>7.2f} | {v:>7.2f} | {p:>7.2f}")
 
         results["repos"][repo_key] = {
             "retrieval": ret_results,

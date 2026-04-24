@@ -1,0 +1,1894 @@
+{
+  "django_retrieval": {
+    "repo": "django",
+    "num_cases": 15,
+    "aggregated": {
+      "K=1": {
+        "hybrid": {
+          "mrr": 0.5333333333333333,
+          "recall": 0.5333333333333333,
+          "precision": 0.5333333333333333,
+          "ndcg": 0.5333333333333333,
+          "file_recall": 0.5333333333333333,
+          "hit_rate": 0.5333333333333333
+        },
+        "vector": {
+          "mrr": 0.5333333333333333,
+          "recall": 0.5333333333333333,
+          "precision": 0.5333333333333333,
+          "ndcg": 0.5333333333333333,
+          "file_recall": 0.5333333333333333,
+          "hit_rate": 0.5333333333333333
+        },
+        "delta": {
+          "mrr": 0.0,
+          "recall": 0.0,
+          "precision": 0.0,
+          "ndcg": 0.0,
+          "file_recall": 0.0,
+          "hit_rate": 0.0
+        }
+      },
+      "K=3": {
+        "hybrid": {
+          "mrr": 0.6222222222222221,
+          "recall": 0.7333333333333333,
+          "precision": 0.4888888888888889,
+          "ndcg": 1.0698292019047775,
+          "file_recall": 0.7333333333333333,
+          "hit_rate": 0.7333333333333333
+        },
+        "vector": {
+          "mrr": 0.6222222222222221,
+          "recall": 0.7333333333333333,
+          "precision": 0.4888888888888889,
+          "ndcg": 1.0698292019047775,
+          "file_recall": 0.7333333333333333,
+          "hit_rate": 0.7333333333333333
+        },
+        "delta": {
+          "mrr": 0.0,
+          "recall": 0.0,
+          "precision": 0.0,
+          "ndcg": 0.0,
+          "file_recall": 0.0,
+          "hit_rate": 0.0
+        }
+      },
+      "K=5": {
+        "hybrid": {
+          "mrr": 0.6222222222222221,
+          "recall": 0.7333333333333333,
+          "precision": 0.41333333333333333,
+          "ndcg": 1.3194703865810429,
+          "file_recall": 0.7333333333333333,
+          "hit_rate": 0.7333333333333333
+        },
+        "vector": {
+          "mrr": 0.6222222222222221,
+          "recall": 0.7333333333333333,
+          "precision": 0.41333333333333333,
+          "ndcg": 1.3194703865810429,
+          "file_recall": 0.7333333333333333,
+          "hit_rate": 0.7333333333333333
+        },
+        "delta": {
+          "mrr": 0.0,
+          "recall": 0.0,
+          "precision": 0.0,
+          "ndcg": 0.0,
+          "file_recall": 0.0,
+          "hit_rate": 0.0
+        }
+      },
+      "K=10": {
+        "hybrid": {
+          "mrr": 0.6288888888888889,
+          "recall": 0.8,
+          "precision": 0.36,
+          "ndcg": 1.8007249342352614,
+          "file_recall": 0.8,
+          "hit_rate": 0.8
+        },
+        "vector": {
+          "mrr": 0.6288888888888889,
+          "recall": 0.8,
+          "precision": 0.36,
+          "ndcg": 1.8088795710508732,
+          "file_recall": 0.8,
+          "hit_rate": 0.8
+        },
+        "delta": {
+          "mrr": 0.0,
+          "recall": 0.0,
+          "precision": 0.0,
+          "ndcg": -0.0082,
+          "file_recall": 0.0,
+          "hit_rate": 0.0
+        }
+      }
+    },
+    "per_case": [
+      {
+        "instance_id": "django__django-10914",
+        "question": "Set default FILE_UPLOAD_PERMISSION to 0o644. Description Hello, As far as I can see, the \u200bFile Uploads documentation pag",
+        "relevant_files": [
+          "django/conf/global_settings.py"
+        ],
+        "hybrid_files": [
+          "tests/file_storage/tests.py",
+          "tests/file_storage/tests.py",
+          "tests/file_storage/tests.py",
+          "tests/test_utils/tests.py",
+          "tests/file_storage/tests.py",
+          "django/core/files/storage/filesystem.py",
+          "django/core/files/storage/filesystem.py",
+          "tests/test_utils/tests.py",
+          "django/core/files/storage/memory.py",
+          "django/core/files/storage/memory.py"
+        ],
+        "vector_files": [
+          "tests/file_storage/tests.py",
+          "tests/file_storage/tests.py",
+          "tests/file_storage/tests.py",
+          "tests/test_utils/tests.py",
+          "tests/file_storage/tests.py",
+          "django/core/files/storage/filesystem.py",
+          "django/core/files/storage/filesystem.py",
+          "tests/test_utils/tests.py",
+          "django/core/files/storage/memory.py",
+          "django/core/files/storage/memory.py"
+        ],
+        "sources": {
+          "vector": 10
+        },
+        "metrics": {
+          "K=1": {
+            "hybrid": {
+              "mrr": 0.0,
+              "recall": 0.0,
+              "precision": 0.0,
+              "ndcg": 0.0,
+              "file_recall": 0.0,
+              "hit_rate": 0.0
+            },
+            "vector": {
+              "mrr": 0.0,
+              "recall": 0.0,
+              "precision": 0.0,
+              "ndcg": 0.0,
+              "file_recall": 0.0,
+              "hit_rate": 0.0
+            }
+          },
+          "K=3": {
+            "hybrid": {
+              "mrr": 0.0,
+              "recall": 0.0,
+              "precision": 0.0,
+              "ndcg": 0.0,
+              "file_recall": 0.0,
+              "hit_rate": 0.0
+            },
+            "vector": {
+              "mrr": 0.0,
+              "recall": 0.0,
+              "precision": 0.0,
+              "ndcg": 0.0,
+              "file_recall": 0.0,
+              "hit_rate": 0.0
+            }
+          },
+          "K=5": {
+            "hybrid": {
+              "mrr": 0.0,
+              "recall": 0.0,
+              "precision": 0.0,
+              "ndcg": 0.0,
+              "file_recall": 0.0,
+              "hit_rate": 0.0
+            },
+            "vector": {
+              "mrr": 0.0,
+              "recall": 0.0,
+              "precision": 0.0,
+              "ndcg": 0.0,
+              "file_recall": 0.0,
+              "hit_rate": 0.0
+            }
+          },
+          "K=10": {
+            "hybrid": {
+              "mrr": 0.0,
+              "recall": 0.0,
+              "precision": 0.0,
+              "ndcg": 0.0,
+              "file_recall": 0.0,
+              "hit_rate": 0.0
+            },
+            "vector": {
+              "mrr": 0.0,
+              "recall": 0.0,
+              "precision": 0.0,
+              "ndcg": 0.0,
+              "file_recall": 0.0,
+              "hit_rate": 0.0
+            }
+          }
+        }
+      },
+      {
+        "instance_id": "django__django-10924",
+        "question": "Allow FilePathField path to accept a callable. Description I have a special case where I want to create a model containi",
+        "relevant_files": [
+          "django/db/models/fields/__init__.py"
+        ],
+        "hybrid_files": [
+          "django/db/models/fields/files.py",
+          "django/db/models/fields/__init__.py",
+          "django/db/models/fields/files.py",
+          "tests/model_forms/models.py",
+          "django/core/files/storage/base.py",
+          "django/db/models/fields/files.py",
+          "django/db/models/fields/files.py",
+          "django/core/files/storage/base.py",
+          "django/contrib/staticfiles/finders.py",
+          "django/contrib/staticfiles/storage.py"
+        ],
+        "vector_files": [
+          "django/db/models/fields/files.py",
+          "django/db/models/fields/__init__.py",
+          "django/db/models/fields/files.py",
+          "tests/model_forms/models.py",
+          "django/core/files/storage/base.py",
+          "django/db/models/fields/files.py",
+          "django/db/models/fields/files.py",
+          "django/core/files/storage/base.py",
+          "django/contrib/staticfiles/finders.py",
+          "django/contrib/staticfiles/storage.py"
+        ],
+        "sources": {
+          "vector": 10
+        },
+        "metrics": {
+          "K=1": {
+            "hybrid": {
+              "mrr": 0.0,
+              "recall": 0.0,
+              "precision": 0.0,
+              "ndcg": 0.0,
+              "file_recall": 0.0,
+              "hit_rate": 0.0
+            },
+            "vector": {
+              "mrr": 0.0,
+              "recall": 0.0,
+              "precision": 0.0,
+              "ndcg": 0.0,
+              "file_recall": 0.0,
+              "hit_rate": 0.0
+            }
+          },
+          "K=3": {
+            "hybrid": {
+              "mrr": 0.5,
+              "recall": 1.0,
+              "precision": 0.3333333333333333,
+              "ndcg": 0.6309297535714575,
+              "file_recall": 1.0,
+              "hit_rate": 1.0
+            },
+            "vector": {
+              "mrr": 0.5,
+              "recall": 1.0,
+              "precision": 0.3333333333333333,
+              "ndcg": 0.6309297535714575,
+              "file_recall": 1.0,
+              "hit_rate": 1.0
+            }
+          },
+          "K=5": {
+            "hybrid": {
+              "mrr": 0.5,
+              "recall": 1.0,
+              "precision": 0.2,
+              "ndcg": 0.6309297535714575,
+              "file_recall": 1.0,
+              "hit_rate": 1.0
+            },
+            "vector": {
+              "mrr": 0.5,
+              "recall": 1.0,
+              "precision": 0.2,
+              "ndcg": 0.6309297535714575,
+              "file_recall": 1.0,
+              "hit_rate": 1.0
+            }
+          },
+          "K=10": {
+            "hybrid": {
+              "mrr": 0.5,
+              "recall": 1.0,
+              "precision": 0.1,
+              "ndcg": 0.6309297535714575,
+              "file_recall": 1.0,
+              "hit_rate": 1.0
+            },
+            "vector": {
+              "mrr": 0.5,
+              "recall": 1.0,
+              "precision": 0.1,
+              "ndcg": 0.6309297535714575,
+              "file_recall": 1.0,
+              "hit_rate": 1.0
+            }
+          }
+        }
+      },
+      {
+        "instance_id": "django__django-11001",
+        "question": "Incorrect removal of order_by clause created as multiline RawSQL Description Hi. The SQLCompiler is ripping off one of m",
+        "relevant_files": [
+          "django/db/models/sql/compiler.py"
+        ],
+        "hybrid_files": [
+          "django/db/models/sql/compiler.py",
+          "django/db/models/sql/query.py",
+          "django/db/models/sql/compiler.py",
+          "tests/expressions/tests.py",
+          "django/db/models/expressions.py",
+          "django/db/models/sql/compiler.py",
+          "django/db/models/expressions.py",
+          "django/db/models/sql/compiler.py",
+          "tests/queries/tests.py",
+          "django/db/models/sql/compiler.py"
+        ],
+        "vector_files": [
+          "django/db/models/sql/compiler.py",
+          "django/db/models/sql/query.py",
+          "django/db/models/sql/compiler.py",
+          "tests/expressions/tests.py",
+          "django/db/models/expressions.py",
+          "django/db/models/sql/compiler.py",
+          "django/db/models/expressions.py",
+          "django/db/models/sql/compiler.py",
+          "tests/queries/tests.py",
+          "django/db/models/sql/compiler.py"
+        ],
+        "sources": {
+          "vector": 10
+        },
+        "metrics": {
+          "K=1": {
+            "hybrid": {
+              "mrr": 1.0,
+              "recall": 1.0,
+              "precision": 1.0,
+              "ndcg": 1.0,
+              "file_recall": 1.0,
+              "hit_rate": 1.0
+            },
+            "vector": {
+              "mrr": 1.0,
+              "recall": 1.0,
+              "precision": 1.0,
+              "ndcg": 1.0,
+              "file_recall": 1.0,
+              "hit_rate": 1.0
+            }
+          },
+          "K=3": {
+            "hybrid": {
+              "mrr": 1.0,
+              "recall": 1.0,
+              "precision": 0.6666666666666666,
+              "ndcg": 1.5,
+              "file_recall": 1.0,
+              "hit_rate": 1.0
+            },
+            "vector": {
+              "mrr": 1.0,
+              "recall": 1.0,
+              "precision": 0.6666666666666666,
+              "ndcg": 1.5,
+              "file_recall": 1.0,
+              "hit_rate": 1.0
+            }
+          },
+          "K=5": {
+            "hybrid": {
+              "mrr": 1.0,
+              "recall": 1.0,
+              "precision": 0.4,
+              "ndcg": 1.5,
+              "file_recall": 1.0,
+              "hit_rate": 1.0
+            },
+            "vector": {
+              "mrr": 1.0,
+              "recall": 1.0,
+              "precision": 0.4,
+              "ndcg": 1.5,
+              "file_recall": 1.0,
+              "hit_rate": 1.0
+            }
+          },
+          "K=10": {
+            "hybrid": {
+              "mrr": 1.0,
+              "recall": 1.0,
+              "precision": 0.5,
+              "ndcg": 2.4607368902116384,
+              "file_recall": 1.0,
+              "hit_rate": 1.0
+            },
+            "vector": {
+              "mrr": 1.0,
+              "recall": 1.0,
+              "precision": 0.5,
+              "ndcg": 2.4607368902116384,
+              "file_recall": 1.0,
+              "hit_rate": 1.0
+            }
+          }
+        }
+      },
+      {
+        "instance_id": "django__django-11019",
+        "question": "Merging 3 or more media objects can throw unnecessary MediaOrderConflictWarnings Description Consider the following form",
+        "relevant_files": [
+          "django/forms/widgets.py"
+        ],
+        "hybrid_files": [
+          "django/forms/widgets.py",
+          "django/forms/widgets.py",
+          "django/forms/widgets.py",
+          "django/forms/widgets.py",
+          "django/forms/widgets.py",
+          "django/forms/widgets.py",
+          "django/forms/widgets.py",
+          "django/forms/widgets.py",
+          "django/forms/widgets.py",
+          "django/forms/widgets.py"
+        ],
+        "vector_files": [
+          "django/forms/widgets.py",
+          "django/forms/widgets.py",
+          "django/forms/widgets.py",
+          "django/forms/widgets.py",
+          "django/forms/widgets.py",
+          "django/forms/widgets.py",
+          "django/forms/widgets.py",
+          "django/forms/widgets.py",
+          "django/forms/widgets.py",
+          "django/forms/widgets.py"
+        ],
+        "sources": {
+          "vector": 9,
+          "hybrid": 1
+        },
+        "metrics": {
+          "K=1": {
+            "hybrid": {
+              "mrr": 1.0,
+              "recall": 1.0,
+              "precision": 1.0,
+              "ndcg": 1.0,
+              "file_recall": 1.0,
+              "hit_rate": 1.0
+            },
+            "vector": {
+              "mrr": 1.0,
+              "recall": 1.0,
+              "precision": 1.0,
+              "ndcg": 1.0,
+              "file_recall": 1.0,
+              "hit_rate": 1.0
+            }
+          },
+          "K=3": {
+            "hybrid": {
+              "mrr": 1.0,
+              "recall": 1.0,
+              "precision": 1.0,
+              "ndcg": 2.1309297535714578,
+              "file_recall": 1.0,
+              "hit_rate": 1.0
+            },
+            "vector": {
+              "mrr": 1.0,
+              "recall": 1.0,
+              "precision": 1.0,
+              "ndcg": 2.1309297535714578,
+              "file_recall": 1.0,
+              "hit_rate": 1.0
+            }
+          },
+          "K=5": {
+            "hybrid": {
+              "mrr": 1.0,
+              "recall": 1.0,
+              "precision": 1.0,
+              "ndcg": 2.9484591188793923,
+              "file_recall": 1.0,
+              "hit_rate": 1.0
+            },
+            "vector": {
+              "mrr": 1.0,
+              "recall": 1.0,
+              "precision": 1.0,
+              "ndcg": 2.9484591188793923,
+              "file_recall": 1.0,
+              "hit_rate": 1.0
+            }
+          },
+          "K=10": {
+            "hybrid": {
+              "mrr": 1.0,
+              "recall": 1.0,
+              "precision": 1.0,
+              "ndcg": 4.543559338088346,
+              "file_recall": 1.0,
+              "hit_rate": 1.0
+            },
+            "vector": {
+              "mrr": 1.0,
+              "recall": 1.0,
+              "precision": 1.0,
+              "ndcg": 4.543559338088346,
+              "file_recall": 1.0,
+              "hit_rate": 1.0
+            }
+          }
+        }
+      },
+      {
+        "instance_id": "django__django-11039",
+        "question": "sqlmigrate wraps it's outpout in BEGIN/COMMIT even if the database doesn't support transactional DDL Description (last m",
+        "relevant_files": [
+          "django/core/management/commands/sqlmigrate.py"
+        ],
+        "hybrid_files": [
+          "django/db/migrations/executor.py",
+          "django/db/backends/base/schema.py",
+          "django/db/migrations/executor.py",
+          "tests/schema/tests.py",
+          "django/contrib/postgres/operations.py",
+          "tests/migrations/test_migrations_atomic_operation/0001_initial.py",
+          "django/contrib/postgres/operations.py",
+          "tests/migrations/test_migrations_non_atomic/0001_initial.py",
+          "django/db/backends/base/schema.py",
+          "django/core/management/commands/sqlmigrate.py"
+        ],
+        "vector_files": [
+          "django/db/migrations/executor.py",
+          "django/db/backends/base/schema.py",
+          "django/db/migrations/executor.py",
+          "tests/schema/tests.py",
+          "django/contrib/postgres/operations.py",
+          "tests/migrations/test_migrations_atomic_operation/0001_initial.py",
+          "django/contrib/postgres/operations.py",
+          "tests/migrations/test_migrations_non_atomic/0001_initial.py",
+          "django/db/backends/base/schema.py",
+          "django/core/management/commands/sqlmigrate.py"
+        ],
+        "sources": {
+          "vector": 10
+        },
+        "metrics": {
+          "K=1": {
+            "hybrid": {
+              "mrr": 0.0,
+              "recall": 0.0,
+              "precision": 0.0,
+              "ndcg": 0.0,
+              "file_recall": 0.0,
+              "hit_rate": 0.0
+            },
+            "vector": {
+              "mrr": 0.0,
+              "recall": 0.0,
+              "precision": 0.0,
+              "ndcg": 0.0,
+              "file_recall": 0.0,
+              "hit_rate": 0.0
+            }
+          },
+          "K=3": {
+            "hybrid": {
+              "mrr": 0.0,
+              "recall": 0.0,
+              "precision": 0.0,
+              "ndcg": 0.0,
+              "file_recall": 0.0,
+              "hit_rate": 0.0
+            },
+            "vector": {
+              "mrr": 0.0,
+              "recall": 0.0,
+              "precision": 0.0,
+              "ndcg": 0.0,
+              "file_recall": 0.0,
+              "hit_rate": 0.0
+            }
+          },
+          "K=5": {
+            "hybrid": {
+              "mrr": 0.0,
+              "recall": 0.0,
+              "precision": 0.0,
+              "ndcg": 0.0,
+              "file_recall": 0.0,
+              "hit_rate": 0.0
+            },
+            "vector": {
+              "mrr": 0.0,
+              "recall": 0.0,
+              "precision": 0.0,
+              "ndcg": 0.0,
+              "file_recall": 0.0,
+              "hit_rate": 0.0
+            }
+          },
+          "K=10": {
+            "hybrid": {
+              "mrr": 0.1,
+              "recall": 1.0,
+              "precision": 0.1,
+              "ndcg": 0.2890648263178879,
+              "file_recall": 1.0,
+              "hit_rate": 1.0
+            },
+            "vector": {
+              "mrr": 0.1,
+              "recall": 1.0,
+              "precision": 0.1,
+              "ndcg": 0.2890648263178879,
+              "file_recall": 1.0,
+              "hit_rate": 1.0
+            }
+          }
+        }
+      },
+      {
+        "instance_id": "django__django-11049",
+        "question": "Correct expected format in invalid DurationField error message Description If you enter a duration \"14:00\" into a durati",
+        "relevant_files": [
+          "django/db/models/fields/__init__.py"
+        ],
+        "hybrid_files": [
+          "django/db/models/fields/__init__.py",
+          "django/db/models/fields/__init__.py",
+          "django/db/models/fields/__init__.py",
+          "django/db/models/fields/__init__.py",
+          "django/forms/fields.py",
+          "django/forms/fields.py",
+          "django/utils/duration.py",
+          "django/db/backends/base/operations.py",
+          "django/utils/duration.py",
+          "django/forms/fields.py"
+        ],
+        "vector_files": [
+          "django/db/models/fields/__init__.py",
+          "django/db/models/fields/__init__.py",
+          "django/db/models/fields/__init__.py",
+          "django/db/models/fields/__init__.py",
+          "django/forms/fields.py",
+          "django/forms/fields.py",
+          "django/forms/fields.py",
+          "django/utils/duration.py",
+          "django/db/backends/base/operations.py",
+          "django/utils/duration.py"
+        ],
+        "sources": {
+          "vector": 9,
+          "hybrid": 1
+        },
+        "metrics": {
+          "K=1": {
+            "hybrid": {
+              "mrr": 1.0,
+              "recall": 1.0,
+              "precision": 1.0,
+              "ndcg": 1.0,
+              "file_recall": 1.0,
+              "hit_rate": 1.0
+            },
+            "vector": {
+              "mrr": 1.0,
+              "recall": 1.0,
+              "precision": 1.0,
+              "ndcg": 1.0,
+              "file_recall": 1.0,
+              "hit_rate": 1.0
+            }
+          },
+          "K=3": {
+            "hybrid": {
+              "mrr": 1.0,
+              "recall": 1.0,
+              "precision": 1.0,
+              "ndcg": 2.1309297535714578,
+              "file_recall": 1.0,
+              "hit_rate": 1.0
+            },
+            "vector": {
+              "mrr": 1.0,
+              "recall": 1.0,
+              "precision": 1.0,
+              "ndcg": 2.1309297535714578,
+              "file_recall": 1.0,
+              "hit_rate": 1.0
+            }
+          },
+          "K=5": {
+            "hybrid": {
+              "mrr": 1.0,
+              "recall": 1.0,
+              "precision": 0.8,
+              "ndcg": 2.5616063116448506,
+              "file_recall": 1.0,
+              "hit_rate": 1.0
+            },
+            "vector": {
+              "mrr": 1.0,
+              "recall": 1.0,
+              "precision": 0.8,
+              "ndcg": 2.5616063116448506,
+              "file_recall": 1.0,
+              "hit_rate": 1.0
+            }
+          },
+          "K=10": {
+            "hybrid": {
+              "mrr": 1.0,
+              "recall": 1.0,
+              "precision": 0.4,
+              "ndcg": 2.5616063116448506,
+              "file_recall": 1.0,
+              "hit_rate": 1.0
+            },
+            "vector": {
+              "mrr": 1.0,
+              "recall": 1.0,
+              "precision": 0.4,
+              "ndcg": 2.5616063116448506,
+              "file_recall": 1.0,
+              "hit_rate": 1.0
+            }
+          }
+        }
+      },
+      {
+        "instance_id": "django__django-11099",
+        "question": "UsernameValidator allows trailing newline in usernames Description ASCIIUsernameValidator and UnicodeUsernameValidator u",
+        "relevant_files": [
+          "django/contrib/auth/validators.py"
+        ],
+        "hybrid_files": [
+          "django/contrib/auth/validators.py",
+          "django/contrib/auth/validators.py",
+          "django/contrib/auth/migrations/0008_alter_user_username_max_length.py",
+          "django/contrib/auth/forms.py",
+          "django/contrib/auth/migrations/0004_alter_user_username_opts.py",
+          "django/contrib/auth/models.py",
+          "django/core/validators.py",
+          "django/contrib/auth/models.py",
+          "django/contrib/auth/forms.py",
+          "django/contrib/auth/migrations/0007_alter_validators_add_error_messages.py"
+        ],
+        "vector_files": [
+          "django/contrib/auth/validators.py",
+          "django/contrib/auth/validators.py",
+          "django/contrib/auth/migrations/0008_alter_user_username_max_length.py",
+          "django/contrib/auth/forms.py",
+          "django/contrib/auth/migrations/0004_alter_user_username_opts.py",
+          "django/contrib/auth/models.py",
+          "django/contrib/auth/migrations/0007_alter_validators_add_error_messages.py",
+          "django/core/validators.py",
+          "django/contrib/auth/models.py",
+          "django/contrib/auth/forms.py"
+        ],
+        "sources": {
+          "vector": 9,
+          "hybrid": 1
+        },
+        "metrics": {
+          "K=1": {
+            "hybrid": {
+              "mrr": 1.0,
+              "recall": 1.0,
+              "precision": 1.0,
+              "ndcg": 1.0,
+              "file_recall": 1.0,
+              "hit_rate": 1.0
+            },
+            "vector": {
+              "mrr": 1.0,
+              "recall": 1.0,
+              "precision": 1.0,
+              "ndcg": 1.0,
+              "file_recall": 1.0,
+              "hit_rate": 1.0
+            }
+          },
+          "K=3": {
+            "hybrid": {
+              "mrr": 1.0,
+              "recall": 1.0,
+              "precision": 0.6666666666666666,
+              "ndcg": 1.6309297535714575,
+              "file_recall": 1.0,
+              "hit_rate": 1.0
+            },
+            "vector": {
+              "mrr": 1.0,
+              "recall": 1.0,
+              "precision": 0.6666666666666666,
+              "ndcg": 1.6309297535714575,
+              "file_recall": 1.0,
+              "hit_rate": 1.0
+            }
+          },
+          "K=5": {
+            "hybrid": {
+              "mrr": 1.0,
+              "recall": 1.0,
+              "precision": 0.4,
+              "ndcg": 1.6309297535714575,
+              "file_recall": 1.0,
+              "hit_rate": 1.0
+            },
+            "vector": {
+              "mrr": 1.0,
+              "recall": 1.0,
+              "precision": 0.4,
+              "ndcg": 1.6309297535714575,
+              "file_recall": 1.0,
+              "hit_rate": 1.0
+            }
+          },
+          "K=10": {
+            "hybrid": {
+              "mrr": 1.0,
+              "recall": 1.0,
+              "precision": 0.2,
+              "ndcg": 1.6309297535714575,
+              "file_recall": 1.0,
+              "hit_rate": 1.0
+            },
+            "vector": {
+              "mrr": 1.0,
+              "recall": 1.0,
+              "precision": 0.2,
+              "ndcg": 1.6309297535714575,
+              "file_recall": 1.0,
+              "hit_rate": 1.0
+            }
+          }
+        }
+      },
+      {
+        "instance_id": "django__django-11133",
+        "question": "HttpResponse doesn't handle memoryview objects Description I am trying to write a BinaryField retrieved from the databas",
+        "relevant_files": [
+          "django/http/response.py"
+        ],
+        "hybrid_files": [
+          "django/db/models/fields/__init__.py",
+          "django/http/response.py",
+          "tests/httpwrappers/tests.py",
+          "django/http/response.py",
+          "django/http/response.py",
+          "django/views/generic/base.py",
+          "django/http/request.py",
+          "django/http/response.py",
+          "django/http/response.py",
+          "django/db/backends/sqlite3/base.py"
+        ],
+        "vector_files": [
+          "django/db/models/fields/__init__.py",
+          "django/http/response.py",
+          "tests/httpwrappers/tests.py",
+          "django/http/response.py",
+          "django/http/response.py",
+          "django/views/generic/base.py",
+          "django/http/request.py",
+          "django/http/response.py",
+          "django/http/response.py",
+          "django/db/backends/sqlite3/base.py"
+        ],
+        "sources": {
+          "vector": 10
+        },
+        "metrics": {
+          "K=1": {
+            "hybrid": {
+              "mrr": 0.0,
+              "recall": 0.0,
+              "precision": 0.0,
+              "ndcg": 0.0,
+              "file_recall": 0.0,
+              "hit_rate": 0.0
+            },
+            "vector": {
+              "mrr": 0.0,
+              "recall": 0.0,
+              "precision": 0.0,
+              "ndcg": 0.0,
+              "file_recall": 0.0,
+              "hit_rate": 0.0
+            }
+          },
+          "K=3": {
+            "hybrid": {
+              "mrr": 0.5,
+              "recall": 1.0,
+              "precision": 0.3333333333333333,
+              "ndcg": 0.6309297535714575,
+              "file_recall": 1.0,
+              "hit_rate": 1.0
+            },
+            "vector": {
+              "mrr": 0.5,
+              "recall": 1.0,
+              "precision": 0.3333333333333333,
+              "ndcg": 0.6309297535714575,
+              "file_recall": 1.0,
+              "hit_rate": 1.0
+            }
+          },
+          "K=5": {
+            "hybrid": {
+              "mrr": 0.5,
+              "recall": 1.0,
+              "precision": 0.6,
+              "ndcg": 1.4484591188793923,
+              "file_recall": 1.0,
+              "hit_rate": 1.0
+            },
+            "vector": {
+              "mrr": 0.5,
+              "recall": 1.0,
+              "precision": 0.6,
+              "ndcg": 1.4484591188793923,
+              "file_recall": 1.0,
+              "hit_rate": 1.0
+            }
+          },
+          "K=10": {
+            "hybrid": {
+              "mrr": 0.5,
+              "recall": 1.0,
+              "precision": 0.5,
+              "ndcg": 2.0649539913291024,
+              "file_recall": 1.0,
+              "hit_rate": 1.0
+            },
+            "vector": {
+              "mrr": 0.5,
+              "recall": 1.0,
+              "precision": 0.5,
+              "ndcg": 2.0649539913291024,
+              "file_recall": 1.0,
+              "hit_rate": 1.0
+            }
+          }
+        }
+      },
+      {
+        "instance_id": "django__django-11179",
+        "question": "delete() on instances of models without any dependencies doesn't clear PKs. Description Deleting any model with no depen",
+        "relevant_files": [
+          "django/db/models/deletion.py"
+        ],
+        "hybrid_files": [
+          "django/db/models/base.py",
+          "django/db/models/base.py",
+          "django/db/models/deletion.py",
+          "django/forms/models.py",
+          "django/db/models/deletion.py",
+          "tests/delete/models.py",
+          "django/db/models/deletion.py",
+          "tests/delete_regress/models.py",
+          "django/db/models/deletion.py",
+          "django/db/models/deletion.py"
+        ],
+        "vector_files": [
+          "django/db/models/base.py",
+          "django/db/models/base.py",
+          "django/db/models/deletion.py",
+          "django/forms/models.py",
+          "django/db/models/deletion.py",
+          "django/db/models/deletion.py",
+          "django/db/models/deletion.py",
+          "tests/delete/models.py",
+          "django/db/models/deletion.py",
+          "tests/delete_regress/models.py"
+        ],
+        "sources": {
+          "vector": 8,
+          "hybrid": 2
+        },
+        "metrics": {
+          "K=1": {
+            "hybrid": {
+              "mrr": 0.0,
+              "recall": 0.0,
+              "precision": 0.0,
+              "ndcg": 0.0,
+              "file_recall": 0.0,
+              "hit_rate": 0.0
+            },
+            "vector": {
+              "mrr": 0.0,
+              "recall": 0.0,
+              "precision": 0.0,
+              "ndcg": 0.0,
+              "file_recall": 0.0,
+              "hit_rate": 0.0
+            }
+          },
+          "K=3": {
+            "hybrid": {
+              "mrr": 0.3333333333333333,
+              "recall": 1.0,
+              "precision": 0.3333333333333333,
+              "ndcg": 0.5,
+              "file_recall": 1.0,
+              "hit_rate": 1.0
+            },
+            "vector": {
+              "mrr": 0.3333333333333333,
+              "recall": 1.0,
+              "precision": 0.3333333333333333,
+              "ndcg": 0.5,
+              "file_recall": 1.0,
+              "hit_rate": 1.0
+            }
+          },
+          "K=5": {
+            "hybrid": {
+              "mrr": 0.3333333333333333,
+              "recall": 1.0,
+              "precision": 0.4,
+              "ndcg": 0.8868528072345416,
+              "file_recall": 1.0,
+              "hit_rate": 1.0
+            },
+            "vector": {
+              "mrr": 0.3333333333333333,
+              "recall": 1.0,
+              "precision": 0.4,
+              "ndcg": 0.8868528072345416,
+              "file_recall": 1.0,
+              "hit_rate": 1.0
+            }
+          },
+          "K=10": {
+            "hybrid": {
+              "mrr": 0.3333333333333333,
+              "recall": 1.0,
+              "precision": 0.5,
+              "ndcg": 1.810280962549744,
+              "file_recall": 1.0,
+              "hit_rate": 1.0
+            },
+            "vector": {
+              "mrr": 0.3333333333333333,
+              "recall": 1.0,
+              "precision": 0.5,
+              "ndcg": 1.8774233233398783,
+              "file_recall": 1.0,
+              "hit_rate": 1.0
+            }
+          }
+        }
+      },
+      {
+        "instance_id": "django__django-11283",
+        "question": "Migration auth.0011_update_proxy_permissions fails for models recreated as a proxy. Description (last modified by Marius",
+        "relevant_files": [
+          "django/contrib/auth/migrations/0011_update_proxy_permissions.py"
+        ],
+        "hybrid_files": [
+          "django/contrib/auth/migrations/0011_update_proxy_permissions.py",
+          "django/contrib/auth/migrations/0011_update_proxy_permissions.py",
+          "django/contrib/auth/migrations/0011_update_proxy_permissions.py",
+          "django/contrib/auth/migrations/0011_update_proxy_permissions.py",
+          "django/contrib/auth/migrations/0012_alter_user_first_name_max_length.py",
+          "django/contrib/auth/management/__init__.py",
+          "django/db/migrations/autodetector.py",
+          "django/db/migrations/operations/base.py",
+          "django/contrib/auth/migrations/0002_alter_permission_name_max_length.py",
+          "django/contrib/auth/migrations/0002_alter_permission_name_max_length.py"
+        ],
+        "vector_files": [
+          "django/contrib/auth/migrations/0011_update_proxy_permissions.py",
+          "django/contrib/auth/migrations/0011_update_proxy_permissions.py",
+          "django/contrib/auth/migrations/0011_update_proxy_permissions.py",
+          "django/contrib/auth/migrations/0011_update_proxy_permissions.py",
+          "django/contrib/auth/migrations/0012_alter_user_first_name_max_length.py",
+          "django/contrib/auth/migrations/0002_alter_permission_name_max_length.py",
+          "django/contrib/auth/management/__init__.py",
+          "django/db/migrations/autodetector.py",
+          "django/db/migrations/operations/base.py",
+          "django/contrib/auth/migrations/0002_alter_permission_name_max_length.py"
+        ],
+        "sources": {
+          "vector": 8,
+          "hybrid": 2
+        },
+        "metrics": {
+          "K=1": {
+            "hybrid": {
+              "mrr": 1.0,
+              "recall": 1.0,
+              "precision": 1.0,
+              "ndcg": 1.0,
+              "file_recall": 1.0,
+              "hit_rate": 1.0
+            },
+            "vector": {
+              "mrr": 1.0,
+              "recall": 1.0,
+              "precision": 1.0,
+              "ndcg": 1.0,
+              "file_recall": 1.0,
+              "hit_rate": 1.0
+            }
+          },
+          "K=3": {
+            "hybrid": {
+              "mrr": 1.0,
+              "recall": 1.0,
+              "precision": 1.0,
+              "ndcg": 2.1309297535714578,
+              "file_recall": 1.0,
+              "hit_rate": 1.0
+            },
+            "vector": {
+              "mrr": 1.0,
+              "recall": 1.0,
+              "precision": 1.0,
+              "ndcg": 2.1309297535714578,
+              "file_recall": 1.0,
+              "hit_rate": 1.0
+            }
+          },
+          "K=5": {
+            "hybrid": {
+              "mrr": 1.0,
+              "recall": 1.0,
+              "precision": 0.8,
+              "ndcg": 2.5616063116448506,
+              "file_recall": 1.0,
+              "hit_rate": 1.0
+            },
+            "vector": {
+              "mrr": 1.0,
+              "recall": 1.0,
+              "precision": 0.8,
+              "ndcg": 2.5616063116448506,
+              "file_recall": 1.0,
+              "hit_rate": 1.0
+            }
+          },
+          "K=10": {
+            "hybrid": {
+              "mrr": 1.0,
+              "recall": 1.0,
+              "precision": 0.4,
+              "ndcg": 2.5616063116448506,
+              "file_recall": 1.0,
+              "hit_rate": 1.0
+            },
+            "vector": {
+              "mrr": 1.0,
+              "recall": 1.0,
+              "precision": 0.4,
+              "ndcg": 2.5616063116448506,
+              "file_recall": 1.0,
+              "hit_rate": 1.0
+            }
+          }
+        }
+      },
+      {
+        "instance_id": "django__django-11422",
+        "question": "Autoreloader with StatReloader doesn't track changes in manage.py. Description (last modified by Mariusz Felisiak) This ",
+        "relevant_files": [
+          "django/utils/autoreload.py"
+        ],
+        "hybrid_files": [
+          "django/utils/autoreload.py",
+          "django/utils/autoreload.py",
+          "django/template/autoreload.py",
+          "django/utils/autoreload.py",
+          "django/core/management/commands/runserver.py",
+          "django/utils/autoreload.py",
+          "django/utils/autoreload.py",
+          "django/utils/autoreload.py",
+          "django/utils/autoreload.py",
+          "django/utils/autoreload.py"
+        ],
+        "vector_files": [
+          "django/utils/autoreload.py",
+          "django/utils/autoreload.py",
+          "django/template/autoreload.py",
+          "django/utils/autoreload.py",
+          "django/core/management/commands/runserver.py",
+          "django/utils/autoreload.py",
+          "django/utils/autoreload.py",
+          "django/utils/autoreload.py",
+          "django/utils/autoreload.py",
+          "django/utils/autoreload.py"
+        ],
+        "sources": {
+          "vector": 9,
+          "hybrid": 1
+        },
+        "metrics": {
+          "K=1": {
+            "hybrid": {
+              "mrr": 1.0,
+              "recall": 1.0,
+              "precision": 1.0,
+              "ndcg": 1.0,
+              "file_recall": 1.0,
+              "hit_rate": 1.0
+            },
+            "vector": {
+              "mrr": 1.0,
+              "recall": 1.0,
+              "precision": 1.0,
+              "ndcg": 1.0,
+              "file_recall": 1.0,
+              "hit_rate": 1.0
+            }
+          },
+          "K=3": {
+            "hybrid": {
+              "mrr": 1.0,
+              "recall": 1.0,
+              "precision": 0.6666666666666666,
+              "ndcg": 1.6309297535714575,
+              "file_recall": 1.0,
+              "hit_rate": 1.0
+            },
+            "vector": {
+              "mrr": 1.0,
+              "recall": 1.0,
+              "precision": 0.6666666666666666,
+              "ndcg": 1.6309297535714575,
+              "file_recall": 1.0,
+              "hit_rate": 1.0
+            }
+          },
+          "K=5": {
+            "hybrid": {
+              "mrr": 1.0,
+              "recall": 1.0,
+              "precision": 0.6,
+              "ndcg": 2.0616063116448506,
+              "file_recall": 1.0,
+              "hit_rate": 1.0
+            },
+            "vector": {
+              "mrr": 1.0,
+              "recall": 1.0,
+              "precision": 0.6,
+              "ndcg": 2.0616063116448506,
+              "file_recall": 1.0,
+              "hit_rate": 1.0
+            }
+          },
+          "K=10": {
+            "hybrid": {
+              "mrr": 1.0,
+              "recall": 1.0,
+              "precision": 0.8,
+              "ndcg": 3.6567065308538043,
+              "file_recall": 1.0,
+              "hit_rate": 1.0
+            },
+            "vector": {
+              "mrr": 1.0,
+              "recall": 1.0,
+              "precision": 0.8,
+              "ndcg": 3.6567065308538043,
+              "file_recall": 1.0,
+              "hit_rate": 1.0
+            }
+          }
+        }
+      },
+      {
+        "instance_id": "django__django-11564",
+        "question": "Add support for SCRIPT_NAME in STATIC_URL and MEDIA_URL Description (last modified by Rostyslav Bryzgunov) By default, {",
+        "relevant_files": [
+          "django/conf/__init__.py"
+        ],
+        "hybrid_files": [
+          "django/conf/__init__.py",
+          "django/contrib/staticfiles/handlers.py",
+          "django/conf/urls/static.py",
+          "django/forms/widgets.py",
+          "django/contrib/staticfiles/utils.py",
+          "django/contrib/staticfiles/handlers.py",
+          "tests/settings_tests/tests.py",
+          "tests/test_utils/tests.py",
+          "django/forms/widgets.py",
+          "tests/settings_tests/tests.py"
+        ],
+        "vector_files": [
+          "django/conf/__init__.py",
+          "django/contrib/staticfiles/handlers.py",
+          "django/conf/urls/static.py",
+          "django/forms/widgets.py",
+          "django/contrib/staticfiles/utils.py",
+          "django/contrib/staticfiles/handlers.py",
+          "tests/settings_tests/tests.py",
+          "tests/test_utils/tests.py",
+          "django/forms/widgets.py",
+          "tests/settings_tests/tests.py"
+        ],
+        "sources": {
+          "vector": 10
+        },
+        "metrics": {
+          "K=1": {
+            "hybrid": {
+              "mrr": 1.0,
+              "recall": 1.0,
+              "precision": 1.0,
+              "ndcg": 1.0,
+              "file_recall": 1.0,
+              "hit_rate": 1.0
+            },
+            "vector": {
+              "mrr": 1.0,
+              "recall": 1.0,
+              "precision": 1.0,
+              "ndcg": 1.0,
+              "file_recall": 1.0,
+              "hit_rate": 1.0
+            }
+          },
+          "K=3": {
+            "hybrid": {
+              "mrr": 1.0,
+              "recall": 1.0,
+              "precision": 0.3333333333333333,
+              "ndcg": 1.0,
+              "file_recall": 1.0,
+              "hit_rate": 1.0
+            },
+            "vector": {
+              "mrr": 1.0,
+              "recall": 1.0,
+              "precision": 0.3333333333333333,
+              "ndcg": 1.0,
+              "file_recall": 1.0,
+              "hit_rate": 1.0
+            }
+          },
+          "K=5": {
+            "hybrid": {
+              "mrr": 1.0,
+              "recall": 1.0,
+              "precision": 0.2,
+              "ndcg": 1.0,
+              "file_recall": 1.0,
+              "hit_rate": 1.0
+            },
+            "vector": {
+              "mrr": 1.0,
+              "recall": 1.0,
+              "precision": 0.2,
+              "ndcg": 1.0,
+              "file_recall": 1.0,
+              "hit_rate": 1.0
+            }
+          },
+          "K=10": {
+            "hybrid": {
+              "mrr": 1.0,
+              "recall": 1.0,
+              "precision": 0.1,
+              "ndcg": 1.0,
+              "file_recall": 1.0,
+              "hit_rate": 1.0
+            },
+            "vector": {
+              "mrr": 1.0,
+              "recall": 1.0,
+              "precision": 0.1,
+              "ndcg": 1.0,
+              "file_recall": 1.0,
+              "hit_rate": 1.0
+            }
+          }
+        }
+      },
+      {
+        "instance_id": "django__django-11583",
+        "question": "Auto-reloading with StatReloader very intermittently throws \"ValueError: embedded null byte\". Description Raising this m",
+        "relevant_files": [
+          "django/utils/autoreload.py"
+        ],
+        "hybrid_files": [
+          "django/utils/autoreload.py",
+          "django/utils/autoreload.py",
+          "django/utils/autoreload.py",
+          "django/utils/autoreload.py",
+          "tests/fixtures_regress/tests.py",
+          "django/core/management/commands/runserver.py",
+          "django/utils/autoreload.py",
+          "django/utils/autoreload.py",
+          "django/utils/autoreload.py",
+          "django/utils/autoreload.py"
+        ],
+        "vector_files": [
+          "django/utils/autoreload.py",
+          "django/utils/autoreload.py",
+          "django/utils/autoreload.py",
+          "django/utils/autoreload.py",
+          "tests/fixtures_regress/tests.py",
+          "django/utils/autoreload.py",
+          "django/utils/autoreload.py",
+          "django/utils/autoreload.py",
+          "django/core/management/commands/runserver.py",
+          "django/utils/autoreload.py"
+        ],
+        "sources": {
+          "vector": 7,
+          "hybrid": 3
+        },
+        "metrics": {
+          "K=1": {
+            "hybrid": {
+              "mrr": 1.0,
+              "recall": 1.0,
+              "precision": 1.0,
+              "ndcg": 1.0,
+              "file_recall": 1.0,
+              "hit_rate": 1.0
+            },
+            "vector": {
+              "mrr": 1.0,
+              "recall": 1.0,
+              "precision": 1.0,
+              "ndcg": 1.0,
+              "file_recall": 1.0,
+              "hit_rate": 1.0
+            }
+          },
+          "K=3": {
+            "hybrid": {
+              "mrr": 1.0,
+              "recall": 1.0,
+              "precision": 1.0,
+              "ndcg": 2.1309297535714578,
+              "file_recall": 1.0,
+              "hit_rate": 1.0
+            },
+            "vector": {
+              "mrr": 1.0,
+              "recall": 1.0,
+              "precision": 1.0,
+              "ndcg": 2.1309297535714578,
+              "file_recall": 1.0,
+              "hit_rate": 1.0
+            }
+          },
+          "K=5": {
+            "hybrid": {
+              "mrr": 1.0,
+              "recall": 1.0,
+              "precision": 0.8,
+              "ndcg": 2.5616063116448506,
+              "file_recall": 1.0,
+              "hit_rate": 1.0
+            },
+            "vector": {
+              "mrr": 1.0,
+              "recall": 1.0,
+              "precision": 0.8,
+              "ndcg": 2.5616063116448506,
+              "file_recall": 1.0,
+              "hit_rate": 1.0
+            }
+          },
+          "K=10": {
+            "hybrid": {
+              "mrr": 1.0,
+              "recall": 1.0,
+              "precision": 0.8,
+              "ndcg": 3.8004993437457824,
+              "file_recall": 1.0,
+              "hit_rate": 1.0
+            },
+            "vector": {
+              "mrr": 1.0,
+              "recall": 1.0,
+              "precision": 0.8,
+              "ndcg": 3.855676535189823,
+              "file_recall": 1.0,
+              "hit_rate": 1.0
+            }
+          }
+        }
+      },
+      {
+        "instance_id": "django__django-11620",
+        "question": "When DEBUG is True, raising Http404 in a path converter's to_python method does not result in a technical response Descr",
+        "relevant_files": [
+          "django/views/debug.py"
+        ],
+        "hybrid_files": [
+          "django/urls/exceptions.py",
+          "django/http/response.py",
+          "tests/middleware_exceptions/middleware.py",
+          "django/urls/exceptions.py",
+          "tests/middleware_exceptions/middleware.py",
+          "tests/urlpatterns/tests.py",
+          "django/test/testcases.py",
+          "tests/view_tests/views.py",
+          "django/urls/__init__.py",
+          "django/core/handlers/exception.py"
+        ],
+        "vector_files": [
+          "django/urls/exceptions.py",
+          "django/http/response.py",
+          "tests/middleware_exceptions/middleware.py",
+          "django/urls/exceptions.py",
+          "tests/middleware_exceptions/middleware.py",
+          "django/urls/__init__.py",
+          "tests/urlpatterns/tests.py",
+          "django/test/testcases.py",
+          "django/core/handlers/exception.py",
+          "tests/view_tests/views.py"
+        ],
+        "sources": {
+          "vector": 8,
+          "hybrid": 2
+        },
+        "metrics": {
+          "K=1": {
+            "hybrid": {
+              "mrr": 0.0,
+              "recall": 0.0,
+              "precision": 0.0,
+              "ndcg": 0.0,
+              "file_recall": 0.0,
+              "hit_rate": 0.0
+            },
+            "vector": {
+              "mrr": 0.0,
+              "recall": 0.0,
+              "precision": 0.0,
+              "ndcg": 0.0,
+              "file_recall": 0.0,
+              "hit_rate": 0.0
+            }
+          },
+          "K=3": {
+            "hybrid": {
+              "mrr": 0.0,
+              "recall": 0.0,
+              "precision": 0.0,
+              "ndcg": 0.0,
+              "file_recall": 0.0,
+              "hit_rate": 0.0
+            },
+            "vector": {
+              "mrr": 0.0,
+              "recall": 0.0,
+              "precision": 0.0,
+              "ndcg": 0.0,
+              "file_recall": 0.0,
+              "hit_rate": 0.0
+            }
+          },
+          "K=5": {
+            "hybrid": {
+              "mrr": 0.0,
+              "recall": 0.0,
+              "precision": 0.0,
+              "ndcg": 0.0,
+              "file_recall": 0.0,
+              "hit_rate": 0.0
+            },
+            "vector": {
+              "mrr": 0.0,
+              "recall": 0.0,
+              "precision": 0.0,
+              "ndcg": 0.0,
+              "file_recall": 0.0,
+              "hit_rate": 0.0
+            }
+          },
+          "K=10": {
+            "hybrid": {
+              "mrr": 0.0,
+              "recall": 0.0,
+              "precision": 0.0,
+              "ndcg": 0.0,
+              "file_recall": 0.0,
+              "hit_rate": 0.0
+            },
+            "vector": {
+              "mrr": 0.0,
+              "recall": 0.0,
+              "precision": 0.0,
+              "ndcg": 0.0,
+              "file_recall": 0.0,
+              "hit_rate": 0.0
+            }
+          }
+        }
+      },
+      {
+        "instance_id": "django__django-11630",
+        "question": "Django throws error when different apps with different models have the same name table name. Description Error message: ",
+        "relevant_files": [
+          "django/core/checks/model_checks.py"
+        ],
+        "hybrid_files": [
+          "django/db/backends/base/introspection.py",
+          "django/db/models/sql/datastructures.py",
+          "tests/reserved_names/models.py",
+          "django/db/backends/base/introspection.py",
+          "django/db/migrations/operations/models.py",
+          "django/db/models/sql/datastructures.py",
+          "django/contrib/contenttypes/models.py",
+          "django/db/migrations/operations/models.py",
+          "tests/custom_columns/models.py",
+          "tests/migrations/test_migrations_conflict_long_name/0002_conflicting_second_migration_with_long_name.py"
+        ],
+        "vector_files": [
+          "django/db/backends/base/introspection.py",
+          "django/db/models/sql/datastructures.py",
+          "tests/reserved_names/models.py",
+          "django/db/backends/base/introspection.py",
+          "django/db/migrations/operations/models.py",
+          "django/db/models/sql/datastructures.py",
+          "django/contrib/contenttypes/models.py",
+          "django/db/migrations/operations/models.py",
+          "tests/custom_columns/models.py",
+          "tests/migrations/test_migrations_conflict_long_name/0002_conflicting_second_migration_with_long_name.py"
+        ],
+        "sources": {
+          "vector": 8,
+          "hybrid": 2
+        },
+        "metrics": {
+          "K=1": {
+            "hybrid": {
+              "mrr": 0.0,
+              "recall": 0.0,
+              "precision": 0.0,
+              "ndcg": 0.0,
+              "file_recall": 0.0,
+              "hit_rate": 0.0
+            },
+            "vector": {
+              "mrr": 0.0,
+              "recall": 0.0,
+              "precision": 0.0,
+              "ndcg": 0.0,
+              "file_recall": 0.0,
+              "hit_rate": 0.0
+            }
+          },
+          "K=3": {
+            "hybrid": {
+              "mrr": 0.0,
+              "recall": 0.0,
+              "precision": 0.0,
+              "ndcg": 0.0,
+              "file_recall": 0.0,
+              "hit_rate": 0.0
+            },
+            "vector": {
+              "mrr": 0.0,
+              "recall": 0.0,
+              "precision": 0.0,
+              "ndcg": 0.0,
+              "file_recall": 0.0,
+              "hit_rate": 0.0
+            }
+          },
+          "K=5": {
+            "hybrid": {
+              "mrr": 0.0,
+              "recall": 0.0,
+              "precision": 0.0,
+              "ndcg": 0.0,
+              "file_recall": 0.0,
+              "hit_rate": 0.0
+            },
+            "vector": {
+              "mrr": 0.0,
+              "recall": 0.0,
+              "precision": 0.0,
+              "ndcg": 0.0,
+              "file_recall": 0.0,
+              "hit_rate": 0.0
+            }
+          },
+          "K=10": {
+            "hybrid": {
+              "mrr": 0.0,
+              "recall": 0.0,
+              "precision": 0.0,
+              "ndcg": 0.0,
+              "file_recall": 0.0,
+              "hit_rate": 0.0
+            },
+            "vector": {
+              "mrr": 0.0,
+              "recall": 0.0,
+              "precision": 0.0,
+              "ndcg": 0.0,
+              "file_recall": 0.0,
+              "hit_rate": 0.0
+            }
+          }
+        }
+      }
+    ]
+  },
+  "django_generation": {
+    "repo": "django",
+    "num_cases": 5,
+    "averages": {
+      "rag": {
+        "accuracy": 4.2,
+        "completeness": 4.0,
+        "helpfulness": 4.2,
+        "avg_score": 4.13
+      },
+      "vec": {
+        "accuracy": 4.2,
+        "completeness": 4.2,
+        "helpfulness": 4.2,
+        "avg_score": 4.2
+      },
+      "plain": {
+        "accuracy": 4.2,
+        "completeness": 4.2,
+        "helpfulness": 4.2,
+        "avg_score": 4.2
+      }
+    },
+    "per_case": [
+      {
+        "instance_id": "django__django-10914",
+        "question": "Set default FILE_UPLOAD_PERMISSION to 0o644. Description Hello, As far as I can see, the \u200bFile Uploads documentation pag",
+        "rag_scores": {
+          "accuracy": 4.0,
+          "completeness": 3.0,
+          "helpfulness": 4.0,
+          "reasoning": "The answer is mostly accurate and helpful, but it could be more comprehensive by addressing the potential issues with file permissions in different environments.",
+          "avg_score": 3.67
+        },
+        "vec_scores": {
+          "accuracy": 4.0,
+          "completeness": 4.0,
+          "helpfulness": 4.0,
+          "reasoning": "The answer is factually correct, covers all important aspects, and provides actionable guidance. It accurately explains how to set the default FILE_UPLOAD_PERMISSIONS in Django settings and mentions relevant storage classes.",
+          "avg_score": 4.0
+        },
+        "plain_scores": {
+          "accuracy": 4.0,
+          "completeness": 4.0,
+          "helpfulness": 4.0,
+          "reasoning": "The answer is factually correct, covers all important aspects, and provides actionable guidance. It accurately explains how to set the default FILE_UPLOAD_PERMISSION to 0o644 in Django settings.",
+          "avg_score": 4.0
+        }
+      },
+      {
+        "instance_id": "django__django-10924",
+        "question": "Allow FilePathField path to accept a callable. Description I have a special case where I want to create a model containi",
+        "rag_scores": {
+          "accuracy": 5.0,
+          "completeness": 5.0,
+          "helpfulness": 5.0,
+          "reasoning": "The answer correctly explains how to use a callable with `FilePathField` in Django models, provides a clear example of modifying the model, and offers practical advice on setting up the directory path.",
+          "avg_score": 5.0
+        },
+        "vec_scores": {
+          "accuracy": 5.0,
+          "completeness": 5.0,
+          "helpfulness": 5.0,
+          "reasoning": "The answer correctly explains how to use a callable with `FilePathField` in Django models, provides a clear example of modifying the model, and offers practical advice on setting up the directory path.",
+          "avg_score": 5.0
+        },
+        "plain_scores": {
+          "accuracy": 5.0,
+          "completeness": 5.0,
+          "helpfulness": 5.0,
+          "reasoning": "The answer is factually correct, comprehensive, and actionable. It provides a clear example of how to use a callable with `FilePathField` in Django models.",
+          "avg_score": 5.0
+        }
+      },
+      {
+        "instance_id": "django__django-11001",
+        "question": "Incorrect removal of order_by clause created as multiline RawSQL Description Hi. The SQLCompiler is ripping off one of m",
+        "rag_scores": {
+          "accuracy": 4.0,
+          "completeness": 4.0,
+          "helpfulness": 4.0,
+          "reasoning": "The answer provides a clear understanding of the problem and offers practical solutions, including using `Case` expressions and customizing the `SQLCompiler`. It also includes debugging tips and testing recommendations, which are valuable for resolving the issue.",
+          "avg_score": 4.0
+        },
+        "vec_scores": {
+          "accuracy": 4.0,
+          "completeness": 4.0,
+          "helpfulness": 4.0,
+          "reasoning": "The answer provides a clear understanding of the problem and offers practical solutions, including using `Case` expressions and customizing the `SQLCompiler`. It also includes debugging tips and testing recommendations, which are valuable for resolving the issue.",
+          "avg_score": 4.0
+        },
+        "plain_scores": {
+          "accuracy": 4.0,
+          "completeness": 4.0,
+          "helpfulness": 4.0,
+          "reasoning": "The answer provides a detailed explanation of the issue and offers several practical steps to troubleshoot and potentially fix it. It includes code examples and guidance on creating a custom SQLCompiler, which is very helpful for developers facing similar problems.",
+          "avg_score": 4.0
+        }
+      },
+      {
+        "instance_id": "django__django-11019",
+        "question": "Merging 3 or more media objects can throw unnecessary MediaOrderConflictWarnings Description Consider the following form",
+        "rag_scores": {
+          "accuracy": 4.0,
+          "completeness": 4.0,
+          "helpfulness": 4.0,
+          "reasoning": "The answer is factually correct, covers all important aspects, and provides a clear, actionable solution. It correctly explains the issue of `MediaOrderConflictWarning` and offers a step-by-step approach to merge media objects while maintaining their order.",
+          "avg_score": 4.0
+        },
+        "vec_scores": {
+          "accuracy": 4.0,
+          "completeness": 4.0,
+          "helpfulness": 4.0,
+          "reasoning": "The answer accurately explains the mechanism behind `MediaOrderConflictWarnings` and provides a clear example of how merging media objects can trigger these warnings. It also offers actionable advice on avoiding unnecessary warnings.",
+          "avg_score": 4.0
+        },
+        "plain_scores": {
+          "accuracy": 4.0,
+          "completeness": 4.0,
+          "helpfulness": 4.0,
+          "reasoning": "The answer is factually correct, covers all important aspects of managing media dependencies in Django forms, and provides actionable guidance. It avoids unnecessary `MediaOrderConflictWarnings` by ensuring proper ordering and avoiding conflicts.",
+          "avg_score": 4.0
+        }
+      },
+      {
+        "instance_id": "django__django-11039",
+        "question": "sqlmigrate wraps it's outpout in BEGIN/COMMIT even if the database doesn't support transactional DDL Description (last m",
+        "rag_scores": {
+          "accuracy": 4.0,
+          "completeness": 4.0,
+          "helpfulness": 4.0,
+          "reasoning": "The answer accurately describes the issue with sqlmigrate and provides a clear, actionable solution to fix it. It covers all important aspects of the problem and how to resolve it.",
+          "avg_score": 4.0
+        },
+        "vec_scores": {
+          "accuracy": 4.0,
+          "completeness": 4.0,
+          "helpfulness": 4.0,
+          "reasoning": "The answer is factually correct, covers all important aspects, and provides actionable steps with specific references. It accurately identifies the issue and proposes a solution that aligns with Django's migration logic.",
+          "avg_score": 4.0
+        },
+        "plain_scores": {
+          "accuracy": 4.0,
+          "completeness": 4.0,
+          "helpfulness": 4.0,
+          "reasoning": "The answer accurately describes the issue and provides a clear, step-by-step approach to fix it. It covers all important aspects of the problem and offers a practical solution with code examples.",
+          "avg_score": 4.0
+        }
+      }
+    ]
+  }
+}

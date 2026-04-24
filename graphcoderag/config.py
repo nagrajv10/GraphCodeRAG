@@ -37,8 +37,9 @@ FAISS_INDEX_DIR = str(DATA_DIR / "faiss_index")
 
 # === Embedding Configuration ===
 # Code-specialized embedding model
-# Note: Jina-v2 (8K ctx) OOMs on CPU with large AST chunks; st-codesearch (512 ctx) is proven
-SFR_EMBEDDING_MODEL = "flax-sentence-embeddings/st-codesearch-distilroberta-base"
+# CodeRankEmbed: 137M params, 768d, 8K context, SOTA on CodeSearchNet/CoIR
+# Trained on CoRNStack (21M contrastive pairs) — outperforms models 10x its size
+SFR_EMBEDDING_MODEL = "nomic-ai/CodeRankEmbed"
 SFR_EMBEDDING_DIMENSION = 768
 
 # Legacy: general-purpose model (kept for backward compatibility)

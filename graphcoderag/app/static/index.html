@@ -12,6 +12,7 @@
 <!-- Libraries -->
 <script src="https://d3js.org/d3.v7.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/dompurify/dist/purify.min.js"></script>
 
 <!-- Design System CSS -->
 <link rel="stylesheet" href="/static/styles/variables.css">
@@ -213,6 +214,50 @@
   </div>
 </div>
 
+<!-- ═══ Settings Panel (overlay) ═══ -->
+<div class="modal-overlay" id="settings-overlay" style="display:none">
+  <div class="modal" style="width:400px;">
+    <div class="modal-head"><h3>Settings</h3><span class="modal-x" id="settings-close">&times;</span></div>
+    <div class="modal-body">
+      <div class="modal-field">
+        <div class="modal-label">Vector Backend</div>
+        <select class="modal-input" id="setting-vector-backend">
+          <option value="faiss">FAISS (Two-Tier Recommended)</option>
+          <option value="chroma">ChromaDB (Legacy)</option>
+        </select>
+      </div>
+      <div class="modal-field">
+        <div class="modal-label">LLM Provider</div>
+        <select class="modal-input" id="setting-llm-provider">
+          <option value="local">Local (Ollama)</option>
+          <option value="api">Cloud API (Anthropic/OpenAI)</option>
+        </select>
+      </div>
+      <div class="modal-field">
+        <div class="modal-label">Local LLM Model</div>
+        <input class="modal-input" id="setting-llm-model" placeholder="e.g., qwen2.5-coder:7b-instruct" />
+      </div>
+    </div>
+    <div class="modal-foot">
+      <button class="btn-ghost" id="settings-cancel">Cancel</button>
+      <button class="btn-primary" id="settings-save">Save Settings</button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ Search Panel (overlay) ═══ -->
+<div class="modal-overlay" id="search-overlay" style="display:none">
+  <div class="modal" style="width:600px; max-height:80vh; display:flex; flex-direction:column;">
+    <div class="modal-head" style="border-bottom:1px solid var(--border-1); padding-bottom:12px;">
+      <input type="text" id="global-search-input" placeholder="Search codebase semantically (e.g., 'how does authentication work?')" style="width:100%; background:transparent; border:none; color:var(--text-0); font-size:14px; outline:none;">
+      <span class="modal-x" id="search-close">&times;</span>
+    </div>
+    <div class="modal-body" id="search-results" style="overflow-y:auto; flex:1; padding:0;">
+      <!-- Results populated here -->
+    </div>
+  </div>
+</div>
+
 <!-- JavaScript Modules -->
 <script src="/static/scripts/api.js"></script>
 <script src="/static/scripts/state.js"></script>
@@ -224,6 +269,8 @@
 <script src="/static/scripts/chat.js"></script>
 <script src="/static/scripts/modal.js"></script>
 <script src="/static/scripts/evaluation.js"></script>
+<script src="/static/scripts/search.js"></script>
+<script src="/static/scripts/settings.js"></script>
 <script src="/static/scripts/app.js"></script>
 </body>
 </html>
