@@ -475,8 +475,15 @@ def main():
 
     results = {"timestamp": datetime.now().isoformat(), "backend": _BACKEND, "embedding_model": "nomic-ai/CodeRankEmbed", "mode": "retrieval_only" if retrieval_only else "full", "repos": {}}
 
-    for repo_key in ["click", "pytest"]:
+    # Parse --repos flag (default: all 4)
+    repo_list = ["click", "pytest", "sklearn", "django"]
+    for arg in sys.argv:
+        if arg.startswith("--repos="):
+            repo_list = arg.split("=")[1].split(",")
+
+    for repo_key in repo_list:
         if repo_key not in test_cases:
+            P(f"  Skipping {repo_key}: no test cases found")
             continue
         results["repos"][repo_key] = run_repo_evaluation(repo_key, test_cases[repo_key], retrieval_only)
 
@@ -494,10 +501,12 @@ def main():
     P(f"{'='*85}")
     P(f"  {'Repo':>10} | {'Size':>15} | MRR(A) | MRR(Bh) | NDCG@10(Bh) | Rec@10(Bh) | FR@10(Bh)")
     P(f"  {'----':>10} | {'----':>15} | {'---':>6} | {'---':>7} | {'---':>11} | {'---':>10} | {'---':>9}")
-    for rk in ["click", "pytest"]:
+    for rk in repo_list:
         if rk not in results["repos"]:
             continue
-        r = results["repos"][rk]["retrieval"]["aggregated"].get("K=10", {})
+        ret = results["repos"][rk].get("retrieval", {})
+        agg = ret.get("aggregated", {})
+        r = agg.get("K=10", {})
         a = r.get("A", {})
         bh = r.get("B_hybrid", {})
         P(f"  {rk:>10} | {REPOS[rk]['label']:>15} | {a.get('mrr',0):>5.3f} | "
