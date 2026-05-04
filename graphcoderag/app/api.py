@@ -121,8 +121,10 @@ def create_workspace(req: IngestRequest, background_tasks: BackgroundTasks):
         if parsed.hostname not in allowed_domains:
             raise HTTPException(400, f"SSRF Protection: Domain {parsed.hostname} is not allowed.")
 
-    # Run ingest in background so it doesn't block the UI
-    background_tasks.add_task(_ingest_and_create_workspace, wm, repo_input, branch)
+    # Run ingest synchronously for the demo so the UI progress bar tracks it!
+    err = _ingest_and_create_workspace(wm, repo_input, branch)
+    if err:
+        raise HTTPException(500, f"Ingestion failed: {err}")
 
     active = wm.get_active()
     return {
@@ -208,7 +210,19 @@ def chat(req: ChatRequest):
         try:
             with open(data_path, "r", encoding="utf-8") as f:
                 data = json.load(f)
-                for item in data:
+                
+                items = []
+                if isinstance(data, list):
+                    items = data
+                elif isinstance(data, dict):
+                    instances = data.get("instances", {})
+                    if isinstance(instances, dict):
+                        for repo_cases in instances.values():
+                            items.extend(repo_cases)
+                    elif isinstance(instances, list):
+                        items = instances
+                        
+                for item in items:
                     if msg.strip() == item.get("problem_statement", "").strip():
                         resp["ground_truth"] = item.get("patch", "")
                         break
@@ -228,6 +242,8 @@ def get_demo_questions():
         return {"questions": []}
     
     repo_name = active.repo.rstrip("/").split("/")[-1]
+    if repo_name.endswith(".git"):
+        repo_name = repo_name[:-4]
     
     from pathlib import Path
     import json
@@ -240,7 +256,20 @@ def get_demo_questions():
             data = json.load(f)
             
         questions = []
-        for item in data:
+        
+        # Handle dict structure with instances dict
+        items = []
+        if isinstance(data, list):
+            items = data
+        elif isinstance(data, dict):
+            instances = data.get("instances", {})
+            if isinstance(instances, dict):
+                for repo_cases in instances.values():
+                    items.extend(repo_cases)
+            elif isinstance(instances, list):
+                items = instances
+                
+        for item in items:
             if item.get("repo", "").endswith(repo_name):
                 questions.append({
                     "instance_id": item.get("instance_id", ""),

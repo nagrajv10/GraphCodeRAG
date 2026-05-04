@@ -17,8 +17,9 @@ import os
 import json
 import numpy as np
 import faiss
-from typing import List, Dict, Any, Optional
+from typing import List, Dict, Any, Optional, Set
 from pathlib import Path
+from collections import defaultdict
 
 from graphcoderag.config import FAISS_INDEX_DIR, SFR_EMBEDDING_DIMENSION
 from graphcoderag.storage.embedding import embed_texts, embed_query
@@ -72,6 +73,125 @@ class FaissVectorStore:
     def _rebuild_cache(self):
         """Maintain an O(1) mapping of chunk_id to faiss index."""
         self.id_to_idx = {cid: i for i, cid in enumerate(self.chunk_ids)}
+        self._rebuild_metadata_indexes()
+
+    # ── Metadata Reverse Indexes ──────────────────────────────────────
+
+    def _rebuild_metadata_indexes(self):
+        """Build in-memory inverted indexes over metadata fields.
+
+        These allow the retrieval layer to ask "give me all chunk_ids
+        where parent_class == 'Command'" in O(1) instead of scanning
+        the entire metadata dictionary.
+        """
+        self.file_index: Dict[str, Set[str]] = defaultdict(set)
+        self.class_index: Dict[str, Set[str]] = defaultdict(set)
+        self.type_index: Dict[str, Set[str]] = defaultdict(set)
+
+        for cid, meta in self.metadata.items():
+            fp = meta.get("file_path", "")
+            if fp:
+                self.file_index[fp].add(cid)
+            pc = meta.get("parent_class", "")
+            if pc:
+                self.class_index[pc].add(cid)
+            ct = meta.get("chunk_type", "")
+            if ct:
+                self.type_index[ct].add(cid)
+
+    def get_ids_by_filter(
+        self,
+        file_path: Optional[str] = None,
+        parent_class: Optional[str] = None,
+        chunk_type: Optional[str] = None,
+    ) -> Set[str]:
+        """Return chunk_ids matching ALL supplied filters (intersection).
+
+        If no filters are provided, returns all chunk_ids.
+        """
+        sets: List[Set[str]] = []
+        if file_path is not None:
+            sets.append(self.file_index.get(file_path, set()))
+        if parent_class is not None:
+            sets.append(self.class_index.get(parent_class, set()))
+        if chunk_type is not None:
+            sets.append(self.type_index.get(chunk_type, set()))
+
+        if not sets:
+            return set(self.chunk_ids)
+        result = sets[0]
+        for s in sets[1:]:
+            result = result & s
+        return result
+
+    def get_known_classes(self) -> Set[str]:
+        """Return all unique parent_class values in the index."""
+        return set(self.class_index.keys())
+
+    def get_known_files(self) -> Set[str]:
+        """Return all unique file_path values in the index."""
+        return set(self.file_index.keys())
+
+    def get_known_functions(self) -> Set[str]:
+        """Return all unique function/method names in the index."""
+        funcs: Set[str] = set()
+        func_ids = self.type_index.get("function", set())
+        for cid in func_ids:
+            meta = self.metadata.get(cid)
+            if meta:
+                name = meta.get("name", "")
+                if name:
+                    funcs.add(name)
+        return funcs
+
+    def search_filtered(
+        self,
+        query: str,
+        top_k: int,
+        candidate_ids: Set[str],
+    ) -> List[Dict[str, Any]]:
+        """Search only within *candidate_ids* by manual dot-product.
+
+        This avoids building a separate FAISS index per filter
+        combination — we just reconstruct the relevant vectors and
+        compute inner products with numpy.
+        """
+        if not candidate_ids:
+            return []
+
+        # Fallback: if the filter covers >70% of the index, native FAISS
+        # search is faster than reconstructing vectors for manual dot-product.
+        if self.index.ntotal > 0 and len(candidate_ids) > 0.7 * self.index.ntotal:
+            logger.debug(
+                f"search_filtered fallback: candidate set ({len(candidate_ids)}) "
+                f"covers >{70}% of index ({self.index.ntotal}), using unfiltered search"
+            )
+            return self.search(query, top_k)
+
+        from graphcoderag.storage.embedding import embed_query as _embed_query
+
+        q_emb = _embed_query(query)  # shape (1, dim)
+        q_vec = q_emb[0]             # shape (dim,)
+
+        scored: List[tuple] = []  # (score, chunk_id)
+        for cid in candidate_ids:
+            idx = self.id_to_idx.get(cid)
+            if idx is None:
+                continue
+            vec = self.index.reconstruct(idx)  # (dim,)
+            score = float(np.dot(q_vec, vec))
+            scored.append((score, cid))
+
+        scored.sort(key=lambda t: t[0], reverse=True)
+        results = []
+        for score, cid in scored[:top_k]:
+            results.append({
+                "chunk_id": cid,
+                "document": "",
+                "metadata": self.metadata.get(cid, {}),
+                "distance": 1.0 - score,
+            })
+        return results
 
     def _save(self):
         """Persist index + metadata to disk atomically."""
@@ -119,6 +239,10 @@ class FaissVectorStore:
                     "parent_id": getattr(c, "parent_id", None),
                     "is_child": getattr(c, "is_child", False),
                     "source_code": c.source_code, # Keep source to resolve parent later
+                    # ── Richer metadata for retrieval filtering ──
+                    "signature": getattr(c, "signature", "") or "",
+                    "decorators": getattr(c, "decorators", []),
+                    "import_names": getattr(c, "import_names", []),
                 }
 
             # Only index child chunks OR small parent chunks

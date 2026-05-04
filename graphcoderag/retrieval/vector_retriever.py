@@ -3,9 +3,14 @@ Vector Retriever -- Wraps VectorStore search with scoring and metadata.
 
 Responsibilities:
 - Accept a natural language query
-- Search ChromaDB for semantically similar code chunks
+- Search FAISS/ChromaDB for semantically similar code chunks
 - Convert raw distances to similarity scores (1 - distance for cosine)
 - Return RetrievalResult objects with normalized scores
+
+Enhanced with metadata-aware retrieval:
+- Phase A: Filtered search using QueryAnalyzer entity extraction
+- Phase B: Standard unfiltered fallback (always runs)
+- Parent-aware progressive fetching replaces naive 3x over-fetch
 
 Usage:
     from graphcoderag.retrieval.vector_retriever import VectorRetriever
@@ -13,9 +18,12 @@ Usage:
     results = retriever.retrieve("how does authentication work?", top_k=10)
 """
 from dataclasses import dataclass, field
-from typing import List, Optional
+from typing import List, Optional, Set, Dict
 from graphcoderag.storage.vector_store import VectorStore
 from graphcoderag.config import VECTOR_TOP_K
+
+import logging
+logger = logging.getLogger(__name__)
 
 
 @dataclass
@@ -59,30 +67,71 @@ class VectorRetriever:
     def retrieve(self, query: str, top_k: int = None) -> List[RetrievalResult]:
         """
         Search for code chunks semantically similar to the query.
-        Implements Two-Tier Retrieval: fetches child chunks, resolves them
-        to their full AST parent, and aggregates scores for deduplication.
+
+        Implements:
+        1. Metadata-filtered search (Phase A) when entities are recognized
+        2. Standard unfiltered search (Phase B) as a fallback
+        3. Two-Tier parent resolution with score aggregation
         """
         k = top_k or VECTOR_TOP_K
 
         if self.store.count() == 0:
             return []
 
-        # Over-fetch for deduplication (Gap 4)
-        fetch_k = k * 3
-        raw_results = self.store.search(query, top_k=fetch_k)
+        # ── Entity Extraction ──────────────────────────────────────────
+        query_entities = None
+        filtered_results = []
+        try:
+            if hasattr(self.store, "get_known_classes"):
+                from graphcoderag.retrieval.query_analyzer import QueryAnalyzer
+                analyzer = QueryAnalyzer()
+                entities = analyzer.extract_entities(
+                    query,
+                    known_classes=self.store.get_known_classes(),
+                    known_files=self.store.get_known_files(),
+                    known_functions=self.store.get_known_functions(),
+                )
+                query_entities = entities
 
-        # Dictionary to store resolved parent results and aggregate scores
-        # Key: chunk_id, Value: dict containing 'result': RetrievalResult, 'child_scores': list of floats
-        resolved_results = {}
+                if entities.has_entities:
+                    candidate_ids = self._build_candidate_set(entities)
+                    if candidate_ids and hasattr(self.store, "search_filtered"):
+                        filtered_results = self.store.search_filtered(
+                            query, top_k=k, candidate_ids=candidate_ids,
+                        )
+                        logger.info(
+                            f"Phase A: {len(filtered_results)} results from "
+                            f"metadata filter (classes={entities.classes}, "
+                            f"files={entities.files}, functions={entities.functions})"
+                        )
+        except Exception as e:
+            logger.warning(f"Metadata-filtered search failed, falling back: {e}")
 
-        for r in raw_results:
+        # ── Phase B: Standard unfiltered search ────────────────────────
+        # Parent-aware progressive fetching: start with k*2, stop early
+        # when we have k unique resolved parents.
+        fetch_k = k * 2
+        max_fetch = k * 3  # safety cap
+        raw_results = self.store.search(query, top_k=min(fetch_k, max_fetch))
+
+        # ── Merge Phase A + Phase B ────────────────────────────────────
+        merged_raw = self._merge_phases(filtered_results, raw_results)
+
+        # ── Parent Resolution + Score Aggregation ──────────────────────
+        resolved_results: Dict[str, dict] = {}
+
+        for r in merged_raw:
             meta = r.get("metadata", {})
-            
+
             # Convert FAISS/Chroma distance to similarity
             dist = r.get("distance", 1.0)
             similarity = max(0.0, 1.0 - (dist / 2.0))
 
-            # Parent Resolution (Gap 3)
+            # Apply Phase A boost (matched both semantically AND structurally)
+            if r.get("_phase_a", False):
+                similarity = min(1.0, similarity * 1.1)
+
+            # Parent Resolution
             parent_id = meta.get("parent_id")
             if parent_id and hasattr(self.store, "get_chunk_metadata"):
                 parent_meta = self.store.get_chunk_metadata(parent_id)
@@ -116,6 +165,9 @@ class VectorRetriever:
                     "result": res,
                     "child_scores": [similarity]
                 }
+                # Check if we have enough unique parents (early stopping)
+                if len(resolved_results) >= k:
+                    break
             else:
                 # Add score for later aggregation
                 resolved_results[resolved_id]["child_scores"].append(similarity)
@@ -126,16 +178,67 @@ class VectorRetriever:
             res = v["result"]
             child_scores = v["child_scores"]
             n = len(child_scores)
-            
+
             # Score Aggregation with Hard Cap
             max_score = max(child_scores)
             bonus = min(0.15, 0.05 * (n - 1))
             res.score = min(1.0, max_score + bonus)
-            
+
             final_results.append(res)
 
         # Sort by aggregated score descending
         final_results.sort(key=lambda x: x.score, reverse=True)
-        
+
         # Truncate back to original requested top_K
         return final_results[:k]
+
+    def _build_candidate_set(self, entities) -> Set[str]:
+        """Build the union of chunk_ids matching any extracted entity."""
+        candidates: Set[str] = set()
+
+        for cls in entities.classes:
+            ids = self.store.get_ids_by_filter(parent_class=cls)
+            candidates |= ids
+
+        for fp in entities.files:
+            ids = self.store.get_ids_by_filter(file_path=fp)
+            candidates |= ids
+
+        # For functions, search by name across all metadata
+        if entities.functions and hasattr(self.store, "metadata"):
+            for cid, meta in self.store.metadata.items():
+                name = meta.get("name", "")
+                if name and name in entities.functions:
+                    candidates.add(cid)
+
+        return candidates
+
+    @staticmethod
+    def _merge_phases(
+        phase_a: List[dict], phase_b: List[dict]
+    ) -> List[dict]:
+        """Merge Phase A (filtered) and Phase B (unfiltered), deduplicating.
+
+        Phase A results get a ``_phase_a`` flag so the caller can apply
+        a similarity boost.  Phase B results fill in any gaps.
+        """
+        seen: Set[str] = set()
+        merged: List[dict] = []
+
+        # Phase A first (higher priority)
+        for r in phase_a:
+            cid = r["chunk_id"]
+            if cid not in seen:
+                r["_phase_a"] = True
+                merged.append(r)
+                seen.add(cid)
+
+        # Phase B
+        for r in phase_b:
+            cid = r["chunk_id"]
+            if cid not in seen:
+                r["_phase_a"] = False
+                merged.append(r)
+                seen.add(cid)
+
+        return merged

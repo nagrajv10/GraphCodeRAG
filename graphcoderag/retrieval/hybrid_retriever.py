@@ -94,6 +94,7 @@ class HybridRetriever:
         2. File-diversified seeding: pick top-1 per unique file
         3. Expand via graph traversal (multi-hop, edge-type filtered)
         4. Merge, deduplicate, re-rank by combined score
+           (with metadata-aware boosts for entity matches)
         5. Return top-K final results
 
         Args:
@@ -115,6 +116,22 @@ class HybridRetriever:
         if not vector_results:
             return []
 
+        # Step 1b: Extract query entities for metadata-aware scoring
+        query_entities = None
+        try:
+            store = self.vector_retriever.store
+            if hasattr(store, "get_known_classes"):
+                from graphcoderag.retrieval.query_analyzer import QueryAnalyzer
+                analyzer = QueryAnalyzer()
+                query_entities = analyzer.extract_entities(
+                    query,
+                    known_classes=store.get_known_classes(),
+                    known_files=store.get_known_files(),
+                    known_functions=store.get_known_functions(),
+                )
+        except Exception as e:
+            logger.debug(f"Query entity extraction skipped: {e}")
+
         # Step 2: File-diversified seeding — top-1 per unique file
         # Instead of naively taking top-5, pick the best result from each file
         # This ensures graph seeds span multiple files → broader graph expansion
@@ -127,8 +144,11 @@ class HybridRetriever:
         else:
             graph_results = []
 
-        # Step 3: Merge and score
-        merged = self._merge_and_score(vector_results, graph_results, query=query)
+        # Step 3: Merge and score (with metadata-aware boosts)
+        merged = self._merge_and_score(
+            vector_results, graph_results, query=query,
+            query_entities=query_entities,
+        )
 
         # Step 4: Return top-K (vector results in original order, graph appended)
         return merged[:f_k]
@@ -204,6 +224,7 @@ class HybridRetriever:
         vector_results: List[RetrievalResult],
         graph_results: list,
         query: str = "",
+        query_entities=None,
     ) -> List[RetrievalResult]:
         """
         Merge vector and graph results — graph can REPLACE bottom vector results.
@@ -213,7 +234,9 @@ class HybridRetriever:
         2. Graph chunks compete for the bottom half if their hybrid_score
            (alpha * cosine_sim + (1-alpha) * graph_proximity) exceeds
            the vector result they would replace
-        3. Final list is sorted by score: locked top + best of (bottom vec, graph)
+        3. Metadata-aware boosts: if query mentions a class/file and the
+           graph chunk matches, apply a multiplicative bonus
+        4. Final list is sorted by score: locked top + best of (bottom vec, graph)
 
         This ensures graph genuinely improves results without hurting top rankings.
         """
@@ -297,11 +320,48 @@ class HybridRetriever:
                 hybrid_score = ALPHA * scaled_cos_sim + (1 - ALPHA) * graph_proximity
 
                 # Cross-file bonus: graph's core strength
-                # Cross-file bonus: graph's core strength
                 is_cross_file = gr.file_path not in vector_files
                 if is_cross_file:
                     hybrid_score *= 1.15
-                    
+
+                # ── Metadata-aware boosts ──────────────────────────
+                if query_entities is not None and query_entities.has_entities:
+                    # Class match: graph chunk belongs to a queried class
+                    if query_entities.classes:
+                        chunk_class = gr.chunk_type == "class" and gr.name
+                        chunk_parent = getattr(gr, "parent_class", "") or ""
+                        # Check metadata from the vector store
+                        gr_meta = None
+                        if hasattr(self.vector_retriever.store, "metadata"):
+                            gr_meta = self.vector_retriever.store.metadata.get(gr.chunk_id, {})
+                        matched_class = False
+                        for qc in query_entities.classes:
+                            qc_low = qc.lower()
+                            if (gr.name and gr.name.lower() == qc_low) or \
+                               (chunk_parent and chunk_parent.lower() == qc_low):
+                                matched_class = True
+                                break
+                            if gr_meta:
+                                meta_parent = gr_meta.get("parent_class", "")
+                                meta_name = gr_meta.get("name", "")
+                                if (meta_parent and meta_parent.lower() == qc_low) or \
+                                   (meta_name and meta_name.lower() == qc_low):
+                                    matched_class = True
+                                    break
+                        if matched_class:
+                            hybrid_score *= 1.15
+
+                    # File match: graph chunk is in a queried file
+                    if query_entities.files:
+                        for qf in query_entities.files:
+                            if gr.file_path and (
+                                gr.file_path == qf or
+                                gr.file_path.endswith("/" + qf) or
+                                gr.file_path.endswith("\\" + qf)
+                            ):
+                                hybrid_score *= 1.10
+                                break
+
                 # Two-Tier Visualization: How many vector chunks led to this graph node?
                 children_count = sum(1 for vr in vector_results if vr.file_path == gr.file_path and vr.chunk_id != gr.chunk_id)
                 if children_count == 0 and not is_cross_file:

@@ -32,24 +32,12 @@ class VectorStore:
         self.client = chromadb.PersistentClient(path=CHROMA_PERSIST_DIR)
         self._collection_name = collection_name or CHROMA_COLLECTION_NAME
 
-        # Use Jina code-specialized embeddings via sentence-transformers
-        try:
-            from chromadb.utils.embedding_functions import (
-                SentenceTransformerEmbeddingFunction,
-            )
-            from graphcoderag.config import SFR_EMBEDDING_MODEL
-            self.embed_fn = SentenceTransformerEmbeddingFunction(
-                model_name=SFR_EMBEDDING_MODEL,
-                trust_remote_code=True,
-            )
-        except Exception as e:
-            logger.warning(f"Jina model failed ({e}), falling back to MiniLM-L6-v2")
-            from chromadb.utils.embedding_functions import (
-                SentenceTransformerEmbeddingFunction,
-            )
-            self.embed_fn = SentenceTransformerEmbeddingFunction(
-                model_name="all-MiniLM-L6-v2"
-            )
+        from chromadb.utils.embedding_functions import OpenAIEmbeddingFunction
+        from graphcoderag.config import EMBEDDING_MODEL, OPENAI_API_KEY
+        self.embed_fn = OpenAIEmbeddingFunction(
+            api_key=OPENAI_API_KEY,
+            model_name=EMBEDDING_MODEL
+        )
 
         self.collection = self.client.get_or_create_collection(
             name=self._collection_name,

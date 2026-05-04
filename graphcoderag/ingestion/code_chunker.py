@@ -19,8 +19,9 @@ Usage:
     chunks = chunker.chunk_file(file_path, ast_nodes, source_code)
 """
 import hashlib
+import re
 from dataclasses import dataclass, field
-from typing import List, Optional
+from typing import List, Optional, Dict, Any
 from graphcoderag.ingestion.ast_parser import ASTNode
 
 
@@ -38,6 +39,7 @@ class CodeChunk:
     signature: Optional[str]     # Function signature (for functions)
     parent_class: Optional[str]  # Parent class name (for methods)
     decorators: List[str] = field(default_factory=list)
+    import_names: List[str] = field(default_factory=list)  # Module names imported in this file
     parent_id: Optional[str] = None # ID of the parent chunk (if this is a child)
     is_child: bool = False       # True if this is a split child chunk
 
@@ -62,6 +64,30 @@ class CodeChunk:
             parts.append(f"# Docstring: {self.docstring[:200]}")
         parts.append(self.source_code)
         return "\n".join(parts)
+
+    def to_metadata_dict(self) -> Dict[str, Any]:
+        """Return a clean dictionary of all metadata fields.
+
+        This is the canonical source of metadata — used by the FAISS
+        store so that field names are defined in one place rather than
+        being duplicated across modules.
+        """
+        return {
+            "chunk_id": self.chunk_id,
+            "file_path": self.file_path,
+            "chunk_type": self.chunk_type,
+            "name": self.display_name,
+            "start_line": self.start_line,
+            "end_line": self.end_line,
+            "docstring": (self.docstring or "")[:500],
+            "parent_class": self.parent_class or "",
+            "signature": self.signature or "",
+            "decorators": self.decorators,
+            "import_names": self.import_names,
+            "parent_id": self.parent_id,
+            "is_child": self.is_child,
+            "source_code": self.source_code,
+        }
 
 
 class CodeChunker:
@@ -152,7 +178,43 @@ class CodeChunker:
                     )
                     chunks.append(child_chunk)
 
+        # --- Extract import names from module-level chunk ---
+        import_names = self._extract_import_names(module_chunk) if module_chunk else []
+
+        # Attach import_names to ALL chunks from this file
+        if import_names:
+            for chunk in chunks:
+                chunk.import_names = import_names
+
         return chunks
+
+    @staticmethod
+    def _extract_import_names(module_chunk: CodeChunk) -> List[str]:
+        """Parse import statements from module-level source code.
+
+        Returns a list of top-level module names (e.g., ['os', 'flask', 'click']).
+        Uses simple regexes — no AST parsing needed for this.
+        """
+        names: List[str] = []
+        if not module_chunk or not module_chunk.source_code:
+            return names
+
+        # Match 'from foo.bar import ...' → capture 'foo'
+        for m in re.finditer(r'^\s*from\s+([A-Za-z_][A-Za-z0-9_.]*)\s+import', module_chunk.source_code, re.MULTILINE):
+            top_level = m.group(1).split('.')[0]
+            if top_level and top_level not in names:
+                names.append(top_level)
+
+        # Match 'import foo, bar.baz' → capture 'foo', 'bar'
+        # Use [^ \t] exclusion trick: allow commas, dots, spaces, letters — but NOT newlines
+        for m in re.finditer(r'^\s*import\s+([A-Za-z_][A-Za-z0-9_., ]*)', module_chunk.source_code, re.MULTILINE):
+            for part in m.group(1).split(','):
+                part = part.strip().split(' as ')[0].strip()
+                top_level = part.split('.')[0]
+                if top_level and top_level not in names:
+                    names.append(top_level)
+
+        return names
 
     def _extract_module_level(
         self, rel_file_path: str, ast_nodes: List[ASTNode], source_code: str

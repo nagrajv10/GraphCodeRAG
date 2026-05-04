@@ -1,0 +1,4979 @@
+{
+  "timestamp": "2026-05-04T04:02:41.405579",
+  "backend": "faiss",
+  "embedding_model": "nomic-ai/CodeRankEmbed",
+  "mode": "retrieval_only",
+  "repos": {
+    "click": {
+      "repo": "click",
+      "label": "Small (~20k LOC)",
+      "retrieval": {
+        "aggregated": {
+          "K=1": {
+            "A": {
+              "mrr": 0.6667,
+              "recall": 0.3611,
+              "precision": 0.6667,
+              "ndcg": 0.6667,
+              "file_recall": 0.3611,
+              "hit_rate": 0.6667
+            },
+            "B_vec": {
+              "mrr": 0.9333,
+              "recall": 0.4944,
+              "precision": 0.9333,
+              "ndcg": 0.9333,
+              "file_recall": 0.4944,
+              "hit_rate": 0.9333
+            },
+            "B_hybrid": {
+              "mrr": 0.9333,
+              "recall": 0.4944,
+              "precision": 0.9333,
+              "ndcg": 0.9333,
+              "file_recall": 0.4944,
+              "hit_rate": 0.9333
+            }
+          },
+          "K=3": {
+            "A": {
+              "mrr": 0.7667,
+              "recall": 0.4611,
+              "precision": 0.7111,
+              "ndcg": 0.9605,
+              "file_recall": 0.4611,
+              "hit_rate": 0.8667
+            },
+            "B_vec": {
+              "mrr": 0.9556,
+              "recall": 0.5833,
+              "precision": 0.8889,
+              "ndcg": 1.2327,
+              "file_recall": 0.5833,
+              "hit_rate": 1.0
+            },
+            "B_hybrid": {
+              "mrr": 0.9556,
+              "recall": 0.5833,
+              "precision": 0.8889,
+              "ndcg": 1.2327,
+              "file_recall": 0.5833,
+              "hit_rate": 1.0
+            }
+          },
+          "K=5": {
+            "A": {
+              "mrr": 0.7833,
+              "recall": 0.5611,
+              "precision": 0.68,
+              "ndcg": 1.2895,
+              "file_recall": 0.5611,
+              "hit_rate": 0.9333
+            },
+            "B_vec": {
+              "mrr": 0.9556,
+              "recall": 0.6333,
+              "precision": 0.92,
+              "ndcg": 1.7272,
+              "file_recall": 0.6333,
+              "hit_rate": 1.0
+            },
+            "B_hybrid": {
+              "mrr": 0.9556,
+              "recall": 0.6333,
+              "precision": 0.92,
+              "ndcg": 1.7272,
+              "file_recall": 0.6333,
+              "hit_rate": 1.0
+            }
+          },
+          "K=10": {
+            "A": {
+              "mrr": 0.7944,
+              "recall": 0.6667,
+              "precision": 0.64,
+              "ndcg": 1.9377,
+              "file_recall": 0.6667,
+              "hit_rate": 1.0
+            },
+            "B_vec": {
+              "mrr": 0.9556,
+              "recall": 0.7222,
+              "precision": 0.82,
+              "ndcg": 2.4076,
+              "file_recall": 0.7222,
+              "hit_rate": 1.0
+            },
+            "B_hybrid": {
+              "mrr": 0.9556,
+              "recall": 0.7222,
+              "precision": 0.82,
+              "ndcg": 2.4058,
+              "file_recall": 0.7222,
+              "hit_rate": 1.0
+            }
+          }
+        },
+        "avg_chunks": {
+          "A": 10.0,
+          "B_vec": 9.9,
+          "B_hybrid": 9.9
+        },
+        "per_case": [
+          {
+            "instance_id": "click_custom_0",
+            "relevant_files": [
+              "src/click/core.py",
+              "src/click/decorators.py"
+            ],
+            "files": {
+              "A": [
+                "tests/test_basic.py",
+                "tests/test_basic.py",
+                "tests/test_basic.py",
+                "src/click/core.py",
+                "src/click/core.py",
+                "src/click/core.py",
+                "tests/typing/typing_aliased_group.py",
+                "tests/typing/typing_aliased_group.py",
+                "tests/test_command_decorators.py",
+                "tests/test_basic.py"
+              ],
+              "B_vec": [
+                "src/click/core.py",
+                "src/click/core.py",
+                "src/click/core.py",
+                "src/click/core.py",
+                "src/click/core.py",
+                "examples/completion/completion.py",
+                "src/click/core.py",
+                "tests/typing/typing_aliased_group.py",
+                "src/click/core.py",
+                "src/click/decorators.py"
+              ],
+              "B_hybrid": [
+                "src/click/core.py",
+                "src/click/core.py",
+                "src/click/core.py",
+                "src/click/core.py",
+                "src/click/core.py",
+                "examples/completion/completion.py",
+                "src/click/core.py",
+                "src/flask/cli.py",
+                "tests/typing/typing_aliased_group.py",
+                "src/click/core.py"
+              ]
+            },
+            "num_chunks": {
+              "A": 10,
+              "B_vec": 10,
+              "B_hybrid": 10
+            },
+            "metrics": {
+              "K=1": {
+                "A": {
+                  "mrr": 0.0,
+                  "recall": 0.0,
+                  "precision": 0.0,
+                  "ndcg": 0.0,
+                  "file_recall": 0.0,
+                  "hit_rate": 0.0
+                },
+                "B_vec": {
+                  "mrr": 1.0,
+                  "recall": 0.5,
+                  "precision": 1.0,
+                  "ndcg": 1.0,
+                  "file_recall": 0.5,
+                  "hit_rate": 1.0
+                },
+                "B_hybrid": {
+                  "mrr": 1.0,
+                  "recall": 0.5,
+                  "precision": 1.0,
+                  "ndcg": 1.0,
+                  "file_recall": 0.5,
+                  "hit_rate": 1.0
+                }
+              },
+              "K=3": {
+                "A": {
+                  "mrr": 0.0,
+                  "recall": 0.0,
+                  "precision": 0.0,
+                  "ndcg": 0.0,
+                  "file_recall": 0.0,
+                  "hit_rate": 0.0
+                },
+                "B_vec": {
+                  "mrr": 1.0,
+                  "recall": 0.5,
+                  "precision": 1.0,
+                  "ndcg": 1.3065735963827294,
+                  "file_recall": 0.5,
+                  "hit_rate": 1.0
+                },
+                "B_hybrid": {
+                  "mrr": 1.0,
+                  "recall": 0.5,
+                  "precision": 1.0,
+                  "ndcg": 1.3065735963827294,
+                  "file_recall": 0.5,
+                  "hit_rate": 1.0
+                }
+              },
+              "K=5": {
+                "A": {
+                  "mrr": 0.25,
+                  "recall": 0.5,
+                  "precision": 0.4,
+                  "ndcg": 0.5012658353418871,
+                  "file_recall": 0.5,
+                  "hit_rate": 1.0
+                },
+                "B_vec": {
+                  "mrr": 1.0,
+                  "recall": 0.5,
+                  "precision": 1.0,
+                  "ndcg": 1.8078394317246163,
+                  "file_recall": 0.5,
+                  "hit_rate": 1.0
+                },
+                "B_hybrid": {
+                  "mrr": 1.0,
+                  "recall": 0.5,
+                  "precision": 1.0,
+                  "ndcg": 1.8078394317246163,
+                  "file_recall": 0.5,
+                  "hit_rate": 1.0
+                }
+              },
+              "K=10": {
+                "A": {
+                  "mrr": 0.25,
+                  "recall": 0.5,
+                  "precision": 0.3,
+                  "ndcg": 0.7196732721600513,
+                  "file_recall": 0.5,
+                  "hit_rate": 1.0
+                },
+                "B_vec": {
+                  "mrr": 1.0,
+                  "recall": 1.0,
+                  "precision": 0.8,
+                  "ndcg": 2.3740368128767186,
+                  "file_recall": 1.0,
+                  "hit_rate": 1.0
+                },
+                "B_hybrid": {
+                  "mrr": 1.0,
+                  "recall": 0.5,
+                  "precision": 0.7,
+                  "ndcg": 2.18946111609715,
+                  "file_recall": 0.5,
+                  "hit_rate": 1.0
+                }
+              }
+            }
+          },
+          {
+            "instance_id": "click_custom_1",
+            "relevant_files": [
+              "src/click/parser.py",
+              "src/click/core.py",
+              "src/click/types.py"
+            ],
+            "files": {
+              "A": [
+                "src/click/parser.py",
+                "src/click/parser.py",
+                "src/click/parser.py",
+                "tests/test_commands.py",
+                "src/click/parser.py",
+                "tests/test_commands.py",
+                "tests/test_info_dict.py",
+                "src/click/parser.py",
+                "tests/test_options.py",
+                "src/click/core.py"
+              ],
+              "B_vec": [
+                "src/click/core.py",
+                "src/click/core.py",
+                "src/click/core.py",
+                "src/click/core.py",
+                "src/click/core.py",
+                "src/click/core.py",
+                "src/click/parser.py",
+                "src/click/parser.py",
+                "src/click/core.py",
+                "src/click/parser.py"
+              ],
+              "B_hybrid": [
+                "src/click/core.py",
+                "src/click/core.py",
+                "src/click/core.py",
+                "src/click/core.py",
+                "src/click/core.py",
+                "src/click/core.py",
+                "src/click/parser.py",
+                "src/click/parser.py",
+                "src/click/core.py",
+                "src/click/parser.py"
+              ]
+            },
+            "num_chunks": {
+              "A": 10,
+              "B_vec": 10,
+              "B_hybrid": 10
+            },
+            "metrics": {
+              "K=1": {
+                "A": {
+                  "mrr": 1.0,
+                  "recall": 0.3333333333333333,
+                  "precision": 1.0,
+                  "ndcg": 1.0,
+                  "file_recall": 0.3333333333333333,
+                  "hit_rate": 1.0
+                },
+                "B_vec": {
+                  "mrr": 1.0,
+                  "recall": 0.3333333333333333,
+                  "precision": 1.0,
+                  "ndcg": 1.0,
+                  "file_recall": 0.3333333333333333,
+                  "hit_rate": 1.0
+                },
+                "B_hybrid": {
+                  "mrr": 1.0,
+                  "recall": 0.3333333333333333,
+                  "precision": 1.0,
+                  "ndcg": 1.0,
+                  "file_recall": 0.3333333333333333,
+                  "hit_rate": 1.0
+                }
+              },
+              "K=3": {
+                "A": {
+                  "mrr": 1.0,
+                  "recall": 0.3333333333333333,
+                  "precision": 1.0,
+                  "ndcg": 1.0,
+                  "file_recall": 0.3333333333333333,
+                  "hit_rate": 1.0
+                },
+                "B_vec": {
+                  "mrr": 1.0,
+                  "recall": 0.3333333333333333,
+                  "precision": 1.0,
+                  "ndcg": 1.0,
+                  "file_recall": 0.3333333333333333,
+                  "hit_rate": 1.0
+                },
+                "B_hybrid": {
+                  "mrr": 1.0,
+                  "recall": 0.3333333333333333,
+                  "precision": 1.0,
+                  "ndcg": 1.0,
+                  "file_recall": 0.3333333333333333,
+                  "hit_rate": 1.0
+                }
+              },
+              "K=5": {
+                "A": {
+                  "mrr": 1.0,
+                  "recall": 0.3333333333333333,
+                  "precision": 0.8,
+                  "ndcg": 1.1815417925373526,
+                  "file_recall": 0.3333333333333333,
+                  "hit_rate": 1.0
+                },
+                "B_vec": {
+                  "mrr": 1.0,
+                  "recall": 0.3333333333333333,
+                  "precision": 1.0,
+                  "ndcg": 1.3836491390379002,
+                  "file_recall": 0.3333333333333333,
+                  "hit_rate": 1.0
+                },
+                "B_hybrid": {
+                  "mrr": 1.0,
+                  "recall": 0.3333333333333333,
+                  "precision": 1.0,
+                  "ndcg": 1.3836491390379002,
+                  "file_recall": 0.3333333333333333,
+                  "hit_rate": 1.0
+                }
+              },
+              "K=10": {
+                "A": {
+                  "mrr": 1.0,
+                  "recall": 0.6666666666666666,
+                  "precision": 0.6,
+                  "ndcg": 1.465234721452733,
+                  "file_recall": 0.6666666666666666,
+                  "hit_rate": 1.0
+                },
+                "B_vec": {
+                  "mrr": 1.0,
+                  "recall": 0.6666666666666666,
+                  "precision": 1.0,
+                  "ndcg": 2.1321957377868976,
+                  "file_recall": 0.6666666666666666,
+                  "hit_rate": 1.0
+                },
+                "B_hybrid": {
+                  "mrr": 1.0,
+                  "recall": 0.6666666666666666,
+                  "precision": 1.0,
+                  "ndcg": 2.1321957377868976,
+                  "file_recall": 0.6666666666666666,
+                  "hit_rate": 1.0
+                }
+              }
+            }
+          },
+          {
+            "instance_id": "click_custom_2",
+            "relevant_files": [
+              "src/click/globals.py",
+              "src/click/core.py"
+            ],
+            "files": {
+              "A": [
+                "src/click/core.py",
+                "src/click/core.py",
+                "src/click/core.py",
+                "src/click/core.py",
+                "tests/test_context.py",
+                "tests/test_custom_classes.py",
+                "tests/test_context.py",
+                "tests/test_context.py",
+                "tests/test_context.py",
+                "src/click/core.py"
+              ],
+              "B_vec": [
+                "src/click/core.py",
+                "src/click/core.py",
+                "src/click/core.py",
+                "src/click/core.py",
+                "src/click/core.py",
+                "src/click/core.py",
+                "src/click/core.py",
+                "src/click/core.py"
+              ],
+              "B_hybrid": [
+                "src/click/core.py",
+                "src/click/core.py",
+                "src/click/core.py",
+                "src/click/core.py",
+                "src/click/core.py",
+                "src/click/core.py",
+                "src/click/core.py",
+                "src/click/core.py"
+              ]
+            },
+            "num_chunks": {
+              "A": 10,
+              "B_vec": 8,
+              "B_hybrid": 8
+            },
+            "metrics": {
+              "K=1": {
+                "A": {
+                  "mrr": 1.0,
+                  "recall": 0.5,
+                  "precision": 1.0,
+                  "ndcg": 1.0,
+                  "file_recall": 0.5,
+                  "hit_rate": 1.0
+                },
+                "B_vec": {
+                  "mrr": 1.0,
+                  "recall": 0.5,
+                  "precision": 1.0,
+                  "ndcg": 1.0,
+                  "file_recall": 0.5,
+                  "hit_rate": 1.0
+                },
+                "B_hybrid": {
+                  "mrr": 1.0,
+                  "recall": 0.5,
+                  "precision": 1.0,
+                  "ndcg": 1.0,
+                  "file_recall": 0.5,
+                  "hit_rate": 1.0
+                }
+              },
+              "K=3": {
+                "A": {
+                  "mrr": 1.0,
+                  "recall": 0.5,
+                  "precision": 1.0,
+                  "ndcg": 1.3065735963827294,
+                  "file_recall": 0.5,
+                  "hit_rate": 1.0
+                },
+                "B_vec": {
+                  "mrr": 1.0,
+                  "recall": 0.5,
+                  "precision": 1.0,
+                  "ndcg": 1.3065735963827294,
+                  "file_recall": 0.5,
+                  "hit_rate": 1.0
+                },
+                "B_hybrid": {
+                  "mrr": 1.0,
+                  "recall": 0.5,
+                  "precision": 1.0,
+                  "ndcg": 1.3065735963827294,
+                  "file_recall": 0.5,
+                  "hit_rate": 1.0
+                }
+              },
+              "K=5": {
+                "A": {
+                  "mrr": 1.0,
+                  "recall": 0.5,
+                  "precision": 0.8,
+                  "ndcg": 1.5706417189553201,
+                  "file_recall": 0.5,
+                  "hit_rate": 1.0
+                },
+                "B_vec": {
+                  "mrr": 1.0,
+                  "recall": 0.5,
+                  "precision": 1.0,
+                  "ndcg": 1.8078394317246163,
+                  "file_recall": 0.5,
+                  "hit_rate": 1.0
+                },
+                "B_hybrid": {
+                  "mrr": 1.0,
+                  "recall": 0.5,
+                  "precision": 1.0,
+                  "ndcg": 1.8078394317246163,
+                  "file_recall": 0.5,
+                  "hit_rate": 1.0
+                }
+              },
+              "K=10": {
+                "A": {
+                  "mrr": 1.0,
+                  "recall": 0.5,
+                  "precision": 0.5,
+                  "ndcg": 1.7478810057393677,
+                  "file_recall": 0.5,
+                  "hit_rate": 1.0
+                },
+                "B_vec": {
+                  "mrr": 1.0,
+                  "recall": 0.5,
+                  "precision": 1.0,
+                  "ndcg": 2.4240556697485376,
+                  "file_recall": 0.5,
+                  "hit_rate": 1.0
+                },
+                "B_hybrid": {
+                  "mrr": 1.0,
+                  "recall": 0.5,
+                  "precision": 1.0,
+                  "ndcg": 2.4240556697485376,
+                  "file_recall": 0.5,
+                  "hit_rate": 1.0
+                }
+              }
+            }
+          },
+          {
+            "instance_id": "click_custom_3",
+            "relevant_files": [
+              "src/click/shell_completion.py",
+              "src/click/core.py"
+            ],
+            "files": {
+              "A": [
+                "examples/completion/completion.py",
+                "src/click/shell_completion.py",
+                "src/click/shell_completion.py",
+                "tests/test_shell_completion.py",
+                "tests/test_shell_completion.py",
+                "src/click/shell_completion.py",
+                "src/click/shell_completion.py",
+                "examples/completion/completion.py",
+                "examples/completion/completion.py",
+                "examples/completion/completion.py"
+              ],
+              "B_vec": [
+                "examples/completion/completion.py",
+                "examples/completion/completion.py",
+                "src/click/shell_completion.py",
+                "src/click/shell_completion.py",
+                "examples/completion/completion.py",
+                "examples/completion/completion.py",
+                "examples/completion/completion.py",
+                "examples/completion/completion.py",
+                "examples/completion/completion.py",
+                "examples/completion/completion.py"
+              ],
+              "B_hybrid": [
+                "examples/completion/completion.py",
+                "examples/completion/completion.py",
+                "src/click/shell_completion.py",
+                "src/click/shell_completion.py",
+                "examples/completion/completion.py",
+                "examples/completion/completion.py",
+                "examples/completion/completion.py",
+                "examples/completion/completion.py",
+                "src/click/core.py",
+                "src/click/shell_completion.py"
+              ]
+            },
+            "num_chunks": {
+              "A": 10,
+              "B_vec": 10,
+              "B_hybrid": 10
+            },
+            "metrics": {
+              "K=1": {
+                "A": {
+                  "mrr": 0.0,
+                  "recall": 0.0,
+                  "precision": 0.0,
+                  "ndcg": 0.0,
+                  "file_recall": 0.0,
+                  "hit_rate": 0.0
+                },
+                "B_vec": {
+                  "mrr": 0.0,
+                  "recall": 0.0,
+                  "precision": 0.0,
+                  "ndcg": 0.0,
+                  "file_recall": 0.0,
+                  "hit_rate": 0.0
+                },
+                "B_hybrid": {
+                  "mrr": 0.0,
+                  "recall": 0.0,
+                  "precision": 0.0,
+                  "ndcg": 0.0,
+                  "file_recall": 0.0,
+                  "hit_rate": 0.0
+                }
+              },
+              "K=3": {
+                "A": {
+                  "mrr": 0.5,
+                  "recall": 0.5,
+                  "precision": 0.6666666666666666,
+                  "ndcg": 0.6934264036172708,
+                  "file_recall": 0.5,
+                  "hit_rate": 1.0
+                },
+                "B_vec": {
+                  "mrr": 0.3333333333333333,
+                  "recall": 0.5,
+                  "precision": 0.3333333333333333,
+                  "ndcg": 0.3065735963827292,
+                  "file_recall": 0.5,
+                  "hit_rate": 1.0
+                },
+                "B_hybrid": {
+                  "mrr": 0.3333333333333333,
+                  "recall": 0.5,
+                  "precision": 0.3333333333333333,
+                  "ndcg": 0.3065735963827292,
+                  "file_recall": 0.5,
+                  "hit_rate": 1.0
+                }
+              },
+              "K=5": {
+                "A": {
+                  "mrr": 0.5,
+                  "recall": 0.5,
+                  "precision": 0.4,
+                  "ndcg": 0.6934264036172708,
+                  "file_recall": 0.5,
+                  "hit_rate": 1.0
+                },
+                "B_vec": {
+                  "mrr": 0.3333333333333333,
+                  "recall": 0.5,
+                  "precision": 0.4,
+                  "ndcg": 0.5706417189553201,
+                  "file_recall": 0.5,
+                  "hit_rate": 1.0
+                },
+                "B_hybrid": {
+                  "mrr": 0.3333333333333333,
+                  "recall": 0.5,
+                  "precision": 0.4,
+                  "ndcg": 0.5706417189553201,
+                  "file_recall": 0.5,
+                  "hit_rate": 1.0
+                }
+              },
+              "K=10": {
+                "A": {
+                  "mrr": 0.5,
+                  "recall": 0.5,
+                  "precision": 0.4,
+                  "ndcg": 1.1162162380239211,
+                  "file_recall": 0.5,
+                  "hit_rate": 1.0
+                },
+                "B_vec": {
+                  "mrr": 0.3333333333333333,
+                  "recall": 0.5,
+                  "precision": 0.2,
+                  "ndcg": 0.5706417189553201,
+                  "file_recall": 0.5,
+                  "hit_rate": 1.0
+                },
+                "B_hybrid": {
+                  "mrr": 0.3333333333333333,
+                  "recall": 1.0,
+                  "precision": 0.4,
+                  "ndcg": 0.9324567025189361,
+                  "file_recall": 1.0,
+                  "hit_rate": 1.0
+                }
+              }
+            }
+          },
+          {
+            "instance_id": "click_custom_4",
+            "relevant_files": [
+              "src/click/core.py",
+              "src/click/types.py"
+            ],
+            "files": {
+              "A": [
+                "src/click/types.py",
+                "src/click/types.py",
+                "src/click/types.py",
+                "src/click/core.py",
+                "src/click/types.py",
+                "src/click/types.py",
+                "src/click/types.py",
+                "tests/test_types.py",
+                "src/click/types.py",
+                "src/click/types.py"
+              ],
+              "B_vec": [
+                "src/click/types.py",
+                "src/click/types.py",
+                "src/click/types.py",
+                "src/click/types.py",
+                "src/click/types.py",
+                "src/click/types.py",
+                "src/click/types.py",
+                "src/click/types.py",
+                "src/click/types.py",
+                "src/click/types.py"
+              ],
+              "B_hybrid": [
+                "src/click/types.py",
+                "src/click/types.py",
+                "src/click/types.py",
+                "src/click/types.py",
+                "src/click/types.py",
+                "src/click/types.py",
+                "src/click/types.py",
+                "src/click/types.py",
+                "src/click/types.py",
+                "src/click/types.py"
+              ]
+            },
+            "num_chunks": {
+              "A": 10,
+              "B_vec": 10,
+              "B_hybrid": 10
+            },
+            "metrics": {
+              "K=1": {
+                "A": {
+                  "mrr": 1.0,
+                  "recall": 0.5,
+                  "precision": 1.0,
+                  "ndcg": 1.0,
+                  "file_recall": 0.5,
+                  "hit_rate": 1.0
+                },
+                "B_vec": {
+                  "mrr": 1.0,
+                  "recall": 0.5,
+                  "precision": 1.0,
+                  "ndcg": 1.0,
+                  "file_recall": 0.5,
+                  "hit_rate": 1.0
+                },
+                "B_hybrid": {
+                  "mrr": 1.0,
+                  "recall": 0.5,
+                  "precision": 1.0,
+                  "ndcg": 1.0,
+                  "file_recall": 0.5,
+                  "hit_rate": 1.0
+                }
+              },
+              "K=3": {
+                "A": {
+                  "mrr": 1.0,
+                  "recall": 0.5,
+                  "precision": 1.0,
+                  "ndcg": 1.3065735963827294,
+                  "file_recall": 0.5,
+                  "hit_rate": 1.0
+                },
+                "B_vec": {
+                  "mrr": 1.0,
+                  "recall": 0.5,
+                  "precision": 1.0,
+                  "ndcg": 1.3065735963827294,
+                  "file_recall": 0.5,
+                  "hit_rate": 1.0
+                },
+                "B_hybrid": {
+                  "mrr": 1.0,
+                  "recall": 0.5,
+                  "precision": 1.0,
+                  "ndcg": 1.3065735963827294,
+                  "file_recall": 0.5,
+                  "hit_rate": 1.0
+                }
+              },
+              "K=5": {
+                "A": {
+                  "mrr": 1.0,
+                  "recall": 1.0,
+                  "precision": 1.0,
+                  "ndcg": 1.8078394317246163,
+                  "file_recall": 1.0,
+                  "hit_rate": 1.0
+                },
+                "B_vec": {
+                  "mrr": 1.0,
+                  "recall": 0.5,
+                  "precision": 1.0,
+                  "ndcg": 1.8078394317246163,
+                  "file_recall": 0.5,
+                  "hit_rate": 1.0
+                },
+                "B_hybrid": {
+                  "mrr": 1.0,
+                  "recall": 0.5,
+                  "precision": 1.0,
+                  "ndcg": 1.8078394317246163,
+                  "file_recall": 0.5,
+                  "hit_rate": 1.0
+                }
+              },
+              "K=10": {
+                "A": {
+                  "mrr": 1.0,
+                  "recall": 1.0,
+                  "precision": 0.9,
+                  "ndcg": 2.5924442496948825,
+                  "file_recall": 1.0,
+                  "hit_rate": 1.0
+                },
+                "B_vec": {
+                  "mrr": 1.0,
+                  "recall": 0.5,
+                  "precision": 1.0,
+                  "ndcg": 2.7858706533121533,
+                  "file_recall": 0.5,
+                  "hit_rate": 1.0
+                },
+                "B_hybrid": {
+                  "mrr": 1.0,
+                  "recall": 0.5,
+                  "precision": 1.0,
+                  "ndcg": 2.7858706533121533,
+                  "file_recall": 0.5,
+                  "hit_rate": 1.0
+                }
+              }
+            }
+          },
+          {
+            "instance_id": "click_custom_5",
+            "relevant_files": [
+              "src/click/testing.py"
+            ],
+            "files": {
+              "A": [
+                "src/click/testing.py",
+                "src/click/testing.py",
+                "src/click/testing.py",
+                "src/click/testing.py",
+                "src/click/testing.py",
+                "src/click/testing.py",
+                "src/click/testing.py",
+                "src/click/testing.py",
+                "src/click/testing.py",
+                "src/click/testing.py"
+              ],
+              "B_vec": [
+                "src/click/testing.py",
+                "src/click/testing.py",
+                "src/click/testing.py",
+                "src/click/testing.py",
+                "src/click/testing.py",
+                "examples/naval/naval.py",
+                "examples/inout/inout.py",
+                "examples/validation/validation.py",
+                "src/click/utils.py",
+                "src/click/core.py"
+              ],
+              "B_hybrid": [
+                "src/click/testing.py",
+                "src/click/testing.py",
+                "src/click/testing.py",
+                "src/click/testing.py",
+                "src/click/testing.py",
+                "examples/naval/naval.py",
+                "examples/inout/inout.py",
+                "examples/validation/validation.py",
+                "src/click/utils.py",
+                "src/click/core.py"
+              ]
+            },
+            "num_chunks": {
+              "A": 10,
+              "B_vec": 10,
+              "B_hybrid": 10
+            },
+            "metrics": {
+              "K=1": {
+                "A": {
+                  "mrr": 1.0,
+                  "recall": 1.0,
+                  "precision": 1.0,
+                  "ndcg": 1.0,
+                  "file_recall": 1.0,
+                  "hit_rate": 1.0
+                },
+                "B_vec": {
+                  "mrr": 1.0,
+                  "recall": 1.0,
+                  "precision": 1.0,
+                  "ndcg": 1.0,
+                  "file_recall": 1.0,
+                  "hit_rate": 1.0
+                },
+                "B_hybrid": {
+                  "mrr": 1.0,
+                  "recall": 1.0,
+                  "precision": 1.0,
+                  "ndcg": 1.0,
+                  "file_recall": 1.0,
+                  "hit_rate": 1.0
+                }
+              },
+              "K=3": {
+                "A": {
+                  "mrr": 1.0,
+                  "recall": 1.0,
+                  "precision": 1.0,
+                  "ndcg": 2.1309297535714578,
+                  "file_recall": 1.0,
+                  "hit_rate": 1.0
+                },
+                "B_vec": {
+                  "mrr": 1.0,
+                  "recall": 1.0,
+                  "precision": 1.0,
+                  "ndcg": 2.1309297535714578,
+                  "file_recall": 1.0,
+                  "hit_rate": 1.0
+                },
+                "B_hybrid": {
+                  "mrr": 1.0,
+                  "recall": 1.0,
+                  "precision": 1.0,
+                  "ndcg": 2.1309297535714578,
+                  "file_recall": 1.0,
+                  "hit_rate": 1.0
+                }
+              },
+              "K=5": {
+                "A": {
+                  "mrr": 1.0,
+                  "recall": 1.0,
+                  "precision": 1.0,
+                  "ndcg": 2.9484591188793923,
+                  "file_recall": 1.0,
+                  "hit_rate": 1.0
+                },
+                "B_vec": {
+                  "mrr": 1.0,
+                  "recall": 1.0,
+                  "precision": 1.0,
+                  "ndcg": 2.9484591188793923,
+                  "file_recall": 1.0,
+                  "hit_rate": 1.0
+                },
+                "B_hybrid": {
+                  "mrr": 1.0,
+                  "recall": 1.0,
+                  "precision": 1.0,
+                  "ndcg": 2.9484591188793923,
+                  "file_recall": 1.0,
+                  "hit_rate": 1.0
+                }
+              },
+              "K=10": {
+                "A": {
+                  "mrr": 1.0,
+                  "recall": 1.0,
+                  "precision": 1.0,
+                  "ndcg": 4.543559338088346,
+                  "file_recall": 1.0,
+                  "hit_rate": 1.0
+                },
+                "B_vec": {
+                  "mrr": 1.0,
+                  "recall": 1.0,
+                  "precision": 0.5,
+                  "ndcg": 2.9484591188793923,
+                  "file_recall": 1.0,
+                  "hit_rate": 1.0
+                },
+                "B_hybrid": {
+                  "mrr": 1.0,
+                  "recall": 1.0,
+                  "precision": 0.5,
+                  "ndcg": 2.9484591188793923,
+                  "file_recall": 1.0,
+                  "hit_rate": 1.0
+                }
+              }
+            }
+          },
+          {
+            "instance_id": "click_custom_6",
+            "relevant_files": [
+              "src/click/exceptions.py",
+              "src/click/core.py"
+            ],
+            "files": {
+              "A": [
+                "src/click/exceptions.py",
+                "src/click/exceptions.py",
+                "src/click/exceptions.py",
+                "src/click/exceptions.py",
+                "src/click/exceptions.py",
+                "src/click/exceptions.py",
+                "src/click/exceptions.py",
+                "src/click/exceptions.py",
+                "src/click/exceptions.py",
+                "src/click/exceptions.py"
+              ],
+              "B_vec": [
+                "src/click/exceptions.py",
+                "src/click/exceptions.py",
+                "src/click/exceptions.py",
+                "src/click/exceptions.py",
+                "src/click/exceptions.py",
+                "src/click/exceptions.py",
+                "src/click/exceptions.py",
+                "src/click/exceptions.py",
+                "src/click/exceptions.py",
+                "src/click/exceptions.py"
+              ],
+              "B_hybrid": [
+                "src/click/exceptions.py",
+                "src/click/exceptions.py",
+                "src/click/exceptions.py",
+                "src/click/exceptions.py",
+                "src/click/exceptions.py",
+                "src/click/exceptions.py",
+                "src/click/exceptions.py",
+                "src/click/exceptions.py",
+                "src/click/exceptions.py",
+                "src/click/exceptions.py"
+              ]
+            },
+            "num_chunks": {
+              "A": 10,
+              "B_vec": 10,
+              "B_hybrid": 10
+            },
+            "metrics": {
+              "K=1": {
+                "A": {
+                  "mrr": 1.0,
+                  "recall": 0.5,
+                  "precision": 1.0,
+                  "ndcg": 1.0,
+                  "file_recall": 0.5,
+                  "hit_rate": 1.0
+                },
+                "B_vec": {
+                  "mrr": 1.0,
+                  "recall": 0.5,
+                  "precision": 1.0,
+                  "ndcg": 1.0,
+                  "file_recall": 0.5,
+                  "hit_rate": 1.0
+                },
+                "B_hybrid": {
+                  "mrr": 1.0,
+                  "recall": 0.5,
+                  "precision": 1.0,
+                  "ndcg": 1.0,
+                  "file_recall": 0.5,
+                  "hit_rate": 1.0
+                }
+              },
+              "K=3": {
+                "A": {
+                  "mrr": 1.0,
+                  "recall": 0.5,
+                  "precision": 1.0,
+                  "ndcg": 1.3065735963827294,
+                  "file_recall": 0.5,
+                  "hit_rate": 1.0
+                },
+                "B_vec": {
+                  "mrr": 1.0,
+                  "recall": 0.5,
+                  "precision": 1.0,
+                  "ndcg": 1.3065735963827294,
+                  "file_recall": 0.5,
+                  "hit_rate": 1.0
+                },
+                "B_hybrid": {
+                  "mrr": 1.0,
+                  "recall": 0.5,
+                  "precision": 1.0,
+                  "ndcg": 1.3065735963827294,
+                  "file_recall": 0.5,
+                  "hit_rate": 1.0
+                }
+              },
+              "K=5": {
+                "A": {
+                  "mrr": 1.0,
+                  "recall": 0.5,
+                  "precision": 1.0,
+                  "ndcg": 1.8078394317246163,
+                  "file_recall": 0.5,
+                  "hit_rate": 1.0
+                },
+                "B_vec": {
+                  "mrr": 1.0,
+                  "recall": 0.5,
+                  "precision": 1.0,
+                  "ndcg": 1.8078394317246163,
+                  "file_recall": 0.5,
+                  "hit_rate": 1.0
+                },
+                "B_hybrid": {
+                  "mrr": 1.0,
+                  "recall": 0.5,
+                  "precision": 1.0,
+                  "ndcg": 1.8078394317246163,
+                  "file_recall": 0.5,
+                  "hit_rate": 1.0
+                }
+              },
+              "K=10": {
+                "A": {
+                  "mrr": 1.0,
+                  "recall": 0.5,
+                  "precision": 1.0,
+                  "ndcg": 2.7858706533121533,
+                  "file_recall": 0.5,
+                  "hit_rate": 1.0
+                },
+                "B_vec": {
+                  "mrr": 1.0,
+                  "recall": 0.5,
+                  "precision": 1.0,
+                  "ndcg": 2.7858706533121533,
+                  "file_recall": 0.5,
+                  "hit_rate": 1.0
+                },
+                "B_hybrid": {
+                  "mrr": 1.0,
+                  "recall": 0.5,
+                  "precision": 1.0,
+                  "ndcg": 2.7858706533121533,
+                  "file_recall": 0.5,
+                  "hit_rate": 1.0
+                }
+              }
+            }
+          },
+          {
+            "instance_id": "click_custom_7",
+            "relevant_files": [
+              "src/click/core.py",
+              "src/click/decorators.py"
+            ],
+            "files": {
+              "A": [
+                "src/click/decorators.py",
+                "src/click/decorators.py",
+                "src/click/decorators.py",
+                "src/click/decorators.py",
+                "src/click/decorators.py",
+                "src/click/decorators.py",
+                "src/click/decorators.py",
+                "src/click/decorators.py",
+                "src/click/decorators.py",
+                "src/click/decorators.py"
+              ],
+              "B_vec": [
+                "src/click/decorators.py",
+                "src/click/decorators.py",
+                "src/click/decorators.py",
+                "src/click/decorators.py",
+                "src/click/decorators.py",
+                "src/click/decorators.py",
+                "src/click/decorators.py",
+                "src/click/decorators.py",
+                "src/click/core.py",
+                "examples/complex/complex/cli.py"
+              ],
+              "B_hybrid": [
+                "src/click/decorators.py",
+                "src/click/decorators.py",
+                "src/click/decorators.py",
+                "src/click/decorators.py",
+                "src/click/decorators.py",
+                "src/click/decorators.py",
+                "src/click/decorators.py",
+                "src/click/decorators.py",
+                "src/click/core.py",
+                "examples/complex/complex/cli.py"
+              ]
+            },
+            "num_chunks": {
+              "A": 10,
+              "B_vec": 10,
+              "B_hybrid": 10
+            },
+            "metrics": {
+              "K=1": {
+                "A": {
+                  "mrr": 1.0,
+                  "recall": 0.5,
+                  "precision": 1.0,
+                  "ndcg": 1.0,
+                  "file_recall": 0.5,
+                  "hit_rate": 1.0
+                },
+                "B_vec": {
+                  "mrr": 1.0,
+                  "recall": 0.5,
+                  "precision": 1.0,
+                  "ndcg": 1.0,
+                  "file_recall": 0.5,
+                  "hit_rate": 1.0
+                },
+                "B_hybrid": {
+                  "mrr": 1.0,
+                  "recall": 0.5,
+                  "precision": 1.0,
+                  "ndcg": 1.0,
+                  "file_recall": 0.5,
+                  "hit_rate": 1.0
+                }
+              },
+              "K=3": {
+                "A": {
+                  "mrr": 1.0,
+                  "recall": 0.5,
+                  "precision": 1.0,
+                  "ndcg": 1.3065735963827294,
+                  "file_recall": 0.5,
+                  "hit_rate": 1.0
+                },
+                "B_vec": {
+                  "mrr": 1.0,
+                  "recall": 0.5,
+                  "precision": 1.0,
+                  "ndcg": 1.3065735963827294,
+                  "file_recall": 0.5,
+                  "hit_rate": 1.0
+                },
+                "B_hybrid": {
+                  "mrr": 1.0,
+                  "recall": 0.5,
+                  "precision": 1.0,
+                  "ndcg": 1.3065735963827294,
+                  "file_recall": 0.5,
+                  "hit_rate": 1.0
+                }
+              },
+              "K=5": {
+                "A": {
+                  "mrr": 1.0,
+                  "recall": 0.5,
+                  "precision": 1.0,
+                  "ndcg": 1.8078394317246163,
+                  "file_recall": 0.5,
+                  "hit_rate": 1.0
+                },
+                "B_vec": {
+                  "mrr": 1.0,
+                  "recall": 0.5,
+                  "precision": 1.0,
+                  "ndcg": 1.8078394317246163,
+                  "file_recall": 0.5,
+                  "hit_rate": 1.0
+                },
+                "B_hybrid": {
+                  "mrr": 1.0,
+                  "recall": 0.5,
+                  "precision": 1.0,
+                  "ndcg": 1.8078394317246163,
+                  "file_recall": 0.5,
+                  "hit_rate": 1.0
+                }
+              },
+              "K=10": {
+                "A": {
+                  "mrr": 1.0,
+                  "recall": 0.5,
+                  "precision": 1.0,
+                  "ndcg": 2.7858706533121533,
+                  "file_recall": 0.5,
+                  "hit_rate": 1.0
+                },
+                "B_vec": {
+                  "mrr": 1.0,
+                  "recall": 1.0,
+                  "precision": 0.9,
+                  "ndcg": 2.608631366528106,
+                  "file_recall": 1.0,
+                  "hit_rate": 1.0
+                },
+                "B_hybrid": {
+                  "mrr": 1.0,
+                  "recall": 1.0,
+                  "precision": 0.9,
+                  "ndcg": 2.608631366528106,
+                  "file_recall": 1.0,
+                  "hit_rate": 1.0
+                }
+              }
+            }
+          },
+          {
+            "instance_id": "click_custom_8",
+            "relevant_files": [
+              "src/click/utils.py",
+              "src/click/core.py",
+              "src/click/formatting.py"
+            ],
+            "files": {
+              "A": [
+                "src/click/core.py",
+                "tests/test_custom_classes.py",
+                "tests/test_formatting.py",
+                "tests/test_formatting.py",
+                "src/click/core.py",
+                "tests/test_formatting.py",
+                "tests/test_formatting.py",
+                "src/click/core.py",
+                "src/click/core.py",
+                "tests/test_formatting.py"
+              ],
+              "B_vec": [
+                "src/click/formatting.py",
+                "src/click/core.py",
+                "src/click/core.py",
+                "src/click/core.py",
+                "src/click/core.py",
+                "src/click/core.py",
+                "src/click/core.py",
+                "src/click/core.py",
+                "tests/typing/typing_help_option.py",
+                "src/click/core.py"
+              ],
+              "B_hybrid": [
+                "src/click/formatting.py",
+                "src/click/core.py",
+                "src/click/core.py",
+                "src/click/core.py",
+                "src/click/core.py",
+                "src/click/core.py",
+                "src/click/core.py",
+                "src/click/core.py",
+                "tests/typing/typing_help_option.py",
+                "src/click/core.py"
+              ]
+            },
+            "num_chunks": {
+              "A": 10,
+              "B_vec": 10,
+              "B_hybrid": 10
+            },
+            "metrics": {
+              "K=1": {
+                "A": {
+                  "mrr": 1.0,
+                  "recall": 0.3333333333333333,
+                  "precision": 1.0,
+                  "ndcg": 1.0,
+                  "file_recall": 0.3333333333333333,
+                  "hit_rate": 1.0
+                },
+                "B_vec": {
+                  "mrr": 1.0,
+                  "recall": 0.3333333333333333,
+                  "precision": 1.0,
+                  "ndcg": 1.0,
+                  "file_recall": 0.3333333333333333,
+                  "hit_rate": 1.0
+                },
+                "B_hybrid": {
+                  "mrr": 1.0,
+                  "recall": 0.3333333333333333,
+                  "precision": 1.0,
+                  "ndcg": 1.0,
+                  "file_recall": 0.3333333333333333,
+                  "hit_rate": 1.0
+                }
+              },
+              "K=3": {
+                "A": {
+                  "mrr": 1.0,
+                  "recall": 0.3333333333333333,
+                  "precision": 0.3333333333333333,
+                  "ndcg": 0.46927872602275644,
+                  "file_recall": 0.3333333333333333,
+                  "hit_rate": 1.0
+                },
+                "B_vec": {
+                  "mrr": 1.0,
+                  "recall": 0.6666666666666666,
+                  "precision": 1.0,
+                  "ndcg": 1.0,
+                  "file_recall": 0.6666666666666666,
+                  "hit_rate": 1.0
+                },
+                "B_hybrid": {
+                  "mrr": 1.0,
+                  "recall": 0.6666666666666666,
+                  "precision": 1.0,
+                  "ndcg": 1.0,
+                  "file_recall": 0.6666666666666666,
+                  "hit_rate": 1.0
+                }
+              },
+              "K=5": {
+                "A": {
+                  "mrr": 1.0,
+                  "recall": 0.3333333333333333,
+                  "precision": 0.4,
+                  "ndcg": 0.6508205185601091,
+                  "file_recall": 0.3333333333333333,
+                  "hit_rate": 1.0
+                },
+                "B_vec": {
+                  "mrr": 1.0,
+                  "recall": 0.6666666666666666,
+                  "precision": 1.0,
+                  "ndcg": 1.3836491390379002,
+                  "file_recall": 0.6666666666666666,
+                  "hit_rate": 1.0
+                },
+                "B_hybrid": {
+                  "mrr": 1.0,
+                  "recall": 0.6666666666666666,
+                  "precision": 1.0,
+                  "ndcg": 1.3836491390379002,
+                  "file_recall": 0.6666666666666666,
+                  "hit_rate": 1.0
+                }
+              },
+              "K=10": {
+                "A": {
+                  "mrr": 1.0,
+                  "recall": 0.3333333333333333,
+                  "precision": 0.4,
+                  "ndcg": 0.9401284469028708,
+                  "file_recall": 0.3333333333333333,
+                  "hit_rate": 1.0
+                },
+                "B_vec": {
+                  "mrr": 1.0,
+                  "recall": 0.6666666666666666,
+                  "precision": 0.9,
+                  "ndcg": 1.9909287649270684,
+                  "file_recall": 0.6666666666666666,
+                  "hit_rate": 1.0
+                },
+                "B_hybrid": {
+                  "mrr": 1.0,
+                  "recall": 0.6666666666666666,
+                  "precision": 0.9,
+                  "ndcg": 1.9909287649270684,
+                  "file_recall": 0.6666666666666666,
+                  "hit_rate": 1.0
+                }
+              }
+            }
+          },
+          {
+            "instance_id": "click_custom_9",
+            "relevant_files": [
+              "src/click/utils.py",
+              "src/click/types.py"
+            ],
+            "files": {
+              "A": [
+                "tests/test_basic.py",
+                "src/click/utils.py",
+                "tests/test_basic.py",
+                "src/click/utils.py",
+                "src/click/utils.py",
+                "src/click/utils.py",
+                "src/click/types.py",
+                "src/click/utils.py",
+                "src/click/utils.py",
+                "src/click/utils.py"
+              ],
+              "B_vec": [
+                "src/click/types.py",
+                "src/click/types.py",
+                "src/click/types.py",
+                "src/click/utils.py",
+                "src/click/types.py",
+                "src/click/types.py",
+                "src/click/types.py",
+                "src/click/types.py",
+                "src/click/types.py",
+                "src/click/types.py"
+              ],
+              "B_hybrid": [
+                "src/click/types.py",
+                "src/click/types.py",
+                "src/click/types.py",
+                "src/click/utils.py",
+                "src/click/types.py",
+                "src/click/types.py",
+                "src/click/types.py",
+                "src/click/types.py",
+                "src/click/types.py",
+                "src/click/types.py"
+              ]
+            },
+            "num_chunks": {
+              "A": 10,
+              "B_vec": 10,
+              "B_hybrid": 10
+            },
+            "metrics": {
+              "K=1": {
+                "A": {
+                  "mrr": 0.0,
+                  "recall": 0.0,
+                  "precision": 0.0,
+                  "ndcg": 0.0,
+                  "file_recall": 0.0,
+                  "hit_rate": 0.0
+                },
+                "B_vec": {
+                  "mrr": 1.0,
+                  "recall": 0.5,
+                  "precision": 1.0,
+                  "ndcg": 1.0,
+                  "file_recall": 0.5,
+                  "hit_rate": 1.0
+                },
+                "B_hybrid": {
+                  "mrr": 1.0,
+                  "recall": 0.5,
+                  "precision": 1.0,
+                  "ndcg": 1.0,
+                  "file_recall": 0.5,
+                  "hit_rate": 1.0
+                }
+              },
+              "K=3": {
+                "A": {
+                  "mrr": 0.5,
+                  "recall": 0.5,
+                  "precision": 0.3333333333333333,
+                  "ndcg": 0.38685280723454163,
+                  "file_recall": 0.5,
+                  "hit_rate": 1.0
+                },
+                "B_vec": {
+                  "mrr": 1.0,
+                  "recall": 0.5,
+                  "precision": 1.0,
+                  "ndcg": 1.3065735963827294,
+                  "file_recall": 0.5,
+                  "hit_rate": 1.0
+                },
+                "B_hybrid": {
+                  "mrr": 1.0,
+                  "recall": 0.5,
+                  "precision": 1.0,
+                  "ndcg": 1.3065735963827294,
+                  "file_recall": 0.5,
+                  "hit_rate": 1.0
+                }
+              },
+              "K=5": {
+                "A": {
+                  "mrr": 0.5,
+                  "recall": 0.5,
+                  "precision": 0.6,
+                  "ndcg": 0.8881186425764287,
+                  "file_recall": 0.5,
+                  "hit_rate": 1.0
+                },
+                "B_vec": {
+                  "mrr": 1.0,
+                  "recall": 1.0,
+                  "precision": 1.0,
+                  "ndcg": 1.8078394317246163,
+                  "file_recall": 1.0,
+                  "hit_rate": 1.0
+                },
+                "B_hybrid": {
+                  "mrr": 1.0,
+                  "recall": 1.0,
+                  "precision": 1.0,
+                  "ndcg": 1.8078394317246163,
+                  "file_recall": 1.0,
+                  "hit_rate": 1.0
+                }
+              },
+              "K=10": {
+                "A": {
+                  "mrr": 0.5,
+                  "recall": 1.0,
+                  "precision": 0.8,
+                  "ndcg": 1.866149864163966,
+                  "file_recall": 1.0,
+                  "hit_rate": 1.0
+                },
+                "B_vec": {
+                  "mrr": 1.0,
+                  "recall": 1.0,
+                  "precision": 1.0,
+                  "ndcg": 2.7858706533121533,
+                  "file_recall": 1.0,
+                  "hit_rate": 1.0
+                },
+                "B_hybrid": {
+                  "mrr": 1.0,
+                  "recall": 1.0,
+                  "precision": 1.0,
+                  "ndcg": 2.7858706533121533,
+                  "file_recall": 1.0,
+                  "hit_rate": 1.0
+                }
+              }
+            }
+          },
+          {
+            "instance_id": "click_custom_10",
+            "relevant_files": [
+              "src/click/core.py",
+              "src/click/decorators.py"
+            ],
+            "files": {
+              "A": [
+                "src/click/__init__.py",
+                "src/click/core.py",
+                "src/click/core.py",
+                "src/click/decorators.py",
+                "src/click/decorators.py",
+                "src/click/decorators.py",
+                "tests/test_commands.py",
+                "src/click/__init__.py",
+                "src/click/decorators.py",
+                "src/click/decorators.py"
+              ],
+              "B_vec": [
+                "src/click/core.py",
+                "src/click/core.py",
+                "src/click/decorators.py",
+                "src/click/decorators.py",
+                "src/click/decorators.py",
+                "src/click/decorators.py",
+                "src/click/core.py",
+                "src/click/decorators.py",
+                "src/click/core.py",
+                "src/click/core.py"
+              ],
+              "B_hybrid": [
+                "src/click/core.py",
+                "src/click/core.py",
+                "src/click/decorators.py",
+                "src/click/decorators.py",
+                "src/click/decorators.py",
+                "src/click/decorators.py",
+                "src/flask/cli.py",
+                "src/click/core.py",
+                "src/click/decorators.py",
+                "src/click/core.py"
+              ]
+            },
+            "num_chunks": {
+              "A": 10,
+              "B_vec": 10,
+              "B_hybrid": 10
+            },
+            "metrics": {
+              "K=1": {
+                "A": {
+                  "mrr": 0.0,
+                  "recall": 0.0,
+                  "precision": 0.0,
+                  "ndcg": 0.0,
+                  "file_recall": 0.0,
+                  "hit_rate": 0.0
+                },
+                "B_vec": {
+                  "mrr": 1.0,
+                  "recall": 0.5,
+                  "precision": 1.0,
+                  "ndcg": 1.0,
+                  "file_recall": 0.5,
+                  "hit_rate": 1.0
+                },
+                "B_hybrid": {
+                  "mrr": 1.0,
+                  "recall": 0.5,
+                  "precision": 1.0,
+                  "ndcg": 1.0,
+                  "file_recall": 0.5,
+                  "hit_rate": 1.0
+                }
+              },
+              "K=3": {
+                "A": {
+                  "mrr": 0.5,
+                  "recall": 0.5,
+                  "precision": 0.6666666666666666,
+                  "ndcg": 0.6934264036172708,
+                  "file_recall": 0.5,
+                  "hit_rate": 1.0
+                },
+                "B_vec": {
+                  "mrr": 1.0,
+                  "recall": 1.0,
+                  "precision": 1.0,
+                  "ndcg": 1.3065735963827294,
+                  "file_recall": 1.0,
+                  "hit_rate": 1.0
+                },
+                "B_hybrid": {
+                  "mrr": 1.0,
+                  "recall": 1.0,
+                  "precision": 1.0,
+                  "ndcg": 1.3065735963827294,
+                  "file_recall": 1.0,
+                  "hit_rate": 1.0
+                }
+              },
+              "K=5": {
+                "A": {
+                  "mrr": 0.5,
+                  "recall": 1.0,
+                  "precision": 0.8,
+                  "ndcg": 1.1946922389591579,
+                  "file_recall": 1.0,
+                  "hit_rate": 1.0
+                },
+                "B_vec": {
+                  "mrr": 1.0,
+                  "recall": 1.0,
+                  "precision": 1.0,
+                  "ndcg": 1.8078394317246163,
+                  "file_recall": 1.0,
+                  "hit_rate": 1.0
+                },
+                "B_hybrid": {
+                  "mrr": 1.0,
+                  "recall": 1.0,
+                  "precision": 1.0,
+                  "ndcg": 1.8078394317246163,
+                  "file_recall": 1.0,
+                  "hit_rate": 1.0
+                }
+              },
+              "K=10": {
+                "A": {
+                  "mrr": 0.5,
+                  "recall": 1.0,
+                  "precision": 0.7,
+                  "ndcg": 1.7749146593409384,
+                  "file_recall": 1.0,
+                  "hit_rate": 1.0
+                },
+                "B_vec": {
+                  "mrr": 1.0,
+                  "recall": 1.0,
+                  "precision": 1.0,
+                  "ndcg": 2.7858706533121533,
+                  "file_recall": 1.0,
+                  "hit_rate": 1.0
+                },
+                "B_hybrid": {
+                  "mrr": 1.0,
+                  "recall": 1.0,
+                  "precision": 0.9,
+                  "ndcg": 2.5814882557236674,
+                  "file_recall": 1.0,
+                  "hit_rate": 1.0
+                }
+              }
+            }
+          },
+          {
+            "instance_id": "click_custom_11",
+            "relevant_files": [
+              "src/click/core.py",
+              "src/click/types.py"
+            ],
+            "files": {
+              "A": [
+                "tests/test_options.py",
+                "tests/test_options.py",
+                "tests/test_options.py",
+                "tests/test_options.py",
+                "tests/test_testing.py",
+                "src/click/core.py",
+                "tests/test_options.py",
+                "tests/test_options.py",
+                "tests/test_options.py",
+                "tests/test_options.py"
+              ],
+              "B_vec": [
+                "src/click/core.py",
+                "src/click/core.py",
+                "src/click/testing.py",
+                "src/click/core.py",
+                "src/click/core.py",
+                "src/click/core.py",
+                "src/click/core.py",
+                "examples/complex/complex/cli.py",
+                "examples/complex/complex/cli.py",
+                "examples/complex/complex/cli.py"
+              ],
+              "B_hybrid": [
+                "src/click/core.py",
+                "src/click/core.py",
+                "src/click/testing.py",
+                "src/click/core.py",
+                "src/click/core.py",
+                "src/click/core.py",
+                "src/click/core.py",
+                "examples/complex/complex/cli.py",
+                "examples/complex/complex/cli.py",
+                "examples/complex/complex/cli.py"
+              ]
+            },
+            "num_chunks": {
+              "A": 10,
+              "B_vec": 10,
+              "B_hybrid": 10
+            },
+            "metrics": {
+              "K=1": {
+                "A": {
+                  "mrr": 0.0,
+                  "recall": 0.0,
+                  "precision": 0.0,
+                  "ndcg": 0.0,
+                  "file_recall": 0.0,
+                  "hit_rate": 0.0
+                },
+                "B_vec": {
+                  "mrr": 1.0,
+                  "recall": 0.5,
+                  "precision": 1.0,
+                  "ndcg": 1.0,
+                  "file_recall": 0.5,
+                  "hit_rate": 1.0
+                },
+                "B_hybrid": {
+                  "mrr": 1.0,
+                  "recall": 0.5,
+                  "precision": 1.0,
+                  "ndcg": 1.0,
+                  "file_recall": 0.5,
+                  "hit_rate": 1.0
+                }
+              },
+              "K=3": {
+                "A": {
+                  "mrr": 0.0,
+                  "recall": 0.0,
+                  "precision": 0.0,
+                  "ndcg": 0.0,
+                  "file_recall": 0.0,
+                  "hit_rate": 0.0
+                },
+                "B_vec": {
+                  "mrr": 1.0,
+                  "recall": 0.5,
+                  "precision": 0.6666666666666666,
+                  "ndcg": 1.0,
+                  "file_recall": 0.5,
+                  "hit_rate": 1.0
+                },
+                "B_hybrid": {
+                  "mrr": 1.0,
+                  "recall": 0.5,
+                  "precision": 0.6666666666666666,
+                  "ndcg": 1.0,
+                  "file_recall": 0.5,
+                  "hit_rate": 1.0
+                }
+              },
+              "K=5": {
+                "A": {
+                  "mrr": 0.0,
+                  "recall": 0.0,
+                  "precision": 0.0,
+                  "ndcg": 0.0,
+                  "file_recall": 0.0,
+                  "hit_rate": 0.0
+                },
+                "B_vec": {
+                  "mrr": 1.0,
+                  "recall": 0.5,
+                  "precision": 0.8,
+                  "ndcg": 1.501265835341887,
+                  "file_recall": 0.5,
+                  "hit_rate": 1.0
+                },
+                "B_hybrid": {
+                  "mrr": 1.0,
+                  "recall": 0.5,
+                  "precision": 0.8,
+                  "ndcg": 1.501265835341887,
+                  "file_recall": 0.5,
+                  "hit_rate": 1.0
+                }
+              },
+              "K=10": {
+                "A": {
+                  "mrr": 0.16666666666666666,
+                  "recall": 0.5,
+                  "precision": 0.1,
+                  "ndcg": 0.21840743681816419,
+                  "file_recall": 0.5,
+                  "hit_rate": 1.0
+                },
+                "B_vec": {
+                  "mrr": 1.0,
+                  "recall": 0.5,
+                  "precision": 0.6,
+                  "ndcg": 1.9240556697485376,
+                  "file_recall": 0.5,
+                  "hit_rate": 1.0
+                },
+                "B_hybrid": {
+                  "mrr": 1.0,
+                  "recall": 0.5,
+                  "precision": 0.6,
+                  "ndcg": 1.9240556697485376,
+                  "file_recall": 0.5,
+                  "hit_rate": 1.0
+                }
+              }
+            }
+          },
+          {
+            "instance_id": "click_custom_12",
+            "relevant_files": [
+              "examples/aliases/aliases.py",
+              "examples/naval/naval.py",
+              "examples/validation/validation.py",
+              "examples/complex/complex/cli.py"
+            ],
+            "files": {
+              "A": [
+                "examples/complex/complex/cli.py",
+                "examples/complex/complex/cli.py",
+                "examples/complex/complex/cli.py",
+                "tests/test_basic.py",
+                "tests/test_formatting.py",
+                "tests/test_basic.py",
+                "tests/test_testing.py",
+                "examples/naval/naval.py",
+                "examples/colors/colors.py",
+                "examples/complex/complex/cli.py"
+              ],
+              "B_vec": [
+                "examples/naval/naval.py",
+                "examples/completion/completion.py",
+                "examples/repo/repo.py",
+                "examples/complex/complex/cli.py",
+                "examples/complex/complex/cli.py",
+                "examples/termui/termui.py",
+                "examples/complex/complex/cli.py",
+                "examples/colors/colors.py",
+                "examples/complex/complex/cli.py",
+                "tests/typing/typing_aliased_group.py"
+              ],
+              "B_hybrid": [
+                "examples/naval/naval.py",
+                "examples/completion/completion.py",
+                "examples/repo/repo.py",
+                "examples/complex/complex/cli.py",
+                "examples/complex/complex/cli.py",
+                "examples/termui/termui.py",
+                "examples/complex/complex/cli.py",
+                "examples/colors/colors.py",
+                "examples/complex/complex/cli.py",
+                "tests/typing/typing_aliased_group.py"
+              ]
+            },
+            "num_chunks": {
+              "A": 10,
+              "B_vec": 10,
+              "B_hybrid": 10
+            },
+            "metrics": {
+              "K=1": {
+                "A": {
+                  "mrr": 1.0,
+                  "recall": 0.25,
+                  "precision": 1.0,
+                  "ndcg": 1.0,
+                  "file_recall": 0.25,
+                  "hit_rate": 1.0
+                },
+                "B_vec": {
+                  "mrr": 1.0,
+                  "recall": 0.25,
+                  "precision": 1.0,
+                  "ndcg": 1.0,
+                  "file_recall": 0.25,
+                  "hit_rate": 1.0
+                },
+                "B_hybrid": {
+                  "mrr": 1.0,
+                  "recall": 0.25,
+                  "precision": 1.0,
+                  "ndcg": 1.0,
+                  "file_recall": 0.25,
+                  "hit_rate": 1.0
+                }
+              },
+              "K=3": {
+                "A": {
+                  "mrr": 1.0,
+                  "recall": 0.25,
+                  "precision": 1.0,
+                  "ndcg": 1.0,
+                  "file_recall": 0.25,
+                  "hit_rate": 1.0
+                },
+                "B_vec": {
+                  "mrr": 1.0,
+                  "recall": 0.25,
+                  "precision": 0.3333333333333333,
+                  "ndcg": 0.46927872602275644,
+                  "file_recall": 0.25,
+                  "hit_rate": 1.0
+                },
+                "B_hybrid": {
+                  "mrr": 1.0,
+                  "recall": 0.25,
+                  "precision": 0.3333333333333333,
+                  "ndcg": 0.46927872602275644,
+                  "file_recall": 0.25,
+                  "hit_rate": 1.0
+                }
+              },
+              "K=5": {
+                "A": {
+                  "mrr": 1.0,
+                  "recall": 0.25,
+                  "precision": 0.6,
+                  "ndcg": 0.8318724637288826,
+                  "file_recall": 0.25,
+                  "hit_rate": 1.0
+                },
+                "B_vec": {
+                  "mrr": 1.0,
+                  "recall": 0.5,
+                  "precision": 0.6,
+                  "ndcg": 0.7095272044910244,
+                  "file_recall": 0.5,
+                  "hit_rate": 1.0
+                },
+                "B_hybrid": {
+                  "mrr": 1.0,
+                  "recall": 0.5,
+                  "precision": 0.6,
+                  "ndcg": 0.7095272044910244,
+                  "file_recall": 0.5,
+                  "hit_rate": 1.0
+                }
+              },
+              "K=10": {
+                "A": {
+                  "mrr": 1.0,
+                  "recall": 0.5,
+                  "precision": 0.5,
+                  "ndcg": 1.0678687994481828,
+                  "file_recall": 0.5,
+                  "hit_rate": 1.0
+                },
+                "B_vec": {
+                  "mrr": 1.0,
+                  "recall": 0.5,
+                  "precision": 0.5,
+                  "ndcg": 0.957169992578152,
+                  "file_recall": 0.5,
+                  "hit_rate": 1.0
+                },
+                "B_hybrid": {
+                  "mrr": 1.0,
+                  "recall": 0.5,
+                  "precision": 0.5,
+                  "ndcg": 0.957169992578152,
+                  "file_recall": 0.5,
+                  "hit_rate": 1.0
+                }
+              }
+            }
+          },
+          {
+            "instance_id": "click_custom_13",
+            "relevant_files": [
+              "src/click/core.py"
+            ],
+            "files": {
+              "A": [
+                "src/click/core.py",
+                "tests/test_commands.py",
+                "src/click/core.py",
+                "tests/test_commands.py",
+                "src/click/core.py",
+                "src/click/core.py",
+                "src/click/core.py",
+                "src/click/core.py",
+                "src/click/core.py",
+                "src/click/core.py"
+              ],
+              "B_vec": [
+                "src/click/core.py",
+                "src/click/core.py",
+                "src/click/core.py",
+                "src/click/core.py",
+                "src/click/core.py",
+                "src/click/core.py",
+                "src/click/core.py",
+                "src/click/core.py",
+                "src/click/core.py",
+                "src/click/types.py"
+              ],
+              "B_hybrid": [
+                "src/click/core.py",
+                "src/click/core.py",
+                "src/click/core.py",
+                "src/click/core.py",
+                "src/click/core.py",
+                "src/click/core.py",
+                "src/click/core.py",
+                "src/click/core.py",
+                "src/click/core.py",
+                "src/click/types.py"
+              ]
+            },
+            "num_chunks": {
+              "A": 10,
+              "B_vec": 10,
+              "B_hybrid": 10
+            },
+            "metrics": {
+              "K=1": {
+                "A": {
+                  "mrr": 1.0,
+                  "recall": 1.0,
+                  "precision": 1.0,
+                  "ndcg": 1.0,
+                  "file_recall": 1.0,
+                  "hit_rate": 1.0
+                },
+                "B_vec": {
+                  "mrr": 1.0,
+                  "recall": 1.0,
+                  "precision": 1.0,
+                  "ndcg": 1.0,
+                  "file_recall": 1.0,
+                  "hit_rate": 1.0
+                },
+                "B_hybrid": {
+                  "mrr": 1.0,
+                  "recall": 1.0,
+                  "precision": 1.0,
+                  "ndcg": 1.0,
+                  "file_recall": 1.0,
+                  "hit_rate": 1.0
+                }
+              },
+              "K=3": {
+                "A": {
+                  "mrr": 1.0,
+                  "recall": 1.0,
+                  "precision": 0.6666666666666666,
+                  "ndcg": 1.5,
+                  "file_recall": 1.0,
+                  "hit_rate": 1.0
+                },
+                "B_vec": {
+                  "mrr": 1.0,
+                  "recall": 1.0,
+                  "precision": 1.0,
+                  "ndcg": 2.1309297535714578,
+                  "file_recall": 1.0,
+                  "hit_rate": 1.0
+                },
+                "B_hybrid": {
+                  "mrr": 1.0,
+                  "recall": 1.0,
+                  "precision": 1.0,
+                  "ndcg": 2.1309297535714578,
+                  "file_recall": 1.0,
+                  "hit_rate": 1.0
+                }
+              },
+              "K=5": {
+                "A": {
+                  "mrr": 1.0,
+                  "recall": 1.0,
+                  "precision": 0.6,
+                  "ndcg": 1.8868528072345416,
+                  "file_recall": 1.0,
+                  "hit_rate": 1.0
+                },
+                "B_vec": {
+                  "mrr": 1.0,
+                  "recall": 1.0,
+                  "precision": 1.0,
+                  "ndcg": 2.9484591188793923,
+                  "file_recall": 1.0,
+                  "hit_rate": 1.0
+                },
+                "B_hybrid": {
+                  "mrr": 1.0,
+                  "recall": 1.0,
+                  "precision": 1.0,
+                  "ndcg": 2.9484591188793923,
+                  "file_recall": 1.0,
+                  "hit_rate": 1.0
+                }
+              },
+              "K=10": {
+                "A": {
+                  "mrr": 1.0,
+                  "recall": 1.0,
+                  "precision": 0.8,
+                  "ndcg": 3.4819530264434952,
+                  "file_recall": 1.0,
+                  "hit_rate": 1.0
+                },
+                "B_vec": {
+                  "mrr": 1.0,
+                  "recall": 1.0,
+                  "precision": 0.9,
+                  "ndcg": 4.254494511770458,
+                  "file_recall": 1.0,
+                  "hit_rate": 1.0
+                },
+                "B_hybrid": {
+                  "mrr": 1.0,
+                  "recall": 1.0,
+                  "precision": 0.9,
+                  "ndcg": 4.254494511770458,
+                  "file_recall": 1.0,
+                  "hit_rate": 1.0
+                }
+              }
+            }
+          },
+          {
+            "instance_id": "click_custom_14",
+            "relevant_files": [
+              "src/click/parser.py",
+              "src/click/exceptions.py"
+            ],
+            "files": {
+              "A": [
+                "src/click/parser.py",
+                "src/click/parser.py",
+                "src/click/parser.py",
+                "src/click/parser.py",
+                "tests/test_options.py",
+                "tests/test_options.py",
+                "src/click/parser.py",
+                "tests/test_options.py",
+                "src/click/parser.py",
+                "tests/test_options.py"
+              ],
+              "B_vec": [
+                "src/click/parser.py",
+                "src/click/parser.py",
+                "src/click/parser.py",
+                "src/click/parser.py",
+                "src/click/parser.py",
+                "src/click/parser.py",
+                "src/click/parser.py",
+                "src/click/parser.py",
+                "src/click/parser.py",
+                "src/click/parser.py"
+              ],
+              "B_hybrid": [
+                "src/click/parser.py",
+                "src/click/parser.py",
+                "src/click/parser.py",
+                "src/click/parser.py",
+                "src/click/parser.py",
+                "src/click/parser.py",
+                "src/click/parser.py",
+                "src/click/parser.py",
+                "src/click/parser.py",
+                "src/click/parser.py"
+              ]
+            },
+            "num_chunks": {
+              "A": 10,
+              "B_vec": 10,
+              "B_hybrid": 10
+            },
+            "metrics": {
+              "K=1": {
+                "A": {
+                  "mrr": 1.0,
+                  "recall": 0.5,
+                  "precision": 1.0,
+                  "ndcg": 1.0,
+                  "file_recall": 0.5,
+                  "hit_rate": 1.0
+                },
+                "B_vec": {
+                  "mrr": 1.0,
+                  "recall": 0.5,
+                  "precision": 1.0,
+                  "ndcg": 1.0,
+                  "file_recall": 0.5,
+                  "hit_rate": 1.0
+                },
+                "B_hybrid": {
+                  "mrr": 1.0,
+                  "recall": 0.5,
+                  "precision": 1.0,
+                  "ndcg": 1.0,
+                  "file_recall": 0.5,
+                  "hit_rate": 1.0
+                }
+              },
+              "K=3": {
+                "A": {
+                  "mrr": 1.0,
+                  "recall": 0.5,
+                  "precision": 1.0,
+                  "ndcg": 1.3065735963827294,
+                  "file_recall": 0.5,
+                  "hit_rate": 1.0
+                },
+                "B_vec": {
+                  "mrr": 1.0,
+                  "recall": 0.5,
+                  "precision": 1.0,
+                  "ndcg": 1.3065735963827294,
+                  "file_recall": 0.5,
+                  "hit_rate": 1.0
+                },
+                "B_hybrid": {
+                  "mrr": 1.0,
+                  "recall": 0.5,
+                  "precision": 1.0,
+                  "ndcg": 1.3065735963827294,
+                  "file_recall": 0.5,
+                  "hit_rate": 1.0
+                }
+              },
+              "K=5": {
+                "A": {
+                  "mrr": 1.0,
+                  "recall": 0.5,
+                  "precision": 0.8,
+                  "ndcg": 1.5706417189553201,
+                  "file_recall": 0.5,
+                  "hit_rate": 1.0
+                },
+                "B_vec": {
+                  "mrr": 1.0,
+                  "recall": 0.5,
+                  "precision": 1.0,
+                  "ndcg": 1.8078394317246163,
+                  "file_recall": 0.5,
+                  "hit_rate": 1.0
+                },
+                "B_hybrid": {
+                  "mrr": 1.0,
+                  "recall": 0.5,
+                  "precision": 1.0,
+                  "ndcg": 1.8078394317246163,
+                  "file_recall": 0.5,
+                  "hit_rate": 1.0
+                }
+              },
+              "K=10": {
+                "A": {
+                  "mrr": 1.0,
+                  "recall": 0.5,
+                  "precision": 0.6,
+                  "ndcg": 1.9595998133233745,
+                  "file_recall": 0.5,
+                  "hit_rate": 1.0
+                },
+                "B_vec": {
+                  "mrr": 1.0,
+                  "recall": 0.5,
+                  "precision": 1.0,
+                  "ndcg": 2.7858706533121533,
+                  "file_recall": 0.5,
+                  "hit_rate": 1.0
+                },
+                "B_hybrid": {
+                  "mrr": 1.0,
+                  "recall": 0.5,
+                  "precision": 1.0,
+                  "ndcg": 2.7858706533121533,
+                  "file_recall": 0.5,
+                  "hit_rate": 1.0
+                }
+              }
+            }
+          }
+        ]
+      },
+      "generation": {
+        "aggregated": {
+          "A": {
+            "accuracy": 0,
+            "completeness": 0,
+            "helpfulness": 0,
+            "avg_score": 0
+          },
+          "B_vec": {
+            "accuracy": 0,
+            "completeness": 0,
+            "helpfulness": 0,
+            "avg_score": 0
+          },
+          "B_hybrid": {
+            "accuracy": 0,
+            "completeness": 0,
+            "helpfulness": 0,
+            "avg_score": 0
+          },
+          "C": {
+            "accuracy": 0,
+            "completeness": 0,
+            "helpfulness": 0,
+            "avg_score": 0
+          }
+        },
+        "per_case": []
+      },
+      "pairwise": {
+        "A_vs_Bh": {
+          "A": 0,
+          "B": 0,
+          "tie": 0
+        }
+      }
+    },
+    "pytest": {
+      "repo": "pytest",
+      "label": "Medium (~50k LOC)",
+      "retrieval": {
+        "aggregated": {
+          "K=1": {
+            "A": {
+              "mrr": 0.2667,
+              "recall": 0.2667,
+              "precision": 0.2667,
+              "ndcg": 0.2667,
+              "file_recall": 0.2667,
+              "hit_rate": 0.2667
+            },
+            "B_vec": {
+              "mrr": 0.3333,
+              "recall": 0.3333,
+              "precision": 0.3333,
+              "ndcg": 0.3333,
+              "file_recall": 0.3333,
+              "hit_rate": 0.3333
+            },
+            "B_hybrid": {
+              "mrr": 0.3333,
+              "recall": 0.3333,
+              "precision": 0.3333,
+              "ndcg": 0.3333,
+              "file_recall": 0.3333,
+              "hit_rate": 0.3333
+            }
+          },
+          "K=3": {
+            "A": {
+              "mrr": 0.2667,
+              "recall": 0.2667,
+              "precision": 0.2444,
+              "ndcg": 0.5349,
+              "file_recall": 0.2667,
+              "hit_rate": 0.2667
+            },
+            "B_vec": {
+              "mrr": 0.3667,
+              "recall": 0.4,
+              "precision": 0.2889,
+              "ndcg": 0.6349,
+              "file_recall": 0.4,
+              "hit_rate": 0.4
+            },
+            "B_hybrid": {
+              "mrr": 0.3667,
+              "recall": 0.4,
+              "precision": 0.2889,
+              "ndcg": 0.6349,
+              "file_recall": 0.4,
+              "hit_rate": 0.4
+            }
+          },
+          "K=5": {
+            "A": {
+              "mrr": 0.2667,
+              "recall": 0.2667,
+              "precision": 0.2533,
+              "ndcg": 0.7529,
+              "file_recall": 0.2667,
+              "hit_rate": 0.2667
+            },
+            "B_vec": {
+              "mrr": 0.3833,
+              "recall": 0.4667,
+              "precision": 0.3067,
+              "ndcg": 0.9074,
+              "file_recall": 0.4667,
+              "hit_rate": 0.4667
+            },
+            "B_hybrid": {
+              "mrr": 0.3833,
+              "recall": 0.4667,
+              "precision": 0.3067,
+              "ndcg": 0.9074,
+              "file_recall": 0.4667,
+              "hit_rate": 0.4667
+            }
+          },
+          "K=10": {
+            "A": {
+              "mrr": 0.2667,
+              "recall": 0.2667,
+              "precision": 0.26,
+              "ndcg": 1.1783,
+              "file_recall": 0.2667,
+              "hit_rate": 0.2667
+            },
+            "B_vec": {
+              "mrr": 0.3907,
+              "recall": 0.5333,
+              "precision": 0.2578,
+              "ndcg": 1.2186,
+              "file_recall": 0.5333,
+              "hit_rate": 0.5333
+            },
+            "B_hybrid": {
+              "mrr": 0.3907,
+              "recall": 0.5333,
+              "precision": 0.2578,
+              "ndcg": 1.2186,
+              "file_recall": 0.5333,
+              "hit_rate": 0.5333
+            }
+          }
+        },
+        "avg_chunks": {
+          "A": 10.0,
+          "B_vec": 9.9,
+          "B_hybrid": 9.9
+        },
+        "per_case": [
+          {
+            "instance_id": "pytest-dev__pytest-11143",
+            "relevant_files": [
+              "src/_pytest/assertion/rewrite.py"
+            ],
+            "files": {
+              "A": [
+                "src/_pytest/assertion/rewrite.py",
+                "src/_pytest/assertion/rewrite.py",
+                "src/_pytest/assertion/rewrite.py",
+                "src/_pytest/assertion/rewrite.py",
+                "src/_pytest/assertion/rewrite.py",
+                "src/_pytest/assertion/rewrite.py",
+                "src/_pytest/assertion/rewrite.py",
+                "src/_pytest/assertion/rewrite.py",
+                "src/_pytest/assertion/rewrite.py",
+                "src/_pytest/assertion/rewrite.py"
+              ],
+              "B_vec": [
+                "src/_pytest/assertion/rewrite.py",
+                "src/_pytest/assertion/rewrite.py",
+                "src/_pytest/assertion/rewrite.py",
+                "src/_pytest/assertion/rewrite.py",
+                "src/_pytest/assertion/rewrite.py",
+                "src/_pytest/doctest.py",
+                "src/_pytest/config/__init__.py",
+                "src/_pytest/assertion/rewrite.py",
+                "src/_pytest/assertion/__init__.py"
+              ],
+              "B_hybrid": [
+                "src/_pytest/assertion/rewrite.py",
+                "src/_pytest/assertion/rewrite.py",
+                "src/_pytest/assertion/rewrite.py",
+                "src/_pytest/assertion/rewrite.py",
+                "src/_pytest/assertion/rewrite.py",
+                "src/_pytest/doctest.py",
+                "src/_pytest/config/__init__.py",
+                "src/_pytest/assertion/rewrite.py",
+                "src/_pytest/assertion/__init__.py"
+              ]
+            },
+            "num_chunks": {
+              "A": 10,
+              "B_vec": 9,
+              "B_hybrid": 9
+            },
+            "metrics": {
+              "K=1": {
+                "A": {
+                  "mrr": 1.0,
+                  "recall": 1.0,
+                  "precision": 1.0,
+                  "ndcg": 1.0,
+                  "file_recall": 1.0,
+                  "hit_rate": 1.0
+                },
+                "B_vec": {
+                  "mrr": 1.0,
+                  "recall": 1.0,
+                  "precision": 1.0,
+                  "ndcg": 1.0,
+                  "file_recall": 1.0,
+                  "hit_rate": 1.0
+                },
+                "B_hybrid": {
+                  "mrr": 1.0,
+                  "recall": 1.0,
+                  "precision": 1.0,
+                  "ndcg": 1.0,
+                  "file_recall": 1.0,
+                  "hit_rate": 1.0
+                }
+              },
+              "K=3": {
+                "A": {
+                  "mrr": 1.0,
+                  "recall": 1.0,
+                  "precision": 1.0,
+                  "ndcg": 2.1309297535714578,
+                  "file_recall": 1.0,
+                  "hit_rate": 1.0
+                },
+                "B_vec": {
+                  "mrr": 1.0,
+                  "recall": 1.0,
+                  "precision": 1.0,
+                  "ndcg": 2.1309297535714578,
+                  "file_recall": 1.0,
+                  "hit_rate": 1.0
+                },
+                "B_hybrid": {
+                  "mrr": 1.0,
+                  "recall": 1.0,
+                  "precision": 1.0,
+                  "ndcg": 2.1309297535714578,
+                  "file_recall": 1.0,
+                  "hit_rate": 1.0
+                }
+              },
+              "K=5": {
+                "A": {
+                  "mrr": 1.0,
+                  "recall": 1.0,
+                  "precision": 1.0,
+                  "ndcg": 2.9484591188793923,
+                  "file_recall": 1.0,
+                  "hit_rate": 1.0
+                },
+                "B_vec": {
+                  "mrr": 1.0,
+                  "recall": 1.0,
+                  "precision": 1.0,
+                  "ndcg": 2.9484591188793923,
+                  "file_recall": 1.0,
+                  "hit_rate": 1.0
+                },
+                "B_hybrid": {
+                  "mrr": 1.0,
+                  "recall": 1.0,
+                  "precision": 1.0,
+                  "ndcg": 2.9484591188793923,
+                  "file_recall": 1.0,
+                  "hit_rate": 1.0
+                }
+              },
+              "K=10": {
+                "A": {
+                  "mrr": 1.0,
+                  "recall": 1.0,
+                  "precision": 1.0,
+                  "ndcg": 4.543559338088346,
+                  "file_recall": 1.0,
+                  "hit_rate": 1.0
+                },
+                "B_vec": {
+                  "mrr": 1.0,
+                  "recall": 1.0,
+                  "precision": 0.6666666666666666,
+                  "ndcg": 3.263923995665121,
+                  "file_recall": 1.0,
+                  "hit_rate": 1.0
+                },
+                "B_hybrid": {
+                  "mrr": 1.0,
+                  "recall": 1.0,
+                  "precision": 0.6666666666666666,
+                  "ndcg": 3.263923995665121,
+                  "file_recall": 1.0,
+                  "hit_rate": 1.0
+                }
+              }
+            }
+          },
+          {
+            "instance_id": "pytest-dev__pytest-11148",
+            "relevant_files": [
+              "src/_pytest/pathlib.py"
+            ],
+            "files": {
+              "A": [
+                "testing/test_pathlib.py",
+                "testing/test_pathlib.py",
+                "testing/test_pathlib.py",
+                "testing/test_pathlib.py",
+                "testing/test_pathlib.py",
+                "testing/test_pathlib.py",
+                "testing/test_collection.py",
+                "testing/test_pathlib.py",
+                "testing/test_pathlib.py",
+                "testing/acceptance_test.py"
+              ],
+              "B_vec": [
+                "src/_pytest/pathlib.py",
+                "testing/python/collect.py",
+                "src/_pytest/python.py",
+                "src/_pytest/python.py",
+                "src/_pytest/python.py",
+                "src/_pytest/python.py",
+                "src/_pytest/python.py",
+                "testing/python/integration.py",
+                "src/_pytest/python.py",
+                "testing/python/raises.py"
+              ],
+              "B_hybrid": [
+                "src/_pytest/pathlib.py",
+                "testing/python/collect.py",
+                "src/_pytest/python.py",
+                "src/_pytest/python.py",
+                "src/_pytest/python.py",
+                "src/_pytest/python.py",
+                "src/_pytest/python.py",
+                "testing/python/integration.py",
+                "src/_pytest/python.py",
+                "testing/python/raises.py"
+              ]
+            },
+            "num_chunks": {
+              "A": 10,
+              "B_vec": 10,
+              "B_hybrid": 10
+            },
+            "metrics": {
+              "K=1": {
+                "A": {
+                  "mrr": 0.0,
+                  "recall": 0.0,
+                  "precision": 0.0,
+                  "ndcg": 0.0,
+                  "file_recall": 0.0,
+                  "hit_rate": 0.0
+                },
+                "B_vec": {
+                  "mrr": 1.0,
+                  "recall": 1.0,
+                  "precision": 1.0,
+                  "ndcg": 1.0,
+                  "file_recall": 1.0,
+                  "hit_rate": 1.0
+                },
+                "B_hybrid": {
+                  "mrr": 1.0,
+                  "recall": 1.0,
+                  "precision": 1.0,
+                  "ndcg": 1.0,
+                  "file_recall": 1.0,
+                  "hit_rate": 1.0
+                }
+              },
+              "K=3": {
+                "A": {
+                  "mrr": 0.0,
+                  "recall": 0.0,
+                  "precision": 0.0,
+                  "ndcg": 0.0,
+                  "file_recall": 0.0,
+                  "hit_rate": 0.0
+                },
+                "B_vec": {
+                  "mrr": 1.0,
+                  "recall": 1.0,
+                  "precision": 0.3333333333333333,
+                  "ndcg": 1.0,
+                  "file_recall": 1.0,
+                  "hit_rate": 1.0
+                },
+                "B_hybrid": {
+                  "mrr": 1.0,
+                  "recall": 1.0,
+                  "precision": 0.3333333333333333,
+                  "ndcg": 1.0,
+                  "file_recall": 1.0,
+                  "hit_rate": 1.0
+                }
+              },
+              "K=5": {
+                "A": {
+                  "mrr": 0.0,
+                  "recall": 0.0,
+                  "precision": 0.0,
+                  "ndcg": 0.0,
+                  "file_recall": 0.0,
+                  "hit_rate": 0.0
+                },
+                "B_vec": {
+                  "mrr": 1.0,
+                  "recall": 1.0,
+                  "precision": 0.2,
+                  "ndcg": 1.0,
+                  "file_recall": 1.0,
+                  "hit_rate": 1.0
+                },
+                "B_hybrid": {
+                  "mrr": 1.0,
+                  "recall": 1.0,
+                  "precision": 0.2,
+                  "ndcg": 1.0,
+                  "file_recall": 1.0,
+                  "hit_rate": 1.0
+                }
+              },
+              "K=10": {
+                "A": {
+                  "mrr": 0.0,
+                  "recall": 0.0,
+                  "precision": 0.0,
+                  "ndcg": 0.0,
+                  "file_recall": 0.0,
+                  "hit_rate": 0.0
+                },
+                "B_vec": {
+                  "mrr": 1.0,
+                  "recall": 1.0,
+                  "precision": 0.1,
+                  "ndcg": 1.0,
+                  "file_recall": 1.0,
+                  "hit_rate": 1.0
+                },
+                "B_hybrid": {
+                  "mrr": 1.0,
+                  "recall": 1.0,
+                  "precision": 0.1,
+                  "ndcg": 1.0,
+                  "file_recall": 1.0,
+                  "hit_rate": 1.0
+                }
+              }
+            }
+          },
+          {
+            "instance_id": "pytest-dev__pytest-5103",
+            "relevant_files": [
+              "src/_pytest/assertion/rewrite.py"
+            ],
+            "files": {
+              "A": [
+                "src/_pytest/reports.py",
+                "src/_pytest/reports.py",
+                "src/_pytest/reports.py",
+                "src/_pytest/reports.py",
+                "src/_pytest/reports.py",
+                "src/_pytest/reports.py",
+                "src/_pytest/reports.py",
+                "src/_pytest/reports.py",
+                "src/_pytest/reports.py",
+                "src/_pytest/reports.py"
+              ],
+              "B_vec": [
+                "src/_pytest/reports.py",
+                "src/_pytest/reports.py",
+                "src/_pytest/reports.py",
+                "src/_pytest/reports.py",
+                "src/_pytest/mark/expression.py",
+                "src/_pytest/reports.py",
+                "src/_pytest/reports.py",
+                "src/_pytest/reports.py",
+                "src/_pytest/reports.py",
+                "src/_pytest/unraisableexception.py"
+              ],
+              "B_hybrid": [
+                "src/_pytest/reports.py",
+                "src/_pytest/reports.py",
+                "src/_pytest/reports.py",
+                "src/_pytest/reports.py",
+                "src/_pytest/mark/expression.py",
+                "src/_pytest/reports.py",
+                "src/_pytest/reports.py",
+                "src/_pytest/reports.py",
+                "src/_pytest/reports.py",
+                "src/_pytest/unraisableexception.py"
+              ]
+            },
+            "num_chunks": {
+              "A": 10,
+              "B_vec": 10,
+              "B_hybrid": 10
+            },
+            "metrics": {
+              "K=1": {
+                "A": {
+                  "mrr": 0.0,
+                  "recall": 0.0,
+                  "precision": 0.0,
+                  "ndcg": 0.0,
+                  "file_recall": 0.0,
+                  "hit_rate": 0.0
+                },
+                "B_vec": {
+                  "mrr": 0.0,
+                  "recall": 0.0,
+                  "precision": 0.0,
+                  "ndcg": 0.0,
+                  "file_recall": 0.0,
+                  "hit_rate": 0.0
+                },
+                "B_hybrid": {
+                  "mrr": 0.0,
+                  "recall": 0.0,
+                  "precision": 0.0,
+                  "ndcg": 0.0,
+                  "file_recall": 0.0,
+                  "hit_rate": 0.0
+                }
+              },
+              "K=3": {
+                "A": {
+                  "mrr": 0.0,
+                  "recall": 0.0,
+                  "precision": 0.0,
+                  "ndcg": 0.0,
+                  "file_recall": 0.0,
+                  "hit_rate": 0.0
+                },
+                "B_vec": {
+                  "mrr": 0.0,
+                  "recall": 0.0,
+                  "precision": 0.0,
+                  "ndcg": 0.0,
+                  "file_recall": 0.0,
+                  "hit_rate": 0.0
+                },
+                "B_hybrid": {
+                  "mrr": 0.0,
+                  "recall": 0.0,
+                  "precision": 0.0,
+                  "ndcg": 0.0,
+                  "file_recall": 0.0,
+                  "hit_rate": 0.0
+                }
+              },
+              "K=5": {
+                "A": {
+                  "mrr": 0.0,
+                  "recall": 0.0,
+                  "precision": 0.0,
+                  "ndcg": 0.0,
+                  "file_recall": 0.0,
+                  "hit_rate": 0.0
+                },
+                "B_vec": {
+                  "mrr": 0.0,
+                  "recall": 0.0,
+                  "precision": 0.0,
+                  "ndcg": 0.0,
+                  "file_recall": 0.0,
+                  "hit_rate": 0.0
+                },
+                "B_hybrid": {
+                  "mrr": 0.0,
+                  "recall": 0.0,
+                  "precision": 0.0,
+                  "ndcg": 0.0,
+                  "file_recall": 0.0,
+                  "hit_rate": 0.0
+                }
+              },
+              "K=10": {
+                "A": {
+                  "mrr": 0.0,
+                  "recall": 0.0,
+                  "precision": 0.0,
+                  "ndcg": 0.0,
+                  "file_recall": 0.0,
+                  "hit_rate": 0.0
+                },
+                "B_vec": {
+                  "mrr": 0.0,
+                  "recall": 0.0,
+                  "precision": 0.0,
+                  "ndcg": 0.0,
+                  "file_recall": 0.0,
+                  "hit_rate": 0.0
+                },
+                "B_hybrid": {
+                  "mrr": 0.0,
+                  "recall": 0.0,
+                  "precision": 0.0,
+                  "ndcg": 0.0,
+                  "file_recall": 0.0,
+                  "hit_rate": 0.0
+                }
+              }
+            }
+          },
+          {
+            "instance_id": "pytest-dev__pytest-5221",
+            "relevant_files": [
+              "src/_pytest/python.py"
+            ],
+            "files": {
+              "A": [
+                "src/_pytest/scope.py",
+                "testing/python/fixtures.py",
+                "testing/python/fixtures.py",
+                "src/_pytest/scope.py",
+                "testing/python/fixtures.py",
+                "testing/python/fixtures.py",
+                "testing/python/fixtures.py",
+                "testing/python/fixtures.py",
+                "testing/python/fixtures.py",
+                "testing/python/fixtures.py"
+              ],
+              "B_vec": [
+                "testing/python/fixtures.py",
+                "src/_pytest/scope.py",
+                "testing/python/fixtures.py",
+                "testing/python/fixtures.py",
+                "testing/python/fixtures.py",
+                "src/_pytest/fixtures.py",
+                "src/_pytest/fixtures.py",
+                "src/_pytest/fixtures.py",
+                "src/_pytest/fixtures.py",
+                "src/_pytest/fixtures.py"
+              ],
+              "B_hybrid": [
+                "testing/python/fixtures.py",
+                "src/_pytest/scope.py",
+                "testing/python/fixtures.py",
+                "testing/python/fixtures.py",
+                "testing/python/fixtures.py",
+                "src/_pytest/fixtures.py",
+                "src/_pytest/fixtures.py",
+                "src/_pytest/fixtures.py",
+                "src/_pytest/fixtures.py",
+                "src/_pytest/fixtures.py"
+              ]
+            },
+            "num_chunks": {
+              "A": 10,
+              "B_vec": 10,
+              "B_hybrid": 10
+            },
+            "metrics": {
+              "K=1": {
+                "A": {
+                  "mrr": 0.0,
+                  "recall": 0.0,
+                  "precision": 0.0,
+                  "ndcg": 0.0,
+                  "file_recall": 0.0,
+                  "hit_rate": 0.0
+                },
+                "B_vec": {
+                  "mrr": 0.0,
+                  "recall": 0.0,
+                  "precision": 0.0,
+                  "ndcg": 0.0,
+                  "file_recall": 0.0,
+                  "hit_rate": 0.0
+                },
+                "B_hybrid": {
+                  "mrr": 0.0,
+                  "recall": 0.0,
+                  "precision": 0.0,
+                  "ndcg": 0.0,
+                  "file_recall": 0.0,
+                  "hit_rate": 0.0
+                }
+              },
+              "K=3": {
+                "A": {
+                  "mrr": 0.0,
+                  "recall": 0.0,
+                  "precision": 0.0,
+                  "ndcg": 0.0,
+                  "file_recall": 0.0,
+                  "hit_rate": 0.0
+                },
+                "B_vec": {
+                  "mrr": 0.0,
+                  "recall": 0.0,
+                  "precision": 0.0,
+                  "ndcg": 0.0,
+                  "file_recall": 0.0,
+                  "hit_rate": 0.0
+                },
+                "B_hybrid": {
+                  "mrr": 0.0,
+                  "recall": 0.0,
+                  "precision": 0.0,
+                  "ndcg": 0.0,
+                  "file_recall": 0.0,
+                  "hit_rate": 0.0
+                }
+              },
+              "K=5": {
+                "A": {
+                  "mrr": 0.0,
+                  "recall": 0.0,
+                  "precision": 0.0,
+                  "ndcg": 0.0,
+                  "file_recall": 0.0,
+                  "hit_rate": 0.0
+                },
+                "B_vec": {
+                  "mrr": 0.0,
+                  "recall": 0.0,
+                  "precision": 0.0,
+                  "ndcg": 0.0,
+                  "file_recall": 0.0,
+                  "hit_rate": 0.0
+                },
+                "B_hybrid": {
+                  "mrr": 0.0,
+                  "recall": 0.0,
+                  "precision": 0.0,
+                  "ndcg": 0.0,
+                  "file_recall": 0.0,
+                  "hit_rate": 0.0
+                }
+              },
+              "K=10": {
+                "A": {
+                  "mrr": 0.0,
+                  "recall": 0.0,
+                  "precision": 0.0,
+                  "ndcg": 0.0,
+                  "file_recall": 0.0,
+                  "hit_rate": 0.0
+                },
+                "B_vec": {
+                  "mrr": 0.0,
+                  "recall": 0.0,
+                  "precision": 0.0,
+                  "ndcg": 0.0,
+                  "file_recall": 0.0,
+                  "hit_rate": 0.0
+                },
+                "B_hybrid": {
+                  "mrr": 0.0,
+                  "recall": 0.0,
+                  "precision": 0.0,
+                  "ndcg": 0.0,
+                  "file_recall": 0.0,
+                  "hit_rate": 0.0
+                }
+              }
+            }
+          },
+          {
+            "instance_id": "pytest-dev__pytest-5227",
+            "relevant_files": [
+              "src/_pytest/logging.py"
+            ],
+            "files": {
+              "A": [
+                "src/_pytest/logging.py",
+                "src/_pytest/logging.py",
+                "src/_pytest/logging.py",
+                "src/_pytest/logging.py",
+                "src/_pytest/logging.py",
+                "src/_pytest/logging.py",
+                "src/_pytest/logging.py",
+                "src/_pytest/logging.py",
+                "src/_pytest/logging.py",
+                "src/_pytest/logging.py"
+              ],
+              "B_vec": [
+                "src/_pytest/logging.py",
+                "src/_pytest/logging.py",
+                "src/_pytest/logging.py",
+                "src/_pytest/logging.py",
+                "src/_pytest/logging.py",
+                "src/_pytest/logging.py",
+                "scripts/release.py",
+                "src/_pytest/logging.py",
+                "src/_pytest/logging.py",
+                "src/_pytest/logging.py"
+              ],
+              "B_hybrid": [
+                "src/_pytest/logging.py",
+                "src/_pytest/logging.py",
+                "src/_pytest/logging.py",
+                "src/_pytest/logging.py",
+                "src/_pytest/logging.py",
+                "src/_pytest/logging.py",
+                "scripts/release.py",
+                "src/_pytest/logging.py",
+                "src/_pytest/logging.py",
+                "src/_pytest/logging.py"
+              ]
+            },
+            "num_chunks": {
+              "A": 10,
+              "B_vec": 10,
+              "B_hybrid": 10
+            },
+            "metrics": {
+              "K=1": {
+                "A": {
+                  "mrr": 1.0,
+                  "recall": 1.0,
+                  "precision": 1.0,
+                  "ndcg": 1.0,
+                  "file_recall": 1.0,
+                  "hit_rate": 1.0
+                },
+                "B_vec": {
+                  "mrr": 1.0,
+                  "recall": 1.0,
+                  "precision": 1.0,
+                  "ndcg": 1.0,
+                  "file_recall": 1.0,
+                  "hit_rate": 1.0
+                },
+                "B_hybrid": {
+                  "mrr": 1.0,
+                  "recall": 1.0,
+                  "precision": 1.0,
+                  "ndcg": 1.0,
+                  "file_recall": 1.0,
+                  "hit_rate": 1.0
+                }
+              },
+              "K=3": {
+                "A": {
+                  "mrr": 1.0,
+                  "recall": 1.0,
+                  "precision": 1.0,
+                  "ndcg": 2.1309297535714578,
+                  "file_recall": 1.0,
+                  "hit_rate": 1.0
+                },
+                "B_vec": {
+                  "mrr": 1.0,
+                  "recall": 1.0,
+                  "precision": 1.0,
+                  "ndcg": 2.1309297535714578,
+                  "file_recall": 1.0,
+                  "hit_rate": 1.0
+                },
+                "B_hybrid": {
+                  "mrr": 1.0,
+                  "recall": 1.0,
+                  "precision": 1.0,
+                  "ndcg": 2.1309297535714578,
+                  "file_recall": 1.0,
+                  "hit_rate": 1.0
+                }
+              },
+              "K=5": {
+                "A": {
+                  "mrr": 1.0,
+                  "recall": 1.0,
+                  "precision": 1.0,
+                  "ndcg": 2.9484591188793923,
+                  "file_recall": 1.0,
+                  "hit_rate": 1.0
+                },
+                "B_vec": {
+                  "mrr": 1.0,
+                  "recall": 1.0,
+                  "precision": 1.0,
+                  "ndcg": 2.9484591188793923,
+                  "file_recall": 1.0,
+                  "hit_rate": 1.0
+                },
+                "B_hybrid": {
+                  "mrr": 1.0,
+                  "recall": 1.0,
+                  "precision": 1.0,
+                  "ndcg": 2.9484591188793923,
+                  "file_recall": 1.0,
+                  "hit_rate": 1.0
+                }
+              },
+              "K=10": {
+                "A": {
+                  "mrr": 1.0,
+                  "recall": 1.0,
+                  "precision": 1.0,
+                  "ndcg": 4.543559338088346,
+                  "file_recall": 1.0,
+                  "hit_rate": 1.0
+                },
+                "B_vec": {
+                  "mrr": 1.0,
+                  "recall": 1.0,
+                  "precision": 0.9,
+                  "ndcg": 4.210226004755013,
+                  "file_recall": 1.0,
+                  "hit_rate": 1.0
+                },
+                "B_hybrid": {
+                  "mrr": 1.0,
+                  "recall": 1.0,
+                  "precision": 0.9,
+                  "ndcg": 4.210226004755013,
+                  "file_recall": 1.0,
+                  "hit_rate": 1.0
+                }
+              }
+            }
+          },
+          {
+            "instance_id": "pytest-dev__pytest-5413",
+            "relevant_files": [
+              "src/_pytest/_code/code.py"
+            ],
+            "files": {
+              "A": [
+                "src/_pytest/python.py",
+                "src/_pytest/python.py",
+                "src/_pytest/python.py",
+                "src/_pytest/python.py",
+                "src/_pytest/python.py",
+                "src/_pytest/python.py",
+                "src/_pytest/python.py",
+                "src/_pytest/python.py",
+                "src/_pytest/python.py",
+                "src/_pytest/python.py"
+              ],
+              "B_vec": [
+                "src/_pytest/python.py",
+                "src/_pytest/raises.py",
+                "testing/python/raises.py",
+                "src/_pytest/raises.py",
+                "src/_pytest/raises.py",
+                "src/_pytest/raises.py",
+                "testing/python/raises.py",
+                "testing/python/fixtures.py",
+                "src/_pytest/python.py",
+                "src/_pytest/python.py"
+              ],
+              "B_hybrid": [
+                "src/_pytest/python.py",
+                "src/_pytest/raises.py",
+                "testing/python/raises.py",
+                "src/_pytest/raises.py",
+                "src/_pytest/raises.py",
+                "src/_pytest/raises.py",
+                "testing/python/raises.py",
+                "testing/python/fixtures.py",
+                "src/_pytest/python.py",
+                "src/_pytest/python.py"
+              ]
+            },
+            "num_chunks": {
+              "A": 10,
+              "B_vec": 10,
+              "B_hybrid": 10
+            },
+            "metrics": {
+              "K=1": {
+                "A": {
+                  "mrr": 0.0,
+                  "recall": 0.0,
+                  "precision": 0.0,
+                  "ndcg": 0.0,
+                  "file_recall": 0.0,
+                  "hit_rate": 0.0
+                },
+                "B_vec": {
+                  "mrr": 0.0,
+                  "recall": 0.0,
+                  "precision": 0.0,
+                  "ndcg": 0.0,
+                  "file_recall": 0.0,
+                  "hit_rate": 0.0
+                },
+                "B_hybrid": {
+                  "mrr": 0.0,
+                  "recall": 0.0,
+                  "precision": 0.0,
+                  "ndcg": 0.0,
+                  "file_recall": 0.0,
+                  "hit_rate": 0.0
+                }
+              },
+              "K=3": {
+                "A": {
+                  "mrr": 0.0,
+                  "recall": 0.0,
+                  "precision": 0.0,
+                  "ndcg": 0.0,
+                  "file_recall": 0.0,
+                  "hit_rate": 0.0
+                },
+                "B_vec": {
+                  "mrr": 0.0,
+                  "recall": 0.0,
+                  "precision": 0.0,
+                  "ndcg": 0.0,
+                  "file_recall": 0.0,
+                  "hit_rate": 0.0
+                },
+                "B_hybrid": {
+                  "mrr": 0.0,
+                  "recall": 0.0,
+                  "precision": 0.0,
+                  "ndcg": 0.0,
+                  "file_recall": 0.0,
+                  "hit_rate": 0.0
+                }
+              },
+              "K=5": {
+                "A": {
+                  "mrr": 0.0,
+                  "recall": 0.0,
+                  "precision": 0.0,
+                  "ndcg": 0.0,
+                  "file_recall": 0.0,
+                  "hit_rate": 0.0
+                },
+                "B_vec": {
+                  "mrr": 0.0,
+                  "recall": 0.0,
+                  "precision": 0.0,
+                  "ndcg": 0.0,
+                  "file_recall": 0.0,
+                  "hit_rate": 0.0
+                },
+                "B_hybrid": {
+                  "mrr": 0.0,
+                  "recall": 0.0,
+                  "precision": 0.0,
+                  "ndcg": 0.0,
+                  "file_recall": 0.0,
+                  "hit_rate": 0.0
+                }
+              },
+              "K=10": {
+                "A": {
+                  "mrr": 0.0,
+                  "recall": 0.0,
+                  "precision": 0.0,
+                  "ndcg": 0.0,
+                  "file_recall": 0.0,
+                  "hit_rate": 0.0
+                },
+                "B_vec": {
+                  "mrr": 0.0,
+                  "recall": 0.0,
+                  "precision": 0.0,
+                  "ndcg": 0.0,
+                  "file_recall": 0.0,
+                  "hit_rate": 0.0
+                },
+                "B_hybrid": {
+                  "mrr": 0.0,
+                  "recall": 0.0,
+                  "precision": 0.0,
+                  "ndcg": 0.0,
+                  "file_recall": 0.0,
+                  "hit_rate": 0.0
+                }
+              }
+            }
+          },
+          {
+            "instance_id": "pytest-dev__pytest-5495",
+            "relevant_files": [
+              "src/_pytest/assertion/util.py"
+            ],
+            "files": {
+              "A": [
+                "testing/test_assertrewrite.py",
+                "testing/test_assertrewrite.py",
+                "testing/test_assertrewrite.py",
+                "testing/test_assertrewrite.py",
+                "testing/test_assertrewrite.py",
+                "testing/test_assertrewrite.py",
+                "testing/test_assertrewrite.py",
+                "testing/test_assertrewrite.py",
+                "testing/test_assertrewrite.py",
+                "testing/test_assertrewrite.py"
+              ],
+              "B_vec": [
+                "src/_pytest/assertion/__init__.py",
+                "src/_pytest/assertion/util.py",
+                "doc/en/example/assertion/failure_demo.py",
+                "doc/en/example/assertion/failure_demo.py",
+                "src/_pytest/nodes.py",
+                "src/_pytest/nodes.py",
+                "src/_pytest/nodes.py",
+                "src/_pytest/nodes.py",
+                "src/_pytest/nodes.py",
+                "src/_pytest/nodes.py"
+              ],
+              "B_hybrid": [
+                "src/_pytest/assertion/__init__.py",
+                "src/_pytest/assertion/util.py",
+                "doc/en/example/assertion/failure_demo.py",
+                "doc/en/example/assertion/failure_demo.py",
+                "src/_pytest/nodes.py",
+                "src/_pytest/nodes.py",
+                "src/_pytest/nodes.py",
+                "src/_pytest/nodes.py",
+                "src/_pytest/nodes.py",
+                "src/_pytest/nodes.py"
+              ]
+            },
+            "num_chunks": {
+              "A": 10,
+              "B_vec": 10,
+              "B_hybrid": 10
+            },
+            "metrics": {
+              "K=1": {
+                "A": {
+                  "mrr": 0.0,
+                  "recall": 0.0,
+                  "precision": 0.0,
+                  "ndcg": 0.0,
+                  "file_recall": 0.0,
+                  "hit_rate": 0.0
+                },
+                "B_vec": {
+                  "mrr": 0.0,
+                  "recall": 0.0,
+                  "precision": 0.0,
+                  "ndcg": 0.0,
+                  "file_recall": 0.0,
+                  "hit_rate": 0.0
+                },
+                "B_hybrid": {
+                  "mrr": 0.0,
+                  "recall": 0.0,
+                  "precision": 0.0,
+                  "ndcg": 0.0,
+                  "file_recall": 0.0,
+                  "hit_rate": 0.0
+                }
+              },
+              "K=3": {
+                "A": {
+                  "mrr": 0.0,
+                  "recall": 0.0,
+                  "precision": 0.0,
+                  "ndcg": 0.0,
+                  "file_recall": 0.0,
+                  "hit_rate": 0.0
+                },
+                "B_vec": {
+                  "mrr": 0.5,
+                  "recall": 1.0,
+                  "precision": 0.3333333333333333,
+                  "ndcg": 0.6309297535714575,
+                  "file_recall": 1.0,
+                  "hit_rate": 1.0
+                },
+                "B_hybrid": {
+                  "mrr": 0.5,
+                  "recall": 1.0,
+                  "precision": 0.3333333333333333,
+                  "ndcg": 0.6309297535714575,
+                  "file_recall": 1.0,
+                  "hit_rate": 1.0
+                }
+              },
+              "K=5": {
+                "A": {
+                  "mrr": 0.0,
+                  "recall": 0.0,
+                  "precision": 0.0,
+                  "ndcg": 0.0,
+                  "file_recall": 0.0,
+                  "hit_rate": 0.0
+                },
+                "B_vec": {
+                  "mrr": 0.5,
+                  "recall": 1.0,
+                  "precision": 0.2,
+                  "ndcg": 0.6309297535714575,
+                  "file_recall": 1.0,
+                  "hit_rate": 1.0
+                },
+                "B_hybrid": {
+                  "mrr": 0.5,
+                  "recall": 1.0,
+                  "precision": 0.2,
+                  "ndcg": 0.6309297535714575,
+                  "file_recall": 1.0,
+                  "hit_rate": 1.0
+                }
+              },
+              "K=10": {
+                "A": {
+                  "mrr": 0.0,
+                  "recall": 0.0,
+                  "precision": 0.0,
+                  "ndcg": 0.0,
+                  "file_recall": 0.0,
+                  "hit_rate": 0.0
+                },
+                "B_vec": {
+                  "mrr": 0.5,
+                  "recall": 1.0,
+                  "precision": 0.1,
+                  "ndcg": 0.6309297535714575,
+                  "file_recall": 1.0,
+                  "hit_rate": 1.0
+                },
+                "B_hybrid": {
+                  "mrr": 0.5,
+                  "recall": 1.0,
+                  "precision": 0.1,
+                  "ndcg": 0.6309297535714575,
+                  "file_recall": 1.0,
+                  "hit_rate": 1.0
+                }
+              }
+            }
+          },
+          {
+            "instance_id": "pytest-dev__pytest-5692",
+            "relevant_files": [
+              "src/_pytest/junitxml.py"
+            ],
+            "files": {
+              "A": [
+                "src/_pytest/reports.py",
+                "src/_pytest/reports.py",
+                "src/_pytest/reports.py",
+                "src/_pytest/reports.py",
+                "src/_pytest/reports.py",
+                "src/_pytest/reports.py",
+                "src/_pytest/reports.py",
+                "src/_pytest/reports.py",
+                "src/_pytest/reports.py",
+                "src/_pytest/reports.py"
+              ],
+              "B_vec": [
+                "src/_pytest/reports.py",
+                "src/_pytest/reports.py",
+                "src/_pytest/reports.py",
+                "src/_pytest/junitxml.py",
+                "src/_pytest/junitxml.py",
+                "src/_pytest/reports.py",
+                "src/_pytest/reports.py",
+                "src/_pytest/junitxml.py",
+                "src/_pytest/junitxml.py",
+                "src/_pytest/junitxml.py"
+              ],
+              "B_hybrid": [
+                "src/_pytest/reports.py",
+                "src/_pytest/reports.py",
+                "src/_pytest/reports.py",
+                "src/_pytest/junitxml.py",
+                "src/_pytest/junitxml.py",
+                "src/_pytest/reports.py",
+                "src/_pytest/reports.py",
+                "src/_pytest/junitxml.py",
+                "src/_pytest/junitxml.py",
+                "src/_pytest/junitxml.py"
+              ]
+            },
+            "num_chunks": {
+              "A": 10,
+              "B_vec": 10,
+              "B_hybrid": 10
+            },
+            "metrics": {
+              "K=1": {
+                "A": {
+                  "mrr": 0.0,
+                  "recall": 0.0,
+                  "precision": 0.0,
+                  "ndcg": 0.0,
+                  "file_recall": 0.0,
+                  "hit_rate": 0.0
+                },
+                "B_vec": {
+                  "mrr": 0.0,
+                  "recall": 0.0,
+                  "precision": 0.0,
+                  "ndcg": 0.0,
+                  "file_recall": 0.0,
+                  "hit_rate": 0.0
+                },
+                "B_hybrid": {
+                  "mrr": 0.0,
+                  "recall": 0.0,
+                  "precision": 0.0,
+                  "ndcg": 0.0,
+                  "file_recall": 0.0,
+                  "hit_rate": 0.0
+                }
+              },
+              "K=3": {
+                "A": {
+                  "mrr": 0.0,
+                  "recall": 0.0,
+                  "precision": 0.0,
+                  "ndcg": 0.0,
+                  "file_recall": 0.0,
+                  "hit_rate": 0.0
+                },
+                "B_vec": {
+                  "mrr": 0.0,
+                  "recall": 0.0,
+                  "precision": 0.0,
+                  "ndcg": 0.0,
+                  "file_recall": 0.0,
+                  "hit_rate": 0.0
+                },
+                "B_hybrid": {
+                  "mrr": 0.0,
+                  "recall": 0.0,
+                  "precision": 0.0,
+                  "ndcg": 0.0,
+                  "file_recall": 0.0,
+                  "hit_rate": 0.0
+                }
+              },
+              "K=5": {
+                "A": {
+                  "mrr": 0.0,
+                  "recall": 0.0,
+                  "precision": 0.0,
+                  "ndcg": 0.0,
+                  "file_recall": 0.0,
+                  "hit_rate": 0.0
+                },
+                "B_vec": {
+                  "mrr": 0.25,
+                  "recall": 1.0,
+                  "precision": 0.4,
+                  "ndcg": 0.8175293653079347,
+                  "file_recall": 1.0,
+                  "hit_rate": 1.0
+                },
+                "B_hybrid": {
+                  "mrr": 0.25,
+                  "recall": 1.0,
+                  "precision": 0.4,
+                  "ndcg": 0.8175293653079347,
+                  "file_recall": 1.0,
+                  "hit_rate": 1.0
+                }
+              },
+              "K=10": {
+                "A": {
+                  "mrr": 0.0,
+                  "recall": 0.0,
+                  "precision": 0.0,
+                  "ndcg": 0.0,
+                  "file_recall": 0.0,
+                  "hit_rate": 0.0
+                },
+                "B_vec": {
+                  "mrr": 0.25,
+                  "recall": 1.0,
+                  "precision": 0.5,
+                  "ndcg": 1.7230890640755325,
+                  "file_recall": 1.0,
+                  "hit_rate": 1.0
+                },
+                "B_hybrid": {
+                  "mrr": 0.25,
+                  "recall": 1.0,
+                  "precision": 0.5,
+                  "ndcg": 1.7230890640755325,
+                  "file_recall": 1.0,
+                  "hit_rate": 1.0
+                }
+              }
+            }
+          },
+          {
+            "instance_id": "pytest-dev__pytest-6116",
+            "relevant_files": [
+              "src/_pytest/main.py"
+            ],
+            "files": {
+              "A": [
+                "testing/python/collect.py",
+                "testing/python/collect.py",
+                "testing/python/collect.py",
+                "testing/python/collect.py",
+                "testing/python/collect.py",
+                "testing/python/collect.py",
+                "testing/python/collect.py",
+                "testing/python/collect.py",
+                "testing/python/collect.py",
+                "testing/python/collect.py"
+              ],
+              "B_vec": [
+                "testing/python/collect.py",
+                "testing/python/collect.py",
+                "testing/python/collect.py",
+                "testing/python/collect.py",
+                "testing/python/collect.py",
+                "testing/python/collect.py",
+                "testing/python/collect.py",
+                "testing/python/fixtures.py",
+                "src/_pytest/main.py",
+                "src/_pytest/capture.py"
+              ],
+              "B_hybrid": [
+                "testing/python/collect.py",
+                "testing/python/collect.py",
+                "testing/python/collect.py",
+                "testing/python/collect.py",
+                "testing/python/collect.py",
+                "testing/python/collect.py",
+                "testing/python/collect.py",
+                "testing/python/fixtures.py",
+                "src/_pytest/main.py",
+                "src/_pytest/capture.py"
+              ]
+            },
+            "num_chunks": {
+              "A": 10,
+              "B_vec": 10,
+              "B_hybrid": 10
+            },
+            "metrics": {
+              "K=1": {
+                "A": {
+                  "mrr": 0.0,
+                  "recall": 0.0,
+                  "precision": 0.0,
+                  "ndcg": 0.0,
+                  "file_recall": 0.0,
+                  "hit_rate": 0.0
+                },
+                "B_vec": {
+                  "mrr": 0.0,
+                  "recall": 0.0,
+                  "precision": 0.0,
+                  "ndcg": 0.0,
+                  "file_recall": 0.0,
+                  "hit_rate": 0.0
+                },
+                "B_hybrid": {
+                  "mrr": 0.0,
+                  "recall": 0.0,
+                  "precision": 0.0,
+                  "ndcg": 0.0,
+                  "file_recall": 0.0,
+                  "hit_rate": 0.0
+                }
+              },
+              "K=3": {
+                "A": {
+                  "mrr": 0.0,
+                  "recall": 0.0,
+                  "precision": 0.0,
+                  "ndcg": 0.0,
+                  "file_recall": 0.0,
+                  "hit_rate": 0.0
+                },
+                "B_vec": {
+                  "mrr": 0.0,
+                  "recall": 0.0,
+                  "precision": 0.0,
+                  "ndcg": 0.0,
+                  "file_recall": 0.0,
+                  "hit_rate": 0.0
+                },
+                "B_hybrid": {
+                  "mrr": 0.0,
+                  "recall": 0.0,
+                  "precision": 0.0,
+                  "ndcg": 0.0,
+                  "file_recall": 0.0,
+                  "hit_rate": 0.0
+                }
+              },
+              "K=5": {
+                "A": {
+                  "mrr": 0.0,
+                  "recall": 0.0,
+                  "precision": 0.0,
+                  "ndcg": 0.0,
+                  "file_recall": 0.0,
+                  "hit_rate": 0.0
+                },
+                "B_vec": {
+                  "mrr": 0.0,
+                  "recall": 0.0,
+                  "precision": 0.0,
+                  "ndcg": 0.0,
+                  "file_recall": 0.0,
+                  "hit_rate": 0.0
+                },
+                "B_hybrid": {
+                  "mrr": 0.0,
+                  "recall": 0.0,
+                  "precision": 0.0,
+                  "ndcg": 0.0,
+                  "file_recall": 0.0,
+                  "hit_rate": 0.0
+                }
+              },
+              "K=10": {
+                "A": {
+                  "mrr": 0.0,
+                  "recall": 0.0,
+                  "precision": 0.0,
+                  "ndcg": 0.0,
+                  "file_recall": 0.0,
+                  "hit_rate": 0.0
+                },
+                "B_vec": {
+                  "mrr": 0.1111111111111111,
+                  "recall": 1.0,
+                  "precision": 0.1,
+                  "ndcg": 0.3010299956639812,
+                  "file_recall": 1.0,
+                  "hit_rate": 1.0
+                },
+                "B_hybrid": {
+                  "mrr": 0.1111111111111111,
+                  "recall": 1.0,
+                  "precision": 0.1,
+                  "ndcg": 0.3010299956639812,
+                  "file_recall": 1.0,
+                  "hit_rate": 1.0
+                }
+              }
+            }
+          },
+          {
+            "instance_id": "pytest-dev__pytest-7168",
+            "relevant_files": [
+              "src/_pytest/_io/saferepr.py"
+            ],
+            "files": {
+              "A": [
+                "src/_pytest/_code/code.py",
+                "src/_pytest/python.py",
+                "src/_pytest/python.py",
+                "src/_pytest/_code/code.py",
+                "src/_pytest/_code/code.py",
+                "src/_pytest/_code/code.py",
+                "src/_pytest/_code/code.py",
+                "src/_pytest/_code/code.py",
+                "src/_pytest/_code/code.py",
+                "src/_pytest/_code/code.py"
+              ],
+              "B_vec": [
+                "src/_pytest/main.py",
+                "src/_pytest/_code/code.py",
+                "src/_pytest/_code/code.py",
+                "src/_pytest/_code/code.py",
+                "src/_pytest/_code/code.py",
+                "src/_pytest/main.py",
+                "src/_pytest/_code/code.py",
+                "src/_pytest/_code/code.py",
+                "src/_pytest/_code/code.py",
+                "src/_pytest/_code/code.py"
+              ],
+              "B_hybrid": [
+                "src/_pytest/main.py",
+                "src/_pytest/_code/code.py",
+                "src/_pytest/_code/code.py",
+                "src/_pytest/_code/code.py",
+                "src/_pytest/_code/code.py",
+                "src/_pytest/main.py",
+                "src/_pytest/_code/code.py",
+                "src/_pytest/_code/code.py",
+                "src/_pytest/_code/code.py",
+                "src/_pytest/_code/code.py"
+              ]
+            },
+            "num_chunks": {
+              "A": 10,
+              "B_vec": 10,
+              "B_hybrid": 10
+            },
+            "metrics": {
+              "K=1": {
+                "A": {
+                  "mrr": 0.0,
+                  "recall": 0.0,
+                  "precision": 0.0,
+                  "ndcg": 0.0,
+                  "file_recall": 0.0,
+                  "hit_rate": 0.0
+                },
+                "B_vec": {
+                  "mrr": 0.0,
+                  "recall": 0.0,
+                  "precision": 0.0,
+                  "ndcg": 0.0,
+                  "file_recall": 0.0,
+                  "hit_rate": 0.0
+                },
+                "B_hybrid": {
+                  "mrr": 0.0,
+                  "recall": 0.0,
+                  "precision": 0.0,
+                  "ndcg": 0.0,
+                  "file_recall": 0.0,
+                  "hit_rate": 0.0
+                }
+              },
+              "K=3": {
+                "A": {
+                  "mrr": 0.0,
+                  "recall": 0.0,
+                  "precision": 0.0,
+                  "ndcg": 0.0,
+                  "file_recall": 0.0,
+                  "hit_rate": 0.0
+                },
+                "B_vec": {
+                  "mrr": 0.0,
+                  "recall": 0.0,
+                  "precision": 0.0,
+                  "ndcg": 0.0,
+                  "file_recall": 0.0,
+                  "hit_rate": 0.0
+                },
+                "B_hybrid": {
+                  "mrr": 0.0,
+                  "recall": 0.0,
+                  "precision": 0.0,
+                  "ndcg": 0.0,
+                  "file_recall": 0.0,
+                  "hit_rate": 0.0
+                }
+              },
+              "K=5": {
+                "A": {
+                  "mrr": 0.0,
+                  "recall": 0.0,
+                  "precision": 0.0,
+                  "ndcg": 0.0,
+                  "file_recall": 0.0,
+                  "hit_rate": 0.0
+                },
+                "B_vec": {
+                  "mrr": 0.0,
+                  "recall": 0.0,
+                  "precision": 0.0,
+                  "ndcg": 0.0,
+                  "file_recall": 0.0,
+                  "hit_rate": 0.0
+                },
+                "B_hybrid": {
+                  "mrr": 0.0,
+                  "recall": 0.0,
+                  "precision": 0.0,
+                  "ndcg": 0.0,
+                  "file_recall": 0.0,
+                  "hit_rate": 0.0
+                }
+              },
+              "K=10": {
+                "A": {
+                  "mrr": 0.0,
+                  "recall": 0.0,
+                  "precision": 0.0,
+                  "ndcg": 0.0,
+                  "file_recall": 0.0,
+                  "hit_rate": 0.0
+                },
+                "B_vec": {
+                  "mrr": 0.0,
+                  "recall": 0.0,
+                  "precision": 0.0,
+                  "ndcg": 0.0,
+                  "file_recall": 0.0,
+                  "hit_rate": 0.0
+                },
+                "B_hybrid": {
+                  "mrr": 0.0,
+                  "recall": 0.0,
+                  "precision": 0.0,
+                  "ndcg": 0.0,
+                  "file_recall": 0.0,
+                  "hit_rate": 0.0
+                }
+              }
+            }
+          },
+          {
+            "instance_id": "pytest-dev__pytest-7220",
+            "relevant_files": [
+              "src/_pytest/nodes.py"
+            ],
+            "files": {
+              "A": [
+                "src/_pytest/_py/path.py",
+                "src/_pytest/python.py",
+                "src/_pytest/_py/path.py",
+                "src/_pytest/_py/path.py",
+                "src/_pytest/_py/path.py",
+                "src/_pytest/_py/path.py",
+                "src/_pytest/python.py",
+                "src/_pytest/_py/path.py",
+                "src/_pytest/_py/path.py",
+                "src/_pytest/monkeypatch.py"
+              ],
+              "B_vec": [
+                "src/_pytest/_py/path.py",
+                "src/_pytest/_py/path.py",
+                "src/_pytest/_py/path.py",
+                "src/_pytest/_py/path.py",
+                "src/_pytest/monkeypatch.py",
+                "src/_pytest/_py/path.py",
+                "src/_pytest/_py/path.py",
+                "src/_pytest/_py/path.py",
+                "src/_pytest/monkeypatch.py",
+                "src/_pytest/_py/path.py"
+              ],
+              "B_hybrid": [
+                "src/_pytest/_py/path.py",
+                "src/_pytest/_py/path.py",
+                "src/_pytest/_py/path.py",
+                "src/_pytest/_py/path.py",
+                "src/_pytest/monkeypatch.py",
+                "src/_pytest/_py/path.py",
+                "src/_pytest/_py/path.py",
+                "src/_pytest/_py/path.py",
+                "src/_pytest/monkeypatch.py",
+                "src/_pytest/_py/path.py"
+              ]
+            },
+            "num_chunks": {
+              "A": 10,
+              "B_vec": 10,
+              "B_hybrid": 10
+            },
+            "metrics": {
+              "K=1": {
+                "A": {
+                  "mrr": 0.0,
+                  "recall": 0.0,
+                  "precision": 0.0,
+                  "ndcg": 0.0,
+                  "file_recall": 0.0,
+                  "hit_rate": 0.0
+                },
+                "B_vec": {
+                  "mrr": 0.0,
+                  "recall": 0.0,
+                  "precision": 0.0,
+                  "ndcg": 0.0,
+                  "file_recall": 0.0,
+                  "hit_rate": 0.0
+                },
+                "B_hybrid": {
+                  "mrr": 0.0,
+                  "recall": 0.0,
+                  "precision": 0.0,
+                  "ndcg": 0.0,
+                  "file_recall": 0.0,
+                  "hit_rate": 0.0
+                }
+              },
+              "K=3": {
+                "A": {
+                  "mrr": 0.0,
+                  "recall": 0.0,
+                  "precision": 0.0,
+                  "ndcg": 0.0,
+                  "file_recall": 0.0,
+                  "hit_rate": 0.0
+                },
+                "B_vec": {
+                  "mrr": 0.0,
+                  "recall": 0.0,
+                  "precision": 0.0,
+                  "ndcg": 0.0,
+                  "file_recall": 0.0,
+                  "hit_rate": 0.0
+                },
+                "B_hybrid": {
+                  "mrr": 0.0,
+                  "recall": 0.0,
+                  "precision": 0.0,
+                  "ndcg": 0.0,
+                  "file_recall": 0.0,
+                  "hit_rate": 0.0
+                }
+              },
+              "K=5": {
+                "A": {
+                  "mrr": 0.0,
+                  "recall": 0.0,
+                  "precision": 0.0,
+                  "ndcg": 0.0,
+                  "file_recall": 0.0,
+                  "hit_rate": 0.0
+                },
+                "B_vec": {
+                  "mrr": 0.0,
+                  "recall": 0.0,
+                  "precision": 0.0,
+                  "ndcg": 0.0,
+                  "file_recall": 0.0,
+                  "hit_rate": 0.0
+                },
+                "B_hybrid": {
+                  "mrr": 0.0,
+                  "recall": 0.0,
+                  "precision": 0.0,
+                  "ndcg": 0.0,
+                  "file_recall": 0.0,
+                  "hit_rate": 0.0
+                }
+              },
+              "K=10": {
+                "A": {
+                  "mrr": 0.0,
+                  "recall": 0.0,
+                  "precision": 0.0,
+                  "ndcg": 0.0,
+                  "file_recall": 0.0,
+                  "hit_rate": 0.0
+                },
+                "B_vec": {
+                  "mrr": 0.0,
+                  "recall": 0.0,
+                  "precision": 0.0,
+                  "ndcg": 0.0,
+                  "file_recall": 0.0,
+                  "hit_rate": 0.0
+                },
+                "B_hybrid": {
+                  "mrr": 0.0,
+                  "recall": 0.0,
+                  "precision": 0.0,
+                  "ndcg": 0.0,
+                  "file_recall": 0.0,
+                  "hit_rate": 0.0
+                }
+              }
+            }
+          },
+          {
+            "instance_id": "pytest-dev__pytest-7373",
+            "relevant_files": [
+              "src/_pytest/mark/evaluate.py"
+            ],
+            "files": {
+              "A": [
+                "testing/test_skipping.py",
+                "bench/skip.py",
+                "testing/test_skipping.py",
+                "src/_pytest/skipping.py",
+                "testing/test_skipping.py",
+                "testing/test_skipping.py",
+                "testing/test_skipping.py",
+                "testing/test_skipping.py",
+                "testing/test_skipping.py",
+                "src/py.py"
+              ],
+              "B_vec": [
+                "bench/skip.py",
+                "bench/skip.py",
+                "src/_pytest/nodes.py",
+                "src/_pytest/nodes.py",
+                "testing/python/fixtures.py",
+                "src/_pytest/nodes.py",
+                "src/_pytest/nodes.py",
+                "src/py.py",
+                "src/_pytest/mark/structures.py",
+                "src/_pytest/nodes.py"
+              ],
+              "B_hybrid": [
+                "bench/skip.py",
+                "bench/skip.py",
+                "src/_pytest/nodes.py",
+                "src/_pytest/nodes.py",
+                "testing/python/fixtures.py",
+                "src/_pytest/nodes.py",
+                "src/_pytest/nodes.py",
+                "src/py.py",
+                "src/_pytest/mark/structures.py",
+                "src/_pytest/nodes.py"
+              ]
+            },
+            "num_chunks": {
+              "A": 10,
+              "B_vec": 10,
+              "B_hybrid": 10
+            },
+            "metrics": {
+              "K=1": {
+                "A": {
+                  "mrr": 0.0,
+                  "recall": 0.0,
+                  "precision": 0.0,
+                  "ndcg": 0.0,
+                  "file_recall": 0.0,
+                  "hit_rate": 0.0
+                },
+                "B_vec": {
+                  "mrr": 0.0,
+                  "recall": 0.0,
+                  "precision": 0.0,
+                  "ndcg": 0.0,
+                  "file_recall": 0.0,
+                  "hit_rate": 0.0
+                },
+                "B_hybrid": {
+                  "mrr": 0.0,
+                  "recall": 0.0,
+                  "precision": 0.0,
+                  "ndcg": 0.0,
+                  "file_recall": 0.0,
+                  "hit_rate": 0.0
+                }
+              },
+              "K=3": {
+                "A": {
+                  "mrr": 0.0,
+                  "recall": 0.0,
+                  "precision": 0.0,
+                  "ndcg": 0.0,
+                  "file_recall": 0.0,
+                  "hit_rate": 0.0
+                },
+                "B_vec": {
+                  "mrr": 0.0,
+                  "recall": 0.0,
+                  "precision": 0.0,
+                  "ndcg": 0.0,
+                  "file_recall": 0.0,
+                  "hit_rate": 0.0
+                },
+                "B_hybrid": {
+                  "mrr": 0.0,
+                  "recall": 0.0,
+                  "precision": 0.0,
+                  "ndcg": 0.0,
+                  "file_recall": 0.0,
+                  "hit_rate": 0.0
+                }
+              },
+              "K=5": {
+                "A": {
+                  "mrr": 0.0,
+                  "recall": 0.0,
+                  "precision": 0.0,
+                  "ndcg": 0.0,
+                  "file_recall": 0.0,
+                  "hit_rate": 0.0
+                },
+                "B_vec": {
+                  "mrr": 0.0,
+                  "recall": 0.0,
+                  "precision": 0.0,
+                  "ndcg": 0.0,
+                  "file_recall": 0.0,
+                  "hit_rate": 0.0
+                },
+                "B_hybrid": {
+                  "mrr": 0.0,
+                  "recall": 0.0,
+                  "precision": 0.0,
+                  "ndcg": 0.0,
+                  "file_recall": 0.0,
+                  "hit_rate": 0.0
+                }
+              },
+              "K=10": {
+                "A": {
+                  "mrr": 0.0,
+                  "recall": 0.0,
+                  "precision": 0.0,
+                  "ndcg": 0.0,
+                  "file_recall": 0.0,
+                  "hit_rate": 0.0
+                },
+                "B_vec": {
+                  "mrr": 0.0,
+                  "recall": 0.0,
+                  "precision": 0.0,
+                  "ndcg": 0.0,
+                  "file_recall": 0.0,
+                  "hit_rate": 0.0
+                },
+                "B_hybrid": {
+                  "mrr": 0.0,
+                  "recall": 0.0,
+                  "precision": 0.0,
+                  "ndcg": 0.0,
+                  "file_recall": 0.0,
+                  "hit_rate": 0.0
+                }
+              }
+            }
+          },
+          {
+            "instance_id": "pytest-dev__pytest-7432",
+            "relevant_files": [
+              "src/_pytest/skipping.py"
+            ],
+            "files": {
+              "A": [
+                "src/_pytest/skipping.py",
+                "src/_pytest/skipping.py",
+                "bench/skip.py",
+                "src/_pytest/skipping.py",
+                "src/_pytest/skipping.py",
+                "src/_pytest/skipping.py",
+                "src/_pytest/skipping.py",
+                "src/_pytest/skipping.py",
+                "src/_pytest/skipping.py",
+                "src/_pytest/skipping.py"
+              ],
+              "B_vec": [
+                "src/_pytest/skipping.py",
+                "src/_pytest/outcomes.py",
+                "src/_pytest/skipping.py",
+                "src/_pytest/skipping.py",
+                "src/_pytest/skipping.py",
+                "bench/skip.py",
+                "src/_pytest/skipping.py",
+                "src/_pytest/skipping.py",
+                "src/_pytest/skipping.py",
+                "src/_pytest/skipping.py"
+              ],
+              "B_hybrid": [
+                "src/_pytest/skipping.py",
+                "src/_pytest/outcomes.py",
+                "src/_pytest/skipping.py",
+                "src/_pytest/skipping.py",
+                "src/_pytest/skipping.py",
+                "bench/skip.py",
+                "src/_pytest/skipping.py",
+                "src/_pytest/skipping.py",
+                "src/_pytest/skipping.py",
+                "src/_pytest/skipping.py"
+              ]
+            },
+            "num_chunks": {
+              "A": 10,
+              "B_vec": 10,
+              "B_hybrid": 10
+            },
+            "metrics": {
+              "K=1": {
+                "A": {
+                  "mrr": 1.0,
+                  "recall": 1.0,
+                  "precision": 1.0,
+                  "ndcg": 1.0,
+                  "file_recall": 1.0,
+                  "hit_rate": 1.0
+                },
+                "B_vec": {
+                  "mrr": 1.0,
+                  "recall": 1.0,
+                  "precision": 1.0,
+                  "ndcg": 1.0,
+                  "file_recall": 1.0,
+                  "hit_rate": 1.0
+                },
+                "B_hybrid": {
+                  "mrr": 1.0,
+                  "recall": 1.0,
+                  "precision": 1.0,
+                  "ndcg": 1.0,
+                  "file_recall": 1.0,
+                  "hit_rate": 1.0
+                }
+              },
+              "K=3": {
+                "A": {
+                  "mrr": 1.0,
+                  "recall": 1.0,
+                  "precision": 0.6666666666666666,
+                  "ndcg": 1.6309297535714575,
+                  "file_recall": 1.0,
+                  "hit_rate": 1.0
+                },
+                "B_vec": {
+                  "mrr": 1.0,
+                  "recall": 1.0,
+                  "precision": 0.6666666666666666,
+                  "ndcg": 1.5,
+                  "file_recall": 1.0,
+                  "hit_rate": 1.0
+                },
+                "B_hybrid": {
+                  "mrr": 1.0,
+                  "recall": 1.0,
+                  "precision": 0.6666666666666666,
+                  "ndcg": 1.5,
+                  "file_recall": 1.0,
+                  "hit_rate": 1.0
+                }
+              },
+              "K=5": {
+                "A": {
+                  "mrr": 1.0,
+                  "recall": 1.0,
+                  "precision": 0.8,
+                  "ndcg": 2.4484591188793923,
+                  "file_recall": 1.0,
+                  "hit_rate": 1.0
+                },
+                "B_vec": {
+                  "mrr": 1.0,
+                  "recall": 1.0,
+                  "precision": 0.8,
+                  "ndcg": 2.3175293653079345,
+                  "file_recall": 1.0,
+                  "hit_rate": 1.0
+                },
+                "B_hybrid": {
+                  "mrr": 1.0,
+                  "recall": 1.0,
+                  "precision": 0.8,
+                  "ndcg": 2.3175293653079345,
+                  "file_recall": 1.0,
+                  "hit_rate": 1.0
+                }
+              },
+              "K=10": {
+                "A": {
+                  "mrr": 1.0,
+                  "recall": 1.0,
+                  "precision": 0.9,
+                  "ndcg": 4.043559338088346,
+                  "file_recall": 1.0,
+                  "hit_rate": 1.0
+                },
+                "B_vec": {
+                  "mrr": 1.0,
+                  "recall": 1.0,
+                  "precision": 0.8,
+                  "ndcg": 3.5564223974088662,
+                  "file_recall": 1.0,
+                  "hit_rate": 1.0
+                },
+                "B_hybrid": {
+                  "mrr": 1.0,
+                  "recall": 1.0,
+                  "precision": 0.8,
+                  "ndcg": 3.5564223974088662,
+                  "file_recall": 1.0,
+                  "hit_rate": 1.0
+                }
+              }
+            }
+          },
+          {
+            "instance_id": "pytest-dev__pytest-7490",
+            "relevant_files": [
+              "src/_pytest/skipping.py"
+            ],
+            "files": {
+              "A": [
+                "src/_pytest/raises.py",
+                "src/_pytest/raises.py",
+                "src/_pytest/raises.py",
+                "src/_pytest/raises.py",
+                "src/_pytest/raises.py",
+                "src/_pytest/raises.py",
+                "src/_pytest/raises.py",
+                "src/_pytest/raises.py",
+                "src/_pytest/raises.py",
+                "src/_pytest/raises.py"
+              ],
+              "B_vec": [
+                "src/_pytest/nodes.py",
+                "src/_pytest/nodes.py",
+                "src/_pytest/nodes.py",
+                "src/_pytest/nodes.py",
+                "src/_pytest/nodes.py",
+                "testing/python/raises.py",
+                "src/_pytest/nodes.py",
+                "src/_pytest/mark/structures.py",
+                "testing/python/raises.py",
+                "src/_pytest/nodes.py"
+              ],
+              "B_hybrid": [
+                "src/_pytest/nodes.py",
+                "src/_pytest/nodes.py",
+                "src/_pytest/nodes.py",
+                "src/_pytest/nodes.py",
+                "src/_pytest/nodes.py",
+                "testing/python/raises.py",
+                "src/_pytest/nodes.py",
+                "src/_pytest/mark/structures.py",
+                "testing/python/raises.py",
+                "src/_pytest/nodes.py"
+              ]
+            },
+            "num_chunks": {
+              "A": 10,
+              "B_vec": 10,
+              "B_hybrid": 10
+            },
+            "metrics": {
+              "K=1": {
+                "A": {
+                  "mrr": 0.0,
+                  "recall": 0.0,
+                  "precision": 0.0,
+                  "ndcg": 0.0,
+                  "file_recall": 0.0,
+                  "hit_rate": 0.0
+                },
+                "B_vec": {
+                  "mrr": 0.0,
+                  "recall": 0.0,
+                  "precision": 0.0,
+                  "ndcg": 0.0,
+                  "file_recall": 0.0,
+                  "hit_rate": 0.0
+                },
+                "B_hybrid": {
+                  "mrr": 0.0,
+                  "recall": 0.0,
+                  "precision": 0.0,
+                  "ndcg": 0.0,
+                  "file_recall": 0.0,
+                  "hit_rate": 0.0
+                }
+              },
+              "K=3": {
+                "A": {
+                  "mrr": 0.0,
+                  "recall": 0.0,
+                  "precision": 0.0,
+                  "ndcg": 0.0,
+                  "file_recall": 0.0,
+                  "hit_rate": 0.0
+                },
+                "B_vec": {
+                  "mrr": 0.0,
+                  "recall": 0.0,
+                  "precision": 0.0,
+                  "ndcg": 0.0,
+                  "file_recall": 0.0,
+                  "hit_rate": 0.0
+                },
+                "B_hybrid": {
+                  "mrr": 0.0,
+                  "recall": 0.0,
+                  "precision": 0.0,
+                  "ndcg": 0.0,
+                  "file_recall": 0.0,
+                  "hit_rate": 0.0
+                }
+              },
+              "K=5": {
+                "A": {
+                  "mrr": 0.0,
+                  "recall": 0.0,
+                  "precision": 0.0,
+                  "ndcg": 0.0,
+                  "file_recall": 0.0,
+                  "hit_rate": 0.0
+                },
+                "B_vec": {
+                  "mrr": 0.0,
+                  "recall": 0.0,
+                  "precision": 0.0,
+                  "ndcg": 0.0,
+                  "file_recall": 0.0,
+                  "hit_rate": 0.0
+                },
+                "B_hybrid": {
+                  "mrr": 0.0,
+                  "recall": 0.0,
+                  "precision": 0.0,
+                  "ndcg": 0.0,
+                  "file_recall": 0.0,
+                  "hit_rate": 0.0
+                }
+              },
+              "K=10": {
+                "A": {
+                  "mrr": 0.0,
+                  "recall": 0.0,
+                  "precision": 0.0,
+                  "ndcg": 0.0,
+                  "file_recall": 0.0,
+                  "hit_rate": 0.0
+                },
+                "B_vec": {
+                  "mrr": 0.0,
+                  "recall": 0.0,
+                  "precision": 0.0,
+                  "ndcg": 0.0,
+                  "file_recall": 0.0,
+                  "hit_rate": 0.0
+                },
+                "B_hybrid": {
+                  "mrr": 0.0,
+                  "recall": 0.0,
+                  "precision": 0.0,
+                  "ndcg": 0.0,
+                  "file_recall": 0.0,
+                  "hit_rate": 0.0
+                }
+              }
+            }
+          },
+          {
+            "instance_id": "pytest-dev__pytest-8365",
+            "relevant_files": [
+              "src/_pytest/tmpdir.py"
+            ],
+            "files": {
+              "A": [
+                "src/_pytest/tmpdir.py",
+                "src/_pytest/tmpdir.py",
+                "src/_pytest/tmpdir.py",
+                "src/_pytest/tmpdir.py",
+                "src/_pytest/tmpdir.py",
+                "src/_pytest/tmpdir.py",
+                "src/_pytest/tmpdir.py",
+                "src/_pytest/tmpdir.py",
+                "src/_pytest/tmpdir.py",
+                "src/_pytest/tmpdir.py"
+              ],
+              "B_vec": [
+                "src/_pytest/tmpdir.py",
+                "src/_pytest/tmpdir.py",
+                "src/_pytest/tmpdir.py",
+                "src/_pytest/tmpdir.py",
+                "src/_pytest/tmpdir.py",
+                "src/_pytest/tmpdir.py",
+                "src/_pytest/legacypath.py",
+                "src/_pytest/legacypath.py",
+                "src/_pytest/pytester.py",
+                "src/_pytest/tmpdir.py"
+              ],
+              "B_hybrid": [
+                "src/_pytest/tmpdir.py",
+                "src/_pytest/tmpdir.py",
+                "src/_pytest/tmpdir.py",
+                "src/_pytest/tmpdir.py",
+                "src/_pytest/tmpdir.py",
+                "src/_pytest/tmpdir.py",
+                "src/_pytest/legacypath.py",
+                "src/_pytest/legacypath.py",
+                "src/_pytest/pytester.py",
+                "src/_pytest/tmpdir.py"
+              ]
+            },
+            "num_chunks": {
+              "A": 10,
+              "B_vec": 10,
+              "B_hybrid": 10
+            },
+            "metrics": {
+              "K=1": {
+                "A": {
+                  "mrr": 1.0,
+                  "recall": 1.0,
+                  "precision": 1.0,
+                  "ndcg": 1.0,
+                  "file_recall": 1.0,
+                  "hit_rate": 1.0
+                },
+                "B_vec": {
+                  "mrr": 1.0,
+                  "recall": 1.0,
+                  "precision": 1.0,
+                  "ndcg": 1.0,
+                  "file_recall": 1.0,
+                  "hit_rate": 1.0
+                },
+                "B_hybrid": {
+                  "mrr": 1.0,
+                  "recall": 1.0,
+                  "precision": 1.0,
+                  "ndcg": 1.0,
+                  "file_recall": 1.0,
+                  "hit_rate": 1.0
+                }
+              },
+              "K=3": {
+                "A": {
+                  "mrr": 1.0,
+                  "recall": 1.0,
+                  "precision": 1.0,
+                  "ndcg": 2.1309297535714578,
+                  "file_recall": 1.0,
+                  "hit_rate": 1.0
+                },
+                "B_vec": {
+                  "mrr": 1.0,
+                  "recall": 1.0,
+                  "precision": 1.0,
+                  "ndcg": 2.1309297535714578,
+                  "file_recall": 1.0,
+                  "hit_rate": 1.0
+                },
+                "B_hybrid": {
+                  "mrr": 1.0,
+                  "recall": 1.0,
+                  "precision": 1.0,
+                  "ndcg": 2.1309297535714578,
+                  "file_recall": 1.0,
+                  "hit_rate": 1.0
+                }
+              },
+              "K=5": {
+                "A": {
+                  "mrr": 1.0,
+                  "recall": 1.0,
+                  "precision": 1.0,
+                  "ndcg": 2.9484591188793923,
+                  "file_recall": 1.0,
+                  "hit_rate": 1.0
+                },
+                "B_vec": {
+                  "mrr": 1.0,
+                  "recall": 1.0,
+                  "precision": 1.0,
+                  "ndcg": 2.9484591188793923,
+                  "file_recall": 1.0,
+                  "hit_rate": 1.0
+                },
+                "B_hybrid": {
+                  "mrr": 1.0,
+                  "recall": 1.0,
+                  "precision": 1.0,
+                  "ndcg": 2.9484591188793923,
+                  "file_recall": 1.0,
+                  "hit_rate": 1.0
+                }
+              },
+              "K=10": {
+                "A": {
+                  "mrr": 1.0,
+                  "recall": 1.0,
+                  "precision": 1.0,
+                  "ndcg": 4.543559338088346,
+                  "file_recall": 1.0,
+                  "hit_rate": 1.0
+                },
+                "B_vec": {
+                  "mrr": 1.0,
+                  "recall": 1.0,
+                  "precision": 0.7,
+                  "ndcg": 3.5937311323053027,
+                  "file_recall": 1.0,
+                  "hit_rate": 1.0
+                },
+                "B_hybrid": {
+                  "mrr": 1.0,
+                  "recall": 1.0,
+                  "precision": 0.7,
+                  "ndcg": 3.5937311323053027,
+                  "file_recall": 1.0,
+                  "hit_rate": 1.0
+                }
+              }
+            }
+          }
+        ]
+      },
+      "generation": {
+        "aggregated": {
+          "A": {
+            "accuracy": 0,
+            "completeness": 0,
+            "helpfulness": 0,
+            "avg_score": 0
+          },
+          "B_vec": {
+            "accuracy": 0,
+            "completeness": 0,
+            "helpfulness": 0,
+            "avg_score": 0
+          },
+          "B_hybrid": {
+            "accuracy": 0,
+            "completeness": 0,
+            "helpfulness": 0,
+            "avg_score": 0
+          },
+          "C": {
+            "accuracy": 0,
+            "completeness": 0,
+            "helpfulness": 0,
+            "avg_score": 0
+          }
+        },
+        "per_case": []
+      },
+      "pairwise": {
+        "A_vs_Bh": {
+          "A": 0,
+          "B": 0,
+          "tie": 0
+        }
+      }
+    }
+  }
+}
